@@ -1,0 +1,1058 @@
+{
+  "inventory": {
+    "title": "إدارة المخزون",
+    "subtitle": "مراقبة وتحكم في المخزون في الوقت الفعلي",
+    "searchPlaceholder": "بحث عن منتج...",
+    "status": {
+      "outOfStock": "نفد من المخزن"
+    }
+  },
+
+  "audit": {
+    "title": "سجلات التدقيق",
+    "subtitle": "مراقبة كافة تحركات النظام والعمليات الحساسة",
+    "total_logs": "إجمالي السجلات",
+    "search_placeholder": "ابحث عن تفاصيل أو مستخدم...",
+    "filter_all": "جميع العمليات",
+    "table": {
+      "date": "آخر تحديث",
+      "user": "المستخدم",
+      "action": "الإجراء",
+      "details": "التفاصيل",
+      "system_auto": "النظام (تلقائي)"
+    },
+    "empty": {
+      "title": "لم يتم العثور على منتجات",
+      "description": "لم نجد أي سجلات تطابق بحثك الحالي"
+    }
+  },
+
+  "table": {
+    "productDetail": "المنتج",
+    "techSpecs": "المواصفات الفنية",
+    "application": "التطبيق",
+    "stockPrice": "المخزون",
+    "actions": "الإجراءات",
+    "finish": "تشطيب",
+    "unit": "وحدة",
+    "coat": "وجه",
+    "dry": "جفاف",
+    "base": "أساس"
+  },
+
+  "modal": {
+    "addTitle": "إضافة منتج جديد",
+    "updateTitle": "تحديث الكمية لـ",
+    "basicInfo": "المعلومات الأساسية",
+    "productName": "اسم المنتج",
+    "price": "السعر",
+    "confirmNew": "إضافة المنتج للمخزن",
+    "saveUpdated": "حفظ التعديلات"
+  },
+
+  "messages": {
+    "lowStock": "مخزون منخفض",
+    "exportError": "فشل تصدير الملف",
+    "importSuccess": "تم استيراد البيانات بنجاح"
+  },
+
+  "options": {
+    "matte": "مطفي",
+    "semi_gloss": "نصف لامع",
+    "gloss": "لامع",
+    "indoor": "داخلي",
+    "outdoor": "خارجي",
+    "both": "داخلي/خارجي",
+    "water": "مائي",
+    "oil": "زيتي",
+    "wood": "خشبي",
+    "kg": "كجم",
+    "liter": "لتر",
+    "available": "متوفر"
+  },
+
+  "units": {
+    "sqm": "متر/كجم",
+    "h": "ساعة",
+    "d": "يوم",
+    "day": "يوم",
+    "days": "أيام",
+    "stock": "في المخزن"
+  },
+  "categories": {
+    "title": "الفئات",
+    "subtitle": "تنظيم المنتجات حسب الموقع والقاعدة الكيميائية",
+    "empty": "لم يتم العثور على فئات.",
+    "actions": {
+      "new": "فئة جديدة"
+    },
+    "fields": {
+      "placeholder": "أدخل اسم الفئة...",
+      "search": "بحث عن فئة..."
+    },
+    "table": {
+      "name": "اسم الفئة",
+      "count": "عدد المنتجات",
+      "actions": "الإجراءات"
+    }
+  },
+
+  "colors": {
+    "title": "مكتبة الألوان",
+    "subtitle": "إدارة درجات الطلاء وأكواد الهيكس",
+    "table": {
+      "shade": "درجة اللون",
+      "hex": "كود الهيكس",
+      "system": "النظام",
+      "actions": "الإجراءات"
+    },
+    "fields": {
+      "search": "بحث بالكود أو النظام...",
+      "code_label": "كود اللون / الاسم",
+      "code_placeholder": "مثلاً: أزرق ملكي",
+      "pick_label": "اختر اللون",
+      "hex_label": "قيمة الهيكس",
+      "system_label": "نظام الألوان",
+      "system_select": "اختر النظام"
+    },
+    "actions": {
+      "add": "إضافة لون",
+      "add_btn": "إضافة اللون الآن"
+    },
+    "modals": {
+      "add_title": "إضافة لون جديد",
+      "edit_title": "تعديل بيانات اللون"
+    }
+  },
+  "services": {
+    "title": "الخدمات الذكية",
+    "tabs": {
+      "calculator": "حاسبة الطلاء",
+      "converter": "محول الألوان",
+      "simulation": "محاكاة الألوان"
+    },
+    "calculator": {
+      "header": "تقدير الكمية المطلوبة",
+      "types": {
+        "dimensions": "بالأبعاد",
+        "area": "بالمساحة الكلية"
+      },
+      "fields": {
+        "length": "الطول (متر)",
+        "width": "العرض (متر)",
+        "height": "الارتفاع (متر)",
+        "total_area": "إجمالي مساحة السطح (م²)",
+        "paint_product": "منتج الطلاء (اختياري)",
+        "paint_placeholder": "اختر الطلاء لجلب معدل التغطية تلقائياً"
+      },
+      "actions": {
+        "calculate": "حساب المتطلبات",
+        "loading": "جاري الحساب..."
+      },
+      "results": {
+        "title": "ملخص الحساب",
+        "total_area": "المساحة الإجمالية",
+        "recommended": "الكمية الموصى بها"
+      }
+    },
+    "converter": {
+      "header": "مطابق الألوان الذكي",
+      "badge": "تحويل مخبري مدعوم بالذكاء الاصطناعي",
+      "fields": {
+        "source_label": "اختر اللون الأصلي",
+        "source_placeholder": "اختر لوناً (مثلاً: جوتن)",
+        "target_label": "العلامة التجارية / النظام المستهدف",
+        "target_placeholder": "اختر العلامة المستهدفة"
+      },
+      "actions": {
+        "convert": "البحث عن أقرب بديل",
+        "loading": "جاري تحليل الأصباغ..."
+      },
+      "results": {
+        "title": "نتيجة المقارنة",
+        "original": "الاختيار الأصلي",
+        "best_match": "أفضل تطابق تم العثور عليه",
+        "match_label": "تطابق",
+        "no_notes": "لا توجد ملاحظات متاحة",
+        "delta_e": "مسافة الفرق (ΔE)"
+      },
+      "alerts": {
+        "select_both": "يرجى اختيار اللون المصدر والعلامة المستهدفة"
+      }
+    },
+    "simulation": {
+      "upload_label": "رفع صورة لاختبار الألوان",
+      "click_hint": "انقر على أي مكان في الصورة لاستخراج اللون",
+      "result_title": "نتيجة المطابقة",
+      "empty_state": "يرجى رفع صورة للغرفة ثم الضغط على الحائط المراد معرفة لونه"
+    }
+  },
+  "invoices": {
+    "title": "إدارة الفواتير",
+    "subtitle": "متابعة الفواتير الصادرة وحالة الدفع",
+    "currency": "ج.م",
+    "unknown_customer": "عميل غير معروف",
+    "unknown_source": "غير محدد",
+    "no_invoices": "لا توجد فواتير متاحة.",
+    "status": {
+      "paid": "مدفوع",
+      "pending": "قيد الانتظار"
+    },
+    "table": {
+      "invoice": "رقم الفاتورة",
+      "customer": "العميل",
+      "amount": "المبلغ",
+      "source": "المصدر",
+      "status": "الحالة",
+      "date": "التاريخ"
+    }
+  },
+  "users": {
+    "title": "إدارة المستخدمين",
+    "subtitle": "إدارة صلاحيات الوصول وأدوار فريق العمل",
+    "search_placeholder": "بحث بالاسم، البريد أو الهاتف...",
+    "loading": "جاري التحميل...",
+    "no_results": "لا يوجد مستخدمين مطابقين للبحث.",
+    "table": {
+      "list_title": "قائمة المستخدمين",
+      "profile": "الملف الشخصي",
+      "role": "الدور",
+      "status": "الحالة",
+      "actions": "الإجراءات"
+    },
+    "roles": {
+      "user": "مستخدم",
+      "admin": "مدير",
+      "painter": "فني دهانات",
+      "vendor": "تاجر / مورد"
+    },
+    "status": {
+      "active": "نشط",
+      "inactive": "غير نشط"
+    },
+    "actions": {
+      "add_new": "إضافة مستخدم",
+      "save": "حفظ التغييرات",
+      "create_now": "إنشاء الحساب الآن"
+    },
+    "fields": {
+      "name": "الاسم بالكامل",
+      "email": "البريد الإلكتروني",
+      "phone_req": "رقم الهاتف (مطلوب)",
+      "password": "كلمة المرور"
+    },
+    "modals": {
+      "add_title": "إضافة حساب مستخدم جديد"
+    },
+    "alerts": {
+      "confirm_delete": "هل أنت متأكد من حذف هذا المستخدم؟ لا يمكن التراجع عن هذا الإجراء."
+    }
+  },
+  "requests": {
+    "title": "طلبات التجار الجدد",
+    "subtitle": "مراجعة وإدارة طلبات حسابات المصنعين الجديدة",
+    "pending": "قيد الانتظار",
+    "search_placeholder": "ابحث باسم الشركة أو البريد الإلكتروني...",
+    "confirm_approve": "هل أنت متأكد من الموافقة على تحويل هذا المستخدم لتاجر؟",
+    "confirm_payment": "هل تأكدت من استلام دفع رسوم الاشتراك؟",
+    "joined_user": "تم الانضمام كمستخدم",
+    "status": {
+      "paid": "مدفوع",
+      "pending": "قيد الانتظار"
+    },
+    "verify_payment": "تأكيد الدفع",
+    "approve": "الموافقة",
+    "reject_delete": "رفض وحذف",
+    "table": {
+      "company": "بيانات الشركة",
+      "contact": "الموقع وبيانات الاتصال",
+      "payment": "الدفع",
+      "actions": "الإجراءات"
+    },
+    "loading": "جاري تحميل الطلبات...",
+    "no_requests": "لم يتم العثور على طلبات معلقة."
+  },
+  "offers": {
+    "title": "العروض والتخفيضات",
+    "subtitle": "إدارة العروض الترويجية والموسمية",
+    "total_promotions": "إجمالي العروض",
+    "currently_active": "العروض النشطة حالياً",
+    "loading": "جاري تحميل العروض...",
+    "no_offers": "لا توجد عروض حالياً. ابدأ بإنشاء عرض!",
+    "new_offer": "عرض جديد",
+    "form": {
+      "title": "عنوان العرض",
+      "discount": "قيمة الخصم",
+      "type": "النوع",
+      "percent": "النسبة %",
+      "fixed": "مبلغ ثابت $",
+      "is_active": "نشر العرض فوراً",
+      "placeholder_title": "مثال: عرض رمضان",
+      "placeholder_discount": "10",
+      "cancel": "إلغاء",
+      "create_offer": "إنشاء العرض"
+    },
+    "status": {
+      "active": "● نشط",
+      "inactive": "○ غير نشط"
+    },
+    "actions": {
+      "delete": "حذف العرض"
+    }
+  },
+  "customers": {
+    "title": "إدارة العملاء",
+    "subtitle": "عرض وإدارة قاعدة بيانات عملائك",
+    "search_placeholder": "بحث عن عميل...",
+    "fields": {
+      "egp": "ج.م",
+      "no_email": "لا يوجد بريد إلكتروني"
+    },
+    "stats": {
+      "total_exposure": "إجمالي المديونيات",
+      "debt_customers": "عملاء عليهم ديون",
+      "total_customers": "إجمالي العملاء"
+    },
+    "table": {
+      "customer": "العميل",
+      "phone": "الهاتف",
+      "balance": "الرصيد",
+      "credit_limit": "الحد الائتماني",
+      "orders": "الطلبات"
+    }
+  },
+
+  "painters": {
+    "title": "دليل الفنيين",
+    "subtitle": "إدارة بيانات الدهانين، مراجعة الطلبات، وتحديث الحالات",
+    "search_placeholder": "بحث بالاسم، المدينة، أو الخبرة...",
+    "directory": "قائمة الفنيين",
+    "empty": "لم يتم العثور على فنيين يطابقون بحثك",
+    "table": {
+      "name": "الاسم",
+      "exp": "الخبرة",
+      "rating": "التقييم",
+      "status": "الحالة",
+      "actions": "الإجراءات"
+    },
+    "status": {
+      "new": "طلب جديد",
+      "pending": "قيد المراجعة",
+      "accepted": "مقبول",
+      "rejected": "مرفوض"
+    },
+    "fields": {
+      "unknown": "غير معروف",
+      "years": "سنوات",
+      "city": "المدينة",
+      "exp_years": "سنوات الخبرة",
+      "bio_placeholder": "نبذة مختصرة عن الفني وأعماله..."
+    },
+    "actions": {
+      "verify": "التحقق وتأكيد البيانات"
+    },
+    "modals": {
+      "complete_data": "إكمال ملف الفني الشخصي"
+    },
+    "alerts": {
+      "fill_required": "يرجى ملء جميع الحقول المطلوبة",
+      "register_success": "تم تسجيل وتوثيق الفني بنجاح",
+      "update_error": "فشل تحديث حالة الفني",
+      "confirm_delete": "هل أنت متأكد من حذف هذا الفني نهائياً؟",
+      "delete_error": "حدث خطأ أثناء محاولة الحذف"
+    }
+  },
+  "vendors": {
+    "title": "إدارة الموردين والشركات",
+    "subtitle": "عرض واعتماد طلبات الموردين وتجار الدهانات",
+    "search_placeholder": "بحث باسم الشركة، البريد، أو النشاط...",
+    "table": {
+      "company_info": "بيانات الشركة",
+      "status": "الحالة",
+      "actions": "الإجراءات"
+    },
+    "status": {
+      "approved": "معتمد",
+      "pending": "تحت المراجعة"
+    },
+    "fields": {
+      "new_vendor": "مورد جديد",
+      "tax_id": "الرقم الضريبي",
+      "company_type": "نوع النشاط",
+      "business_address": "عنوان العمل",
+      "contact_phone": "هاتف التواصل",
+      "no_phone": "لا يوجد هاتف متاح"
+    },
+    "actions": {
+      "approve": "اعتماد المورد",
+      "revoke": "إلغاء الاعتماد",
+      "approve_btn": "تفعيل الحساب الآن",
+      "close": "إغلاق"
+    },
+    "modals": {
+      "profile_title": "بيانات الملف التجاري"
+    },
+    "alerts": {
+      "confirm_delete": "هل أنت متأكد من حذف هذا المورد؟ لا يمكن التراجع عن هذا الإجراء."
+    }
+  },
+  "vendors": {
+    "title": "إدارة الموردين والشركات",
+    "subtitle": "عرض واعتماد طلبات الموردين وتجار الدهانات",
+    "search_placeholder": "بحث باسم الشركة، البريد أو النشاط...",
+    "table": {
+      "company_info": "معلومات الشركة",
+      "status": "الحالة",
+      "actions": "الإجراءات"
+    },
+    "status": {
+      "approved": "معتمد",
+      "pending": "قيد المراجعة"
+    },
+    "fields": {
+      "new_vendor": "مورد جديد",
+      "tax_id": "رقم السجل الضريبي",
+      "company_type": "نوع النشاط",
+      "business_address": "العنوان التجاري",
+      "contact_phone": "رقم التواصل",
+      "no_phone": "لا يوجد هاتف"
+    },
+    "actions": {
+      "approve": "اعتماد المورد",
+      "revoke": "إلغاء الاعتماد",
+      "approve_btn": "تفعيل الحساب الآن",
+      "close": "إغلاق"
+    },
+    "modals": {
+      "profile_title": "بيانات النشاط التجاري"
+    },
+    "alerts": {
+      "confirm_delete": "هل أنت متأكد من حذف هذا المورد؟ لا يمكن التراجع عن هذا الإجراء."
+    }
+  },
+  "reviews": {
+    "title": "آراء وتقييمات العملاء",
+    "subtitle": "متابعة ملاحظات العملاء على أداء الفنيين",
+    "total": "إجمالي التقييمات",
+    "empty": "لا توجد تقييمات حالياً",
+    "table": {
+      "user": "صاحب التقييم",
+      "painter": "الفني",
+      "rating": "التقييم",
+      "comment": "التعليق",
+      "actions": "الإجراءات"
+    },
+    "fields": {
+      "unknown_user": "مستخدم غير معروف",
+      "na": "غير محدد"
+    },
+    "alerts": {
+      "confirm_delete": "هل تريد حذف هذا التقييم نهائياً؟"
+    }
+  },
+  "filters": {
+    "allCategories": "جميع الفئات",
+    "allFinishes": "جميع أنواع التشطيب",
+    "allUsages": "جميع الاستخدامات",
+    "allBases": "جميع أنواع القواعد (Bases)",
+    "dryingTime": "وقت الجفاف"
+  },
+  "buttons": {
+    "export": "تصدير البيانات",
+    "import": "استيراد ملف",
+    "addPaint": "إضافة دهان جديد",
+    "clearFilters": "مسح الفلاتر"
+  },
+
+  "overview": {
+    "title": "لوحة التحكم",
+    "subtitle": "متابعة أداء المبيعات وحالة المخزون",
+    "loading": "جاري تحميل البيانات...",
+    "stats": {
+      "today_sales": "مبيعات اليوم",
+      "pending_orders": "طلبات معلقة",
+      "low_stock": "نقص مخزون",
+      "total_products": "إجمالي المنتجات"
+    },
+    "charts": {
+      "sales_trend": "اتجاه المبيعات",
+      "sales_source": "مصادر المبيعات",
+      "mobile_app": "تطبيق الهاتف",
+      "pos_system": "نظام الكاشير (POS)"
+    },
+    "transactions": {
+      "title": "أحدث العمليات",
+      "view_all": "عرض الكل",
+      "order_id": "رقم الطلب",
+      "customer": "العميل",
+      "transaction": "العملية",
+      "source": "المصدر",
+      "status": "الحالة",
+      "walk_in": "عميل نقدي"
+    },
+    "alerts": {
+      "title": "تنبيهات المخزون",
+      "units": "القطع المتبقية",
+      "limit": "الحد الأدنى",
+      "order_stock": "طلب كمية",
+      "healthy": "المخزون سليم حالياً"
+    }
+  },
+  "orders": {
+    "title": "لوحة الإدارة",
+    "subtitle": "مراجعة تفاصيل الطلبات وتوزيع الموردين",
+    "tabs": {
+      "paints": "طلبات الدهانات",
+      "visits": "طلبات المعاينة"
+    },
+    "table": {
+      "order_info": "بيانات الطلب",
+      "customer": "تفاصيل العميل",
+      "vendor": "المورد",
+      "items": "الأصناف",
+      "total": "إجمالي السعر",
+      "status": "الحالة",
+      "products": "منتجات",
+      "other_vendors": "موردين آخرين",
+      "history_title": "سجل الطلبات",
+      "col_id": "رقم الطلب",
+      "col_items": "المنتجات",
+      "col_date": "التاريخ",
+      "col_status": "الحالة",
+      "no_orders": "لا يوجد طلبات سابقة"
+    },
+    "status": {
+      "pending": "قيد الانتظار",
+      "accepted": "تم القبول",
+      "completed": "مكتمل",
+      "canceled": "ملغي"
+    }
+  },
+  "details": {
+    "title": "تفاصيل الطلب #",
+    "order_time": "توقيت الطلب",
+    "status_label": "الحالة",
+    "customer_info": "بيانات العميل",
+    "store_info": "بيانات المتجر",
+    "main_system": "السيستم الرئيسي",
+    "items_count": "عدد الأصناف",
+    "source": "المصدر",
+    "total_invoice": "إجمالي الفاتورة",
+    "table": {
+      "product": "المنتج",
+      "qty": "الكمية",
+      "unit_price": "سعر الوحدة",
+      "total": "الإجمالي"
+    },
+    "calculations": {
+      "customer_total": "إجمالي العميل",
+      "vat": "ضريبة (14%)",
+      "commission": "عمولة السيستم (10%)",
+      "net_profit": "صافي التاجر"
+    },
+    "actions": {
+      "print": "طباعة الفاتورة",
+      "close": "إغلاق السجل"
+    }
+  },
+  "visits": {
+    "table": {
+      "date_time": "التاريخ والوقت",
+      "customer": "بيانات العميل",
+      "painter": "الفني المطلوب",
+      "area": "المساحة (م²)",
+      "status": "الحالة"
+    }
+  },
+  "settings": {
+    "title": "إعدادات التطبيق",
+    "subtitle": "إدارة هوية العلامة التجارية ومحتوى التطبيق",
+    "save": "حفظ التغييرات",
+    "general": {
+      "title": "المعلومات العامة",
+
+      "app_name": "اسم التطبيق",
+      "email": "البريد الإلكتروني للتواصل",
+      "phone": "رقم الهاتف للتواصل"
+    },
+    "onboarding": {
+      "title": "محتوى الشاشات الترحيبية",
+      "screen": "الشاشة {{num}}"
+    },
+    "media": {
+      "logo": "شعار التطبيق (Logo)",
+      "upload": "اضغط للرفع أو اسحب الشعار هنا",
+      "slider": "صور السلايدر",
+      "add": "+ إضافة"
+    }
+  },
+  "userDetails": {
+    "loading": "جاري تحميل بيانات المستخدم...",
+    "edit_title": "تعديل ملف المستخدم",
+    "save": "حفظ التغييرات",
+    "saving": "جاري الحفظ...",
+    "update_success": "✅ تم تحديث بيانات المستخدم بنجاح!",
+    "update_error": "حدث خطأ أثناء الحفظ.",
+    "basic_info": {
+      "title": "المعلومات الأساسية",
+      "full_name": "الاسم الكامل",
+      "phone": "رقم الهاتف"
+    },
+    "financial": {
+      "title": "الحساب المالي",
+      "balance": "الرصيد الحالي (ج.م)",
+      "credit_limit": "الحد الائتماني (ج.م)"
+    },
+    "permissions": {
+      "title": "صلاحيات النظام",
+      "list": {
+        "manage_users": "إدارة المستخدمين",
+        "manage_stock": "إدارة المخزن",
+        "edit_prices": "تعديل الأسعار والعروض",
+        "view_reports": "عرض التقارير",
+        "manage_orders": "إدارة الطلبات والفواتير",
+        "color_tools": "أدوات الألوان"
+      }
+    },
+    "wallet": {
+      "title": "آخر عمليات المحفظة",
+      "count": "{{count}} عملية",
+      "no_records": "لا توجد عمليات مسجلة في المحفظة بعد.",
+      "table": {
+        "date": "التاريخ",
+        "type": "النوع",
+        "amount": "القيمة",
+        "desc": "الوصف",
+        "deposit": "إيداع / عمولة",
+        "withdrawal": "سحب / مشتريات"
+      }
+    }
+  },
+  "painterDetails": {
+    "not_found": "لم يتم العثور على الفني",
+    "back_to_list": "العودة للقائمة",
+    "actions": {
+      "accept": "قبول الحساب",
+      "reject": "رفض الحساب",
+      "confirm_status": "هل تريد تغيير حالة الفني إلى {{status}}؟",
+      "confirm_verify": "هل تؤكد تطابق الوثائق مع هوية الفني؟",
+      "verify_success": "تم توثيق الحساب بنجاح ✅",
+      "financial_success": "تم تحديث البيانات المالية بنجاح ✅"
+    },
+    "stats": {
+      "visits": "زيارات الملف",
+      "reviews": "إجمالي التقييمات",
+      "wallet": "رصيد المحفظة",
+      "debt": "المديونية"
+    },
+    "tabs": {
+      "info": "بيانات التوثيق",
+      "financial": "المحفظة والماليات",
+      "gallery": "الأعمال",
+      "disputes": "النزاعات ({{count}})",
+      "reviews": "التقييمات"
+    },
+    "info_tab": {
+      "title": "وثائق التحقق",
+      "full_name": "الاسم الكامل",
+      "id_number": "رقم الهوية",
+      "request_date": "تاريخ الطلب",
+      "id_front": "صورة وجه الهوية",
+      "no_image": "لا توجد صورة",
+      "verified_title": "حساب موثق",
+      "pending_title": "قيد التوثيق",
+      "verified_desc": "تم التحقق من هوية الفني بنجاح.",
+      "pending_desc": "راجع صور الهوية قبل السماح للفني بتقديم الخدمات.",
+      "verify_btn": "توثيق الهوية وقبول الفني",
+      "reject_reason": "رفض بسبب عدم وضوح الصور"
+    },
+    "financial_tab": {
+      "wallet_label": "رصيد المحفظة (ج.م)",
+      "commission_label": "عمولة المنصة (%)",
+      "debt_label": "المديونية الحالية",
+      "update_btn": "تحديث البيانات المالية",
+      "orders_title": "سجل الطلبات",
+      "table": {
+        "order_id": "رقم الطلب",
+        "items": "الأصناف",
+        "date": "التاريخ",
+        "status": "الحالة",
+        "completed": "مكتمل",
+        "processing": "جاري التنفيذ",
+        "empty": "لا توجد طلبات"
+      }
+    },
+    "disputes_tab": {
+      "id": "نزاع رقم #",
+      "view_conv": "عرض المحادثة",
+      "empty": "لا توجد نزاعات حالياً"
+    }
+  },
+  "common": {
+    "back": "رجوع",
+    "back_to_list": "العودة للقائمة",
+    "years_exp": "سنوات خبرة",
+    "not_provided": "غير متوفر",
+    "updating": "جاري التحديث...",
+    "unit_liter": "لتر",
+    "no_image": "لا توجد صورة",
+    "back_to_inventory": "العودة للمخزن",
+    "last_synced": "آخر تحديث",
+    "units": "وحدة",
+    "unit_coverage": "م²/كجم",
+    "days": "أيام",
+    "currency": "ج.م",
+    "not_specified": "غير محدد",
+    "not_available": "غير متوفر",
+    "edit": "تعديل",
+    "save": "حفظ",
+    "cancel": "إلغاء",
+    "loading": "جاري التحميل...",
+    "refresh": "تحديث"
+  },
+  "actions": {
+    "accept_account": "تنشيط الحساب",
+    "reject_account": "رفض الحساب"
+  },
+  "stats": {
+    "profile_visits": "زيارات الملف",
+    "total_reviews": "إجمالي التقييمات",
+    "wallet_balance": "رصيد المحفظة",
+    "debt": "المديونية",
+    "overall_rating": "التقييم العام"
+  },
+  "tabs": {
+    "verification_info": "بيانات التوثيق",
+    "wallet_financials": "المحفظة والماليات",
+    "portfolio": "الأعمال",
+    "disputes": "النزاعات",
+    "reviews": "المراجعات"
+  },
+  "infoTab": {
+    "verification_docs_title": "مستندات التوثيق",
+    "full_name": "الاسم بالكامل",
+    "id_number": "رقم الهوية",
+    "request_date": "تاريخ الطلب",
+    "id_front_image": "صورة وجه الهوية",
+    "id_front_alt": "إثبات الهوية - الوجه",
+    "status_verified": "حساب موثق",
+    "status_pending": "قيد المراجعة",
+    "verified_desc": "تم التحقق من هوية النقاش بنجاح.",
+    "pending_desc": "يرجى مراجعة صورة الهوية قبل السماح للنقاش بتقديم الخدمات.",
+    "btn_verify_accept": "توثيق الهوية وقبول الحساب",
+    "btn_reject_unclear": "رفض بسبب عدم وضوح الصور"
+  },
+  "financials": {
+    "wallet_balance": "رصيد المحفظة الحالي",
+    "commission_rate": "عمولة المنصة",
+    "current_debt": "المديونية الحالية",
+    "btn_update": "تحديث البيانات المالية"
+  },
+
+  "status": {
+    "accepted": "مقبول",
+    "rejected": "مرفوض",
+    "completed": "مكتمل",
+    "processing": "قيد التنفيذ"
+  },
+  "disputes": {
+    "id_label": "نزاع رقم #{{id}}",
+    "btn_view_conversation": "مشاهدة المحادثة",
+    "no_disputes": "لا توجد نزاعات حالياً",
+    "alt_client_proof": "دليل العميل",
+    "alt_painter_proof": "دليل النقاش",
+    "label_client_photo": "صورة العميل",
+    "label_painter_photo": "صورة النقاش"
+  },
+  "messages": {
+    "confirm_status_change": "هل تريد تغيير حالة النقاش إلى {{status}}؟",
+    "confirm_verify": "هل تؤكد أن المستندات مطابقة لهوية النقاش؟",
+    "verify_success": "تم توثيق الحساب بنجاح ✅",
+    "verify_error": "خطأ في توثيق الحساب. تحقق من الاتصال.",
+    "update_success": "تم تحديث البيانات المالية بنجاح ✅"
+  },
+  "painterDetails": {
+    "not_found": "لم يتم العثور على بيانات النقاش"
+  },
+  "product": {
+    "loading": "جاري تحميل تفاصيل المنتج...",
+    "not_found_title": "المنتج غير متوفر",
+    "not_found_desc": "عذراً، لم نتمكن من العثور على بيانات هذا المنتج. قد يكون قد تم حذفه أو أن الرابط غير صحيح.",
+    "back_to_list": "العودة لقائمة المنتجات",
+    "sku": "كود المنتج",
+    "default_category": "دهان ممتاز",
+    "default_desc": "تشطيب احترافي عالي الجودة للأسطح الداخلية والخارجية.",
+    "unit_price": "سعر وحدة التجزئة",
+    "stats_stock": "في المخزن",
+    "stats_sold": "حجم المبيعات",
+    "stats_value": "قيمة المخزون",
+    "stats_supplier": "المورد",
+    "internal_supplier": "داخلي",
+    "tech_details_title": "التفاصيل الفنية",
+    "spec_base": "الأساس",
+    "spec_finish": "التشطيب",
+    "spec_coverage": "معدل التغطية",
+    "spec_drying": "وقت الجفاف",
+    "base_water": "مائي",
+    "finish_matt": "مطفي",
+    "inventory_health": "صحة المخزون",
+    "min_level": "الحد الأدنى",
+    "history_title": "التحركات الأخيرة",
+    "history_trn": "المعاملة",
+    "history_details": "التفاصيل",
+    "history_qty": "الكمية",
+    "history_revenue": "الإيرادات",
+    "standard_sale": "بيع قياسي",
+    "no_sales": "لا توجد بيانات مبيعات متاحة"
+  },
+
+  "order": {
+    "loading": "جاري تحميل تفاصيل الطلب...",
+    "back_to_list": "العودة للطلبات",
+    "title": "الطلب",
+    "customer_info": "بيانات العميل",
+    "full_name": "الاسم بالكامل",
+    "phone_number": "رقم الهاتف",
+    "location_label": "موقع التنفيذ / مدينة المورد",
+    "guest_user": "مستخدم زائر",
+    "products_title": "المنتجات المطلوبة",
+    "col_product": "المنتج",
+    "col_vendor": "المورد",
+    "col_qty": "الكمية",
+    "col_price": "السعر",
+    "main_store": "المتجر الرئيسي",
+    "summary_total": "إجمالي المبلغ",
+    "summary_tax": "ضريبة القيمة المضافة (14%)",
+    "summary_fee": "عمولة المنصة (10%)",
+    "summary_net": "صافي أرباح المورد"
+  },
+
+  "order": {
+    "loading": "جاري تحميل تفاصيل الطلب...",
+    "back_to_list": "العودة للطلبات",
+    "title": "الطلب",
+    "customer_info": "بيانات العميل",
+    "full_name": "الاسم بالكامل",
+    "phone_number": "رقم الهاتف",
+    "location_label": "موقع التنفيذ / مدينة المورد",
+    "guest_user": "مستخدم زائر",
+    "products_title": "المنتجات المطلوبة",
+    "col_product": "المنتج",
+    "col_vendor": "المورد",
+    "col_qty": "الكمية",
+    "col_price": "السعر",
+    "main_store": "المتجر الرئيسي",
+    "summary_total": "إجمالي المبلغ",
+    "summary_tax": "ضريبة القيمة المضافة (14%)",
+    "summary_fee": "عمولة المنصة (10%)",
+    "summary_net": "صافي أرباح المورد"
+  },
+  "customers": {
+    "title": "إدارة العملاء",
+    "subtitle": "متابعة أرصدة العملاء، حدود الائتمان وتاريخ الطلبات",
+    "search_placeholder": "بحث عن عميل بالاسم...",
+    "empty": "لم يتم العثور على عملاء يطابقون بحثك",
+    "stats": {
+      "total_customers": "إجمالي العملاء",
+      "debt_customers": "عملاء عليهم مديونية",
+      "total_exposure": "إجمالي مديونيات السوق"
+    },
+    "table": {
+      "customer": "العميل",
+      "phone": "رقم الهاتف",
+      "balance": "الرصيد الحالي",
+      "credit_limit": "حد الائتمان",
+      "orders": "الطلبات"
+    },
+    "fields": {
+      "egp": "ج.م",
+      "no_email": "لا يوجد بريد إلكتروني",
+      "no_phone": "بدون هاتف"
+    },
+    "modals": {
+      "edit_limit_prompt": "أدخل حد الائتمان الجديد للعميل:"
+    }
+  },
+  
+  "admin": {
+    "simulations": {
+      "title": "سجلات محاكي الألوان",
+      "user": "المستخدم",
+      "unknown_user": "مستخدم غير معروف",
+      "color_id": "معرف اللون",
+      "coordinates": "الإحداثيات",
+      "view_comparison": "عرض المقارنة",
+      "comparison_title": "مقارنة المحاكاة",
+      "original_img": "الصورة الأصلية",
+      "result_img": "نتيجة المحاكاة",
+      "log_detail": "اللون المستخدم من قبل المستخدم: {{id}}",
+      "logged_on": "تم التسجيل في",
+      "download_logs": "تحميل السجلات",
+      "confirm_delete": "هل أنت متأكد من حذف هذا السجل؟",
+      "delete_error": "حدث خطأ أثناء حذف السجل"
+    }
+  },
+  "invoices": {
+    "title": "إدارة الفواتير",
+    "subtitle": "تتبع الفواتير الصادرة وحالة الدفع",
+    "currency": "جنيه",
+    "unknown_customer": "عميل غير معروف",
+    "unknown_source": "مصدر غير معروف",
+    "no_invoices": "لا توجد فواتير مسجلة حالياً.",
+    "status": {
+      "paid": "تم الدفع",
+      "pending": "قيد الانتظار"
+    },
+    "table": {
+      "invoice": "رقم الفاتورة",
+      "customer": "اسم العميل",
+      "amount": "القيمة الإجمالية",
+      "source": "مصدر الطلب",
+      "status": "حالة الدفع",
+      "date": "تاريخ الإصدار"
+    }
+  },
+  "requests": {
+    "title": "طلبات الموردين",
+    "subtitle": "إدارة والموافقة على طلبات تسجيل الموردين الجدد",
+    "pending": "طلبات قيد الانتظار",
+    "search_placeholder": "بحث باسم المتجر أو البريد الإلكتروني...",
+    "loading": "جاري تحميل الطلبات...",
+    "no_requests": "لا توجد طلبات انضمام معلقة حالياً.",
+    "joined_user": "سجل مؤخراً",
+    "verify_payment": "تأكيد الدفع",
+    "approve": "قبول المورد",
+    "reject_delete": "رفض وحذف",
+    "confirm_approve": "هل أنت متأكد من الموافقة على هذا المورد؟ سيتم منحه صلاحية الوصول الكاملة للمنصة.",
+    "confirm_payment": "هل تأكدت من استلام رسوم التسجيل من هذا المورد؟",
+    "status": {
+      "paid": "تم دفع الرسوم",
+      "pending": "في انتظار الدفع"
+    },
+    "table": {
+      "company": "الشركة / المتجر",
+      "contact": "التواصل والموقع",
+      "payment": "حالة الدفع",
+      "actions": "الإجراءات"
+    }
+  },
+  "offers": {
+    "title": "العروض والخصومات",
+    "subtitle": "إدارة حملات الخصم والعروض الترويجية الخاصة",
+    "create_new": "إنشاء عرض جديد",
+    "total_promotions": "إجمالي العروض",
+    "currently_active": "العروض النشطة",
+    "loading": "جاري تحميل العروض...",
+    "no_offers": "لا توجد عروض متاحة حالياً. ابدأ بإنشاء حملتك الأولى!",
+    "new_offer": "عرض ترويجي جديد",
+    "modal_subtitle": "قم بضبط إعدادات الخصم وإطلاق الحملة الترويجية",
+    "status": {
+      "active": "نشط",
+      "inactive": "غير نشط"
+    },
+    "actions": {
+      "delete": "حذف العرض"
+    },
+    "form": {
+      "title": "عنوان العرض",
+      "placeholder_title": "مثال: عروض صيف 2024",
+      "discount": "قيمة الخصم",
+      "placeholder_discount": "0.00",
+      "type": "نوع الخصم",
+      "percent": "نسبة مئوية (%)",
+      "fixed": "مبلغ ثابت (ج.م)",
+      "is_active": "تفعيل العرض فوراً",
+      "create_offer": "إطلاق العرض"
+    }
+  },
+  
+  "settings": {
+    "title": "إعدادات النظام",
+    "subtitle": "تكوين هوية التطبيق، بيانات التواصل، والوسائط الإعلانية",
+    "save": "حفظ التغييرات",
+    "save_success": "تم تحديث الإعدادات بنجاح!",
+    "save_error": "فشل في تحديث الإعدادات.",
+    "connection_error": "خطأ في الاتصال، يرجى التحقق من الشبكة.",
+    "general": {
+      "title": "المعلومات العامة",
+      "app_name": "اسم التطبيق",
+      "email": "بريد الدعم الفني",
+      "phone": "رقم الدعم الفني"
+    },
+    "onboarding": {
+      "title": "شاشات الترحيب (Onboarding)",
+      "screen": "الشاشة رقم {{num}}"
+    },
+    "media": {
+      "logo": "شعار التطبيق",
+      "upload": "اضغط أو اسحب لرفع الشعار",
+      "slider": "بنرات الصفحة الرئيسية",
+      "add": "إضافة بنر جديد"
+    }
+  },
+
+  "vendorProfile": {
+    "title": "ملف التاجر",
+    "merchantId": "رقم التاجر",
+    "editProfile": "تعديل الملف",
+    "save": "حفظ",
+    "cancel": "إلغاء",
+    "saving": "جاري الحفظ...",
+    "profileUpdated": "تم تحديث الملف بنجاح!",
+    "updateFailed": "فشل تحديث الملف",
+    "suspendVendor": "إيقاف التاجر",
+    "approveMerchant": "تفعيل التاجر",
+    "suspendConfirm": "هل أنت متأكد من إيقاف حساب هذا التاجر؟",
+    "tabs": {
+      "overview": "نظرة عامة",
+      "inventory": "المخزون",
+      "financials": "المالية"
+    },
+    "stats": {
+      "totalProducts": "إجمالي المنتجات",
+      "currentBalance": "الرصيد الحالي",
+      "totalTransactions": "إجمالي المعاملات",
+      "lowStock": "مخزون منخفض"
+    },
+    "overview": {
+      "legalInfo": "المعلومات القانونية والتجارية",
+      "contactDetails": "بيانات التواصل"
+    },
+    "fields": {
+      "taxRegistration": "السجل الضريبي",
+      "companyType": "نوع النشاط",
+      "cityRegion": "المدينة / المنطقة",
+      "accountCreated": "تاريخ إنشاء الحساب",
+      "phone": "الهاتف",
+      "email": "البريد الإلكتروني",
+      "address": "العنوان",
+      "notProvided": "غير متوفر"
+    },
+    "inventory": {
+      "productName": "اسم المنتج",
+      "price": "السعر",
+      "stock": "المخزون",
+      "status": "الحالة",
+      "actions": "الإجراءات"
+    },
+    "financials": {
+      "walletLedger": "سجل المحفظة",
+      "transactionsHistory": "تفاصيل جميع الأرباح والمدفوعات",
+      "totalRows": "إجمالي الصفوف",
+      "vendorWallet": "محفظة التاجر",
+      "availableForWithdrawal": "متاح للسحب",
+      "commissionRate": "نسبة عمولة المنصة",
+      "commissionDescription": "تطبق على كل طلب مكتمل",
+      "settlePayout": "تسوية وصرف الرصيد"
+    },
+    "table": {
+      "dateTime": "التاريخ والوقت",
+      "reference": "المرجع",
+      "type": "النوع",
+      "amount": "المبلغ",
+      "status": "الحالة"
+    },
+    "noTransactions": "لا توجد معاملات مسجلة"
+  }
+
+}

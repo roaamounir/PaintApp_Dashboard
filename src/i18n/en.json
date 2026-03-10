@@ -1,0 +1,615 @@
+{
+  "inventory": {
+    "title": "Inventory Management",
+    "subtitle": "Monitor and control stock in real time",
+    "searchPlaceholder": "Search for a product...",
+    "status": {
+      "outOfStock": "Out of Stock"
+    }
+  },
+
+  "overview": {
+    "title": "Dashboard",
+    "subtitle": "Track sales performance and inventory status",
+    "loading": "Loading data...",
+    "stats": {
+      "today_sales": "Today's Sales",
+      "pending_orders": "Pending Orders",
+      "low_stock": "Low Stock",
+      "total_products": "Total Products"
+    },
+    "charts": {
+      "sales_trend": "Sales Trend",
+      "sales_source": "Sales Sources",
+      "mobile_app": "Mobile App",
+      "pos_system": "POS System"
+    },
+    "transactions": {
+      "title": "Recent Transactions",
+      "view_all": "View All",
+      "order_id": "Order ID",
+      "customer": "Customer",
+      "transaction": "Transaction",
+      "source": "Source",
+      "status": "Status",
+      "walk_in": "Walk-in Customer"
+    },
+    "alerts": {
+      "title": "Inventory Alerts",
+      "units": "Remaining Units",
+      "limit": "Minimum Limit",
+      "order_stock": "Order Stock",
+      "healthy": "Stock is currently healthy"
+    }
+  },
+  "audit": {
+    "title": "Audit Logs",
+    "subtitle": "Monitor all system activities and sensitive operations",
+    "total_logs": "Total Logs",
+    "search_placeholder": "Search by details or user...",
+    "filter_all": "All Actions",
+    "table": {
+      "date": "Last Updated",
+      "user": "User",
+      "action": "Action",
+      "details": "Details",
+      "system_auto": "System (Automatic)"
+    },
+    "empty": {
+      "title": "No Products Found",
+      "description": "No logs match your current search"
+    }
+  },
+
+  "table": {
+    "productDetail": "Product",
+    "techSpecs": "Technical Specifications",
+    "application": "Application",
+    "stockPrice": "Stock",
+    "actions": "Actions",
+    "finish": "Finish",
+    "unit": "Unit",
+    "coat": "Coat",
+    "dry": "Drying",
+    "base": "Base"
+  },
+
+  "modal": {
+    "addTitle": "Add New Product",
+    "updateTitle": "Update Quantity for",
+    "basicInfo": "Basic Information",
+    "productName": "Product Name",
+    "price": "Price",
+    "confirmNew": "Add Product to Inventory",
+    "saveUpdated": "Save Changes"
+  },
+
+  "messages": {
+    "lowStock": "Low Stock",
+    "exportError": "File export failed",
+    "importSuccess": "Data imported successfully"
+  },
+
+  "options": {
+    "matte": "Matte",
+    "semi_gloss": "Semi Gloss",
+    "gloss": "Gloss",
+    "indoor": "Indoor",
+    "outdoor": "Outdoor",
+    "both": "Indoor/Outdoor",
+    "water": "Water-based",
+    "oil": "Oil-based",
+    "wood": "Wood",
+    "kg": "Kg",
+    "liter": "Liter",
+    "available": "Available"
+  },
+
+  "units": {
+    "sqm": "sqm/kg",
+    "h": "Hour",
+    "d": "Day",
+    "day": "Day",
+    "days": "Days",
+    "stock": "In Stock"
+  },
+
+  "categories": {
+    "title": "Categories",
+    "subtitle": "Organize products by location and chemical base",
+    "empty": "No categories found.",
+    "actions": {
+      "new": "New Category"
+    },
+    "fields": {
+      "placeholder": "Enter category name...",
+      "search": "Search for a category..."
+    },
+    "table": {
+      "name": "Category Name",
+      "count": "Number of Products",
+      "actions": "Actions"
+    }
+  },
+
+  "colors": {
+    "title": "Color Library",
+    "subtitle": "Manage paint shades and hex codes",
+    "table": {
+      "shade": "Shade",
+      "hex": "Hex Code",
+      "system": "System",
+      "actions": "Actions"
+    },
+    "fields": {
+      "search": "Search by code or system...",
+      "code_label": "Color Code / Name",
+      "code_placeholder": "e.g. Royal Blue",
+      "pick_label": "Pick Color",
+      "hex_label": "Hex Value",
+      "system_label": "Color System",
+      "system_select": "Select System"
+    },
+    "actions": {
+      "add": "Add Color",
+      "add_btn": "Add Color Now"
+    },
+    "modals": {
+      "add_title": "Add New Color",
+      "edit_title": "Edit Color Data"
+    }
+  },
+  "services": {
+    "title": "Smart Services",
+    "tabs": {
+      "calculator": "Paint Calculator",
+      "converter": "Color Converter",
+      "simulation": "Color Simulation"
+    },
+    "calculator": {
+      "header": "Estimate Required Quantity",
+      "types": {
+        "dimensions": "By Dimensions",
+        "area": "By Total Area"
+      },
+      "fields": {
+        "length": "Length (m)",
+        "width": "Width (m)",
+        "height": "Height (m)",
+        "total_area": "Total Surface Area (m²)",
+        "paint_product": "Paint Product (Optional)",
+        "paint_placeholder": "Select paint to auto-fetch coverage rate"
+      },
+      "actions": {
+        "calculate": "Calculate Requirements",
+        "loading": "Calculating..."
+      },
+      "results": {
+        "title": "Calculation Summary",
+        "total_area": "Total Area",
+        "recommended": "Recommended Quantity"
+      }
+    },
+    "converter": {
+      "header": "Smart Color Matcher",
+      "badge": "AI-powered Laboratory Conversion",
+      "fields": {
+        "source_label": "Select Original Color",
+        "source_placeholder": "Select a color (e.g., Jotun)",
+        "target_label": "Target Brand / System",
+        "target_placeholder": "Select the target brand"
+      },
+      "actions": {
+        "convert": "Find Closest Match",
+        "loading": "Analyzing pigments..."
+      },
+      "results": {
+        "title": "Comparison Result",
+        "original": "Original Selection",
+        "best_match": "Best Match Found",
+        "match_label": "Match",
+        "no_notes": "No notes available",
+        "delta_e": "Difference Distance (ΔE)"
+      },
+      "alerts": {
+        "select_both": "Please select both source color and target brand"
+      }
+    },
+    "simulation": {
+      "upload_label": "Upload image to test colors",
+      "click_hint": "Click anywhere on the image to extract the color",
+      "result_title": "Matching Result",
+      "empty_state": "Please upload a room image and click on the wall to identify its color"
+    }
+  },
+  "customers": {
+    "title": "Customer Management",
+    "subtitle": "Track customer balances, credit limits, and order history",
+    "search_placeholder": "Search customer by name...",
+    "empty": "No customers found matching your search",
+    "stats": {
+      "total_customers": "Total Customers",
+      "debt_customers": "Customers with Debt",
+      "total_exposure": "Total Market Exposure"
+    },
+    "table": {
+      "customer": "Customer",
+      "phone": "Phone Number",
+      "balance": "Current Balance",
+      "credit_limit": "Credit Limit",
+      "orders": "Orders"
+    },
+    "fields": {
+      "egp": "EGP",
+      "no_email": "No email provided",
+      "no_phone": "No phone"
+    },
+    "modals": {
+      "edit_limit_prompt": "Enter the new credit limit for the customer:"
+    }
+  },
+  "common": {
+    "back": "Back",
+    "back_to_list": "Back to List",
+    "years_exp": "Years of Experience",
+    "not_provided": "Not Provided",
+    "updating": "Updating...",
+    "unit_liter": "Liters",
+    "no_image": "No Image",
+    "back_to_inventory": "Back to Inventory",
+    "last_synced": "Last Synced",
+    "units": "Units",
+    "unit_coverage": "m²/kg",
+    "days": "Days",
+    "currency": "EGP",
+    "not_specified": "Not Specified",
+    "not_available": "N/A",
+    "edit": "Edit",
+    "save": "Save",
+    "cancel": "Cancel",
+    "loading": "Loading...",
+    "refresh": "Refresh"
+  },
+  "reviews": {
+    "title": "Customer Reviews & Ratings",
+    "subtitle": "Track customer feedback on painter performance",
+    "total": "Total Reviews",
+    "empty": "No reviews available at the moment",
+    "table": {
+      "user": "Reviewer",
+      "painter": "Painter",
+      "rating": "Rating",
+      "comment": "Comment",
+      "actions": "Actions"
+    },
+    "fields": {
+      "unknown_user": "Unknown User",
+      "na": "N/A"
+    },
+    "alerts": {
+      "confirm_delete": "Are you sure you want to permanently delete this review?"
+    }
+  },
+  "painters": {
+    "title": "Painters Directory",
+    "subtitle": "Manage painter data, review requests, and update statuses",
+    "search_placeholder": "Search by name, city, or experience...",
+    "directory": "Painters List",
+    "empty": "No painters found matching your search",
+    "table": {
+      "name": "Name",
+      "exp": "Experience",
+      "rating": "Rating",
+      "status": "Status",
+      "actions": "Actions"
+    },
+    "status": {
+      "new": "New Request",
+      "pending": "Pending Review",
+      "accepted": "Accepted",
+      "rejected": "Rejected"
+    },
+    "fields": {
+      "unknown": "Unknown",
+      "years": "Years",
+      "city": "City",
+      "exp_years": "Years of Experience",
+      "bio_placeholder": "Brief bio about the painter and their work..."
+    },
+    "actions": {
+      "verify": "Verify and Confirm Data"
+    },
+    "modals": {
+      "complete_data": "Complete Painter Profile"
+    },
+    "alerts": {
+      "fill_required": "Please fill in all required fields",
+      "register_success": "Painter registered and verified successfully",
+      "update_error": "Failed to update painter status",
+      "confirm_delete": "Are you sure you want to permanently delete this painter?",
+      "delete_error": "An error occurred while trying to delete"
+    }
+  },
+  "users": {
+    "title": "User Management",
+    "subtitle": "Manage access permissions and team roles",
+    "search_placeholder": "Search by name, email or phone...",
+    "loading": "Loading...",
+    "no_results": "No matching users found.",
+    "table": {
+      "list_title": "User List",
+      "profile": "Profile",
+      "role": "Role",
+      "status": "Status",
+      "actions": "Actions"
+    },
+    "roles": {
+      "admin": "System Admin",
+      "vendor": "Vendor / Supplier",
+      "painter": "Painter",
+      "user": "Customer"
+    },
+    "status": {
+      "active": "Active",
+      "inactive": "Inactive"
+    },
+    "actions": {
+      "add_new": "Add User",
+      "save": "Save Changes",
+      "create_now": "Create Account Now"
+    },
+    "fields": {
+      "name": "Full Name",
+      "email": "Email Address",
+      "phone_req": "Phone Number (Required)",
+      "password": "Password",
+      "role": "System Role"
+    },
+    "modals": {
+      "add_title": "Add New User Account"
+    },
+    "users": {
+      "alerts": {
+        "confirm_delete": "Are you sure you want to delete this user? This action cannot be undone."
+      }
+    }
+  },
+  "vendors": {
+    "title": "Vendor & Company Management",
+    "subtitle": "View and approve supplier and paint trader requests",
+    "search_placeholder": "Search by company name, email, or activity...",
+    "table": {
+      "company_info": "Company Information",
+      "status": "Status",
+      "actions": "Actions"
+    },
+    "status": {
+      "approved": "Approved",
+      "pending": "Under Review"
+    },
+    "fields": {
+      "new_vendor": "New Vendor",
+      "tax_id": "Tax ID",
+      "company_type": "Business Type",
+      "business_address": "Business Address",
+      "contact_phone": "Contact Phone",
+      "no_phone": "No Phone Available"
+    },
+    "actions": {
+      "approve": "Approve Vendor",
+      "revoke": "Revoke Approval",
+      "approve_btn": "Activate Account Now",
+      "close": "Close"
+    },
+    "modals": {
+      "profile_title": "Business Profile Information"
+    },
+    "alerts": {
+      "confirm_delete": "Are you sure you want to delete this vendor? This action cannot be undone."
+    }
+  },
+  "admin": {
+    "simulations": {
+      "title": "Color Visualizer Logs",
+      "user": "User",
+      "unknown_user": "Unknown User",
+      "color_id": "Color ID",
+      "coordinates": "Coordinates",
+      "view_comparison": "View Comparison",
+      "comparison_title": "Simulation Comparison",
+      "original_img": "Original Image",
+      "result_img": "Simulated Result",
+      "log_detail": "User applied color ID: {{id}}",
+      "logged_on": "Logged on",
+      "download_logs": "Download Logs",
+      "confirm_delete": "Are you sure you want to delete this log?",
+      "delete_error": "Error deleting simulation record"
+    }
+  },
+  "orders": {
+    "title": "Admin Dashboard",
+    "subtitle": "Review order details and vendor allocations",
+    "tabs": {
+      "paints": "Paint Orders",
+      "visits": "Visit Requests"
+    },
+    "table": {
+      "order_info": "Order Details",
+      "customer": "Customer Info",
+      "vendor": "Vendor",
+      "items": "Items",
+      "total": "Total Price",
+      "status": "Status",
+      "products": "Products",
+      "other_vendors": "Other Vendors"
+    },
+    "status": {
+      "pending": "Pending",
+      "accepted": "Accepted",
+      "completed": "Completed",
+      "canceled": "Canceled"
+    }
+  },
+  "invoices": {
+    "title": "Invoice Management",
+    "subtitle": "Track issued invoices and payment status",
+    "currency": "EGP",
+    "unknown_customer": "Unknown Customer",
+    "unknown_source": "Unknown Source",
+    "no_invoices": "No invoices found in the records.",
+    "status": {
+      "paid": "Paid",
+      "pending": "Pending"
+    },
+    "table": {
+      "invoice": "Invoice ID",
+      "customer": "Customer Name",
+      "amount": "Total Amount",
+      "source": "Order Source",
+      "status": "Payment Status",
+      "date": "Issue Date"
+    }
+  },
+  "requests": {
+    "title": "Vendor Requests",
+    "subtitle": "Manage and approve new vendor registration requests",
+    "pending": "Pending Requests",
+    "search_placeholder": "Search by shop name or email...",
+    "loading": "Loading pending requests...",
+    "no_requests": "No pending registration requests found.",
+    "joined_user": "Registered recently",
+    "verify_payment": "Verify Payment",
+    "approve": "Approve Vendor",
+    "reject_delete": "Reject & Delete",
+    "confirm_approve": "Are you sure you want to approve this vendor? They will gain full access to the platform.",
+    "confirm_payment": "Confirm that you have received the registration fees from this vendor?",
+    "status": {
+      "paid": "Fees Paid",
+      "pending": "Awaiting Payment"
+    },
+    "table": {
+      "company": "Company / Shop",
+      "contact": "Contact & Location",
+      "payment": "Payment Status",
+      "actions": "Actions"
+    }
+  },
+  "offers": {
+    "title": "Promotions & Offers",
+    "subtitle": "Manage discount campaigns and special promotional offers",
+    "create_new": "Create New Offer",
+    "total_promotions": "Total Promotions",
+    "currently_active": "Currently Active",
+    "loading": "Loading offers...",
+    "no_offers": "No offers available. Start by creating your first campaign!",
+    "new_offer": "New Promotion",
+    "modal_subtitle": "Configure your discount settings and launch the campaign",
+    "status": {
+      "active": "Active",
+      "inactive": "Inactive"
+    },
+    "actions": {
+      "delete": "Delete offer"
+    },
+    "form": {
+      "title": "Offer Title",
+      "placeholder_title": "e.g., Summer Sale 2024",
+      "discount": "Discount Value",
+      "placeholder_discount": "0.00",
+      "type": "Discount Type",
+      "percent": "Percentage (%)",
+      "fixed": "Fixed Amount ($)",
+      "is_active": "Activate offer immediately",
+      "create_offer": "Launch Offer"
+    }
+  },
+
+  "settings": {
+    "title": "System Settings",
+    "subtitle": "Configure application identity, contact info, and promotional media",
+    "save": "Save Changes",
+    "save_success": "Settings updated successfully!",
+    "save_error": "Failed to update settings.",
+    "connection_error": "Network error, please check your connection.",
+    "general": {
+      "title": "General Information",
+      "app_name": "Application Name",
+      "email": "Support Email",
+      "phone": "Support Phone"
+    },
+    "onboarding": {
+      "title": "Onboarding Screens",
+      "screen": "Screen {{num}}"
+    },
+    "media": {
+      "logo": "App Logo",
+      "upload": "Click or drag to upload logo",
+      "slider": "Homepage Slider",
+      "add": "Add New Banner"
+    }
+  },
+
+  "vendorProfile": {
+    "title": "Vendor Profile",
+    "merchantId": "Merchant ID",
+    "editProfile": "Edit Profile",
+    "save": "Save",
+    "cancel": "Cancel",
+    "saving": "Saving...",
+    "profileUpdated": "Profile updated successfully!",
+    "updateFailed": "Failed to update profile",
+    "suspendVendor": "Suspend Vendor",
+    "approveMerchant": "Approve Merchant",
+    "suspendConfirm": "Are you sure you want to suspend this vendor's account?",
+    "tabs": {
+      "overview": "Overview",
+      "inventory": "Inventory",
+      "financials": "Financials"
+    },
+    "stats": {
+      "totalProducts": "Total Products",
+      "currentBalance": "Current Balance",
+      "totalTransactions": "Total Transactions",
+      "lowStock": "Low Stock"
+    },
+    "overview": {
+      "legalInfo": "Legal & Business Info",
+      "contactDetails": "Contact Details"
+    },
+    "fields": {
+      "taxRegistration": "Tax Registration",
+      "companyType": "Company Type",
+      "cityRegion": "City / Region",
+      "accountCreated": "Account Created",
+      "phone": "Phone",
+      "email": "Email",
+      "address": "Address",
+      "notProvided": "Not provided"
+    },
+    "inventory": {
+      "productName": "Product Name",
+      "price": "Price",
+      "stock": "Stock",
+      "status": "Status",
+      "actions": "Actions"
+    },
+    "financials": {
+      "walletLedger": "Wallet Ledger",
+      "transactionsHistory": "Detailed history of all earnings and payouts",
+      "totalRows": "Total Rows",
+      "vendorWallet": "Vendor Wallet",
+      "availableForWithdrawal": "Available for withdrawal",
+      "commissionRate": "Current Commission Rate",
+      "commissionDescription": "Applied to every completed order",
+      "settlePayout": "Settle & Payout Balance"
+    },
+    "table": {
+      "dateTime": "Date & Time",
+      "reference": "Reference",
+      "type": "Type",
+      "amount": "Amount",
+      "status": "Status"
+    },
+    "noTransactions": "No transactions recorded"
+  }
+}
