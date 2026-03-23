@@ -2,9 +2,19 @@ import React, { createContext, useState, useContext, useEffect, useCallback } fr
 import axios from "axios";
 import i18n from "../i18n/i18n";
 
-export const AppContext = createContext();
+const defaultContextValue = {
+  language: "ar",
+  changeLanguage: () => {},
+};
 
-const getApiUrl = () => import.meta.env.VITE_API_URL || "http://localhost:5000";
+export const AppContext = createContext(defaultContextValue);
+
+const getApiUrl = () => {
+  const env = import.meta.env.VITE_API_URL;
+  if (env && String(env).trim()) return String(env).replace(/\/$/, "");
+  if (typeof window !== "undefined") return `${window.location.origin}/api-backend`;
+  return "http://localhost:5000";
+};
 
 export const AppProvider = ({ children }) => {
   const [language, setLanguage] = useState(localStorage.getItem("language") || "ar");
@@ -24,7 +34,8 @@ export const AppProvider = ({ children }) => {
   const [customers, setCustomers] = useState([]);
   const [invoices, setInvoices] = useState([]);
   const [painterGallery, setPainterGallery] = useState([]);
-  
+  const [visitRequests, setVisitRequests] = useState([]);
+
   const [loadingStates, setLoadingStates] = useState({
     global: false, users: false, painters: false, vendors: false, paints: false,
     categories: false, reviews: false, colors: false, orders: false, visits: false,
@@ -418,6 +429,131 @@ export const AppProvider = ({ children }) => {
     finally { setLoading("colors", false); }
   };
 
+  // ===============================
+  // Designs (المصمم + التصاميم)
+  // ===============================
+  const fetchDesigns = useCallback(async (params = {}) => {
+    try {
+      const res = await axios.get(`${API_URL}/designs`, { params, ...getAuthHeader() });
+      return res.data;
+    } catch (err) { throw err; }
+  }, [API_URL, getAuthHeader]);
+
+  const fetchDesignById = useCallback(async (id) => {
+    try {
+      const res = await axios.get(`${API_URL}/designs/${id}`, getAuthHeader());
+      return res.data;
+    } catch (err) { throw err; }
+  }, [API_URL, getAuthHeader]);
+
+  const createDesign = async (data) => {
+    try {
+      const res = await axios.post(`${API_URL}/designs`, data, getAuthHeader());
+      return { success: true, data: res.data };
+    } catch (err) { return { success: false, error: err.response?.data?.error }; }
+  };
+
+  const updateDesign = async (id, data) => {
+    try {
+      const res = await axios.put(`${API_URL}/designs/${id}`, data, getAuthHeader());
+      return { success: true, data: res.data };
+    } catch (err) { return { success: false, error: err.response?.data?.error }; }
+  };
+
+  const deleteDesign = async (id) => {
+    try {
+      await axios.delete(`${API_URL}/designs/${id}`, getAuthHeader());
+      return { success: true };
+    } catch (err) { return { success: false, error: err.response?.data?.error }; }
+  };
+
+  const fetchDesignComments = useCallback(async (designId) => {
+    try {
+      const res = await axios.get(`${API_URL}/designs/${designId}/comments`, getAuthHeader());
+      return res.data;
+    } catch (err) { throw err; }
+  }, [API_URL, getAuthHeader]);
+
+  const addDesignComment = async (designId, text) => {
+    try {
+      const res = await axios.post(`${API_URL}/designs/${designId}/comments`, { text }, getAuthHeader());
+      return { success: true, data: res.data };
+    } catch (err) { return { success: false, error: err.response?.data?.error }; }
+  };
+
+  const deleteDesignComment = async (designId, commentId) => {
+    try {
+      await axios.delete(`${API_URL}/designs/${designId}/comments/${commentId}`, getAuthHeader());
+      return { success: true };
+    } catch (err) { return { success: false, error: err.response?.data?.error }; }
+  };
+
+  const toggleDesignFavorite = async (designId) => {
+    try {
+      const res = await axios.post(`${API_URL}/designs/${designId}/favorite`, {}, getAuthHeader());
+      return { success: true, favorited: res.data?.favorited };
+    } catch (err) { return { success: false, error: err.response?.data?.error }; }
+  };
+
+  const fetchDesignFavoriteStatus = useCallback(async (designId) => {
+    try {
+      const res = await axios.get(`${API_URL}/designs/${designId}/favorite`, getAuthHeader());
+      return res.data?.favorited ?? false;
+    } catch { return false; }
+  }, [API_URL, getAuthHeader]);
+
+  const fetchDesignRequests = useCallback(async (designId) => {
+    try {
+      const res = await axios.get(`${API_URL}/designs/${designId}/requests`, getAuthHeader());
+      return res.data;
+    } catch (err) { throw err; }
+  }, [API_URL, getAuthHeader]);
+
+  const createDesignRequest = async (designId, data) => {
+    try {
+      const res = await axios.post(`${API_URL}/designs/${designId}/requests`, data, getAuthHeader());
+      return { success: true, data: res.data };
+    } catch (err) { return { success: false, error: err.response?.data?.error }; }
+  };
+
+  // ===============================
+  // Visit Requests (طلب زيارة من الفني: التاريخ، الوقت، المساحة، العنوان)
+  // ===============================
+  const fetchVisitRequests = useCallback(async (params = {}) => {
+    try {
+      setLoading("visits", true);
+      const res = await axios.get(`${API_URL}/visit-requests`, { params, ...getAuthHeader() });
+      const list = Array.isArray(res.data) ? res.data : [];
+      setVisitRequests(list);
+      return list;
+    } catch (err) {
+      setVisitRequests([]);
+      return [];
+    } finally {
+      setLoading("visits", false);
+    }
+  }, [API_URL, getAuthHeader, setLoading]);
+
+  const createVisitRequest = async (data) => {
+    try {
+      const res = await axios.post(`${API_URL}/visit-requests`, data, getAuthHeader());
+      setVisitRequests((prev) => [res.data, ...prev]);
+      return { success: true, data: res.data };
+    } catch (err) {
+      return { success: false, error: err.response?.data?.error || err.message };
+    }
+  };
+
+  const updateVisitRequestStatus = async (id, status) => {
+    try {
+      const res = await axios.put(`${API_URL}/visit-requests/${id}/status`, { status }, getAuthHeader());
+      setVisitRequests((prev) => prev.map((v) => (v.id === Number(id) ? { ...v, status } : v)));
+      return { success: true, data: res.data };
+    } catch (err) {
+      return { success: false, error: err.response?.data?.error || err.message };
+    }
+  };
+
   const fetchOrders = useCallback(async () => {
     try {
       setLoading("orders", true);
@@ -544,7 +680,7 @@ export const AppProvider = ({ children }) => {
   const getPaintDetails = useCallback(async (id) => {
     try {
       setLoading("paints", true);
-      const res = await axios.get(`${API_URL}/paint/${id}/details`);
+      const res = await axios.get(`${API_URL}/paint/${id}`);
       return res.data;
     } catch (err) { return null; }
     finally { setLoading("paints", false); }
@@ -728,7 +864,12 @@ export const AppProvider = ({ children }) => {
         updatePaintQuantity, syncInventory, fetchCategories, addCategory,
         deleteCategory, updateCategory, addSubCategory, deleteSubCategory,
         fetchColorSystems, fetchColors, addColor, updateColor, deleteColor,
-        toggleColorFavorite, fetchOrders, getOrderDetails, updateOrderStatus,
+        toggleColorFavorite,
+        fetchDesigns, fetchDesignById, createDesign, updateDesign, deleteDesign,
+        fetchDesignComments, addDesignComment, deleteDesignComment,
+        toggleDesignFavorite, fetchDesignFavoriteStatus, fetchDesignRequests, createDesignRequest,
+        visitRequests, fetchVisitRequests, createVisitRequest, updateVisitRequestStatus,
+        fetchOrders, getOrderDetails, updateOrderStatus,
         fetchVisits, updateVisit, updateVisitStatus, fetchOffers, addOffer,
         deleteOffer, toggleOfferStatus, fetchCustomers, fetchInvoices,
         updateCreditLimit, fetchReviews, deleteReview, verifyPainter,

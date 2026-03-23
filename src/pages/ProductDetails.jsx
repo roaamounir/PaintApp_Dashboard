@@ -6,8 +6,6 @@ import {
   ArrowLeft,
   Box,
   Droplet,
-  Layers,
-  Thermometer,
   ShieldCheck,
   TrendingUp,
   Truck,
@@ -57,15 +55,14 @@ const ProductDetails = () => {
   const supplier = productData?.vendor;
 
   const totalSold = productData?.analytics?.totalSoldQuantity || 0;
-  const stockValue = (product?.stock || 0) * (product?.price || 0);
-
+  const stockValue = Number(product?.stock || 0) * Number(product?.price || 0);
   if (!product && !loadingLocal) {
     return (
       <div
         className="flex flex-col items-center justify-center h-screen bg-slate-50 p-6"
         dir={isRTL ? "rtl" : "ltr"}
       >
-        <div className="bg-white p-12 rounded-[3rem] shadow-xl text-center max-w-md border border-slate-100">
+        <div className="bg-white p-12 rounded-3xl shadow-xl text-center max-w-md border border-slate-100">
           <div className="bg-amber-50 w-20 h-20 rounded-3xl flex items-center justify-center mx-auto mb-6">
             <AlertTriangle size={40} className="text-amber-500" />
           </div>
@@ -108,7 +105,7 @@ const ProductDetails = () => {
       </div>
 
       {/* Hero Section */}
-      <div className="bg-white p-8 rounded-[3rem] shadow-sm mb-8 border border-slate-100 relative overflow-hidden">
+      <div className="bg-white p-8 rounded-3xl shadow-sm mb-8 border border-slate-100 relative overflow-hidden">
         <div
           className={`absolute top-0 ${isRTL ? "left-0" : "right-0"} p-12 opacity-5 pointer-events-none`}
         >
@@ -132,7 +129,7 @@ const ProductDetails = () => {
             </p>
           </div>
           <div
-            className={`${isRTL ? "text-left" : "text-right"} mt-6 md:mt-0 bg-blue-50/50 p-6 rounded-[2rem] border border-blue-100`}
+            className={`${isRTL ? "text-left" : "text-right"} mt-6 md:mt-0 bg-blue-50/50 p-6 rounded-4xl border border-blue-100`}
           >
             <p className="text-4xl font-black text-blue-700">
               {product.price}{" "}
@@ -180,7 +177,7 @@ const ProductDetails = () => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Technical Specs & Safety */}
         <div className="lg:col-span-1 space-y-8">
-          <div className="bg-white p-8 rounded-[2.5rem] shadow-sm border border-slate-100">
+          <div className="bg-white p-8 rounded-3xl shadow-sm border border-slate-100">
             <h3 className="font-black text-slate-800 mb-6 flex items-center gap-2 border-b pb-4">
               <ShieldCheck className="text-blue-500" size={20} />{" "}
               {t("product.tech_details_title")}
@@ -203,10 +200,14 @@ const ProductDetails = () => {
                 label={t("product.spec_drying")}
                 value={`${product.dryDays || 1} ${t("common.days")}`}
               />
+              <SpecItem
+                label={t("product.spec_weight") || "الوزن"}
+                value={`${(product.weightKg ?? product.weightkg ?? 1)} kg`}
+              />
             </div>
           </div>
 
-          <div className="bg-slate-900 p-8 rounded-[2.5rem] shadow-xl text-white">
+          <div className="bg-slate-900 p-8 rounded-3xl shadow-xl text-white">
             <h3 className="font-black mb-4 flex items-center gap-2">
               {t("product.inventory_health")}
             </h3>
@@ -228,7 +229,7 @@ const ProductDetails = () => {
         </div>
 
         {/* Transaction History */}
-        <div className="lg:col-span-2 bg-white p-8 rounded-[2.5rem] shadow-sm border border-slate-100">
+        <div className="lg:col-span-2 bg-white p-8 rounded-3xl shadow-sm border border-slate-100">
           <div className="flex justify-between items-center mb-8">
             <h3 className="font-black text-slate-800 flex items-center gap-2 text-xl">
               <History className="text-blue-500" size={24} />{" "}
@@ -277,7 +278,7 @@ const ProductDetails = () => {
               </table>
             </div>
           ) : (
-            <div className="flex flex-col items-center justify-center py-20 bg-slate-50 rounded-[2rem] border-2 border-dashed">
+            <div className="flex flex-col items-center justify-center py-20 bg-slate-50 rounded-4xl border-2 border-dashed">
               <TrendingUp size={40} className="text-slate-200 mb-2" />
               <p className="text-slate-400 font-bold">
                 {t("product.no_sales")}
@@ -290,15 +291,14 @@ const ProductDetails = () => {
   );
 };
 
-const StatCard = ({ label, value, icon: Icon, color, bg }) => {
-  const { i18n } = useTranslation();
-  const isRTL = i18n.language === "ar";
+const StatCard = ({ label, value, icon, color, bg }) => {
+  const IconEl = icon;
   return (
-    <div className="bg-white p-6 rounded-[2rem] border border-slate-100 shadow-sm">
+    <div className="bg-white p-6 rounded-4xl border border-slate-100 shadow-sm">
       <div
         className={`${bg} ${color} w-10 h-10 rounded-xl flex items-center justify-center mb-4`}
       >
-        <Icon size={20} />
+        <IconEl size={20} />
       </div>
       <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">
         {label}
@@ -309,8 +309,6 @@ const StatCard = ({ label, value, icon: Icon, color, bg }) => {
 };
 
 const SpecItem = ({ label, value, highlight }) => {
-  const { i18n } = useTranslation();
-  const isRTL = i18n.language === "ar";
   return (
     <div className="flex justify-between items-center">
       <span className="text-slate-400 font-bold text-xs uppercase">

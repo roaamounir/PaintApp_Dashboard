@@ -1,4 +1,119 @@
 {
+  "sidebar": {
+    "admin": "Admin",
+    "groups": {
+      "main": "Main",
+      "management": "Management",
+      "inventory": "Inventory",
+      "smart_tools": "Smart Tools",
+      "designs": "Designs",
+      "business": "Business"
+    },
+    "links": {
+      "overview": "Overview",
+      "users": "Users",
+      "customers": "Customers",
+      "audit_logs": "Audit Logs",
+      "painters": "Painters",
+      "vendors": "Vendors",
+      "reviews": "Reviews",
+      "products": "Products",
+      "stock_management": "Stock Management",
+      "categories": "Categories",
+      "colors_library": "Colors Library",
+      "services": "Services",
+      "color_visualizer": "Color Visualizer",
+      "my_designs": "My Designs",
+      "designs_gallery": "Designs Gallery",
+      "orders": "Orders",
+      "visit_requests": "Visit Requests",
+      "invoices": "Invoices",
+      "wholesale_requests": "Wholesale Requests",
+      "offers_specials": "Offers & Specials",
+      "settings": "Settings"
+    },
+    "switch_english": "English",
+    "switch_arabic": "العربية",
+    "logout": "Logout"
+  },
+
+  "visitRequests": {
+    "title": "Visit Requests",
+    "title_for_painter": "Incoming Visit Requests",
+    "subtitle": "Request a visit from a technician (date, time, area, address)",
+    "subtitle_for_painter": "Visit requests sent by clients",
+    "new_request": "New visit request",
+    "form_title": "Request a visit from technician",
+    "painter": "Technician",
+    "choose_painter": "Choose technician",
+    "date": "Date",
+    "time": "Time",
+    "area": "Area",
+    "address": "Address",
+    "address_placeholder": "Full address for the visit",
+    "notes": "Notes",
+    "notes_placeholder": "Any extra details for the visit",
+    "submit": "Submit request",
+    "cancel": "Cancel",
+    "back": "Back",
+    "fill_required": "Please fill technician, date, time and address",
+    "request_sent": "Visit request sent successfully",
+    "error": "An error occurred",
+    "loading": "Loading...",
+    "no_requests": "No visit requests",
+    "status_pending": "Pending",
+    "status_accepted": "Accepted",
+    "status_rejected": "Rejected",
+    "status_completed": "Completed",
+    "accept": "Accept",
+    "reject": "Reject"
+  },
+
+  "painterDetails": {
+    "request_visit": "Request a visit from this technician"
+  },
+
+  "designs": {
+    "gallery_title": "Designs Gallery",
+    "gallery_subtitle": "Designs by designers",
+    "my_designs_title": "My Designs",
+    "my_designs_subtitle": "Manage your designs",
+    "no_designs": "No designs yet",
+    "designer_id": "Designer",
+    "comments": "Comments",
+    "favorite": "Favorite",
+    "share": "Share",
+    "request_design": "Request this design",
+    "copied": "Link copied",
+    "add_design": "Add design",
+    "view": "View",
+    "edit": "Edit",
+    "delete": "Delete",
+    "view_requests": "View requests",
+    "confirm_delete": "Are you sure you want to delete this design?",
+    "login_required": "Please log in",
+    "back": "Back",
+    "back_to_gallery": "Back to gallery",
+    "not_found": "Design not found",
+    "comment_placeholder": "Write a comment...",
+    "post_comment": "Post",
+    "request_modal_title": "Request design",
+    "request_description": "Description",
+    "request_image_url": "Image URL (optional)",
+    "request_video_url": "Video URL (optional)",
+    "request_description_required": "Description is required",
+    "submit_request": "Submit request",
+    "request_sent": "Request sent",
+    "edit_design": "Edit design",
+    "title": "Title",
+    "description": "Description",
+    "image_url": "Image URL",
+    "video_url": "Video URL",
+    "save": "Save",
+    "create": "Create",
+    "fill_required": "Please fill title, description and image URL"
+  },
+
   "inventory": {
     "title": "Inventory Management",
     "subtitle": "Monitor and control stock in real time",
@@ -79,7 +194,17 @@
     "updateTitle": "Update Quantity for",
     "basicInfo": "Basic Information",
     "productName": "Product Name",
+    "description": "Description",
+    "descriptionPlaceholder": "Product description (optional)",
     "price": "Price",
+    "type": "Product type",
+    "vendor": "Vendor",
+    "selectVendor": "Select vendor",
+    "weightKg": "Product weight (kg)",
+    "requiredCategory": "Please select a category",
+    "requiredVendor": "Please select a vendor",
+    "noVendors": "No vendors — add a vendor first",
+    "noVendorsHint": "At least one vendor is required to create a product.",
     "confirmNew": "Add Product to Inventory",
     "saveUpdated": "Save Changes"
   },
@@ -187,39 +312,78 @@
       "results": {
         "title": "Calculation Summary",
         "total_area": "Total Area",
-        "recommended": "Recommended Quantity"
+        "area_walls_only": "Area without ceiling & floor (walls only)",
+        "area_with_ceiling_floor": "Area with ceiling & floor",
+        "recommended": "Number of Cans Needed",
+        "coverage": "Coverage (m²/kg)",
+        "weight_per_can": "Weight per can (kg)",
+        "kg_needed": "Paint needed (kg)",
+        "product": "Product",
+        "cans": "can",
+        "cans_plural": "cans"
       }
     },
     "converter": {
       "header": "Smart Color Matcher",
       "badge": "AI-powered Laboratory Conversion",
+      "description_systems": "Supports conversion to: RAL Classic, Pantone, NCS, HKS, Sherwin Williams, and sample system. Enter color as HEX or RGB values, then select the target system.",
+      "target_placeholder": "Enter manufacturer or color system",
+      "hint_convert": "Select target system and press Convert",
+      "source_system_label": "Code system",
+      "source_system_hex": "HEX",
+      "source_system_rgb": "RGB",
+      "source_system_cmyk": "CMYK",
+      "source_system_hsl": "HSL",
+      "source_system_hsv": "HSV",
+      "source_system_lab": "LAB",
+      "loading_palette": "Loading colors...",
+      "select_source_code": "Select color code",
       "fields": {
         "source_label": "Select Original Color",
+        "source_hex": "Source Color (HEX)",
         "source_placeholder": "Select a color (e.g., Jotun)",
-        "target_label": "Target Brand / System",
-        "target_placeholder": "Select the target brand"
+        "target_label": "Target Color System",
+        "target_placeholder": "Select target system"
       },
+      "target_hint": "You can select any system: RAL Classic, Pantone, NCS, HKS, Sherwin Williams, or sample.",
+      "target_group_systems": "Match systems (RAL, Pantone, ...)",
+      "target_group_formats": "Display formats (HEX, CMYK, RGB, HSL, LAB)",
+      "target_hint_full": "Choose a system to match, or a format to display the result. When you choose a format (HEX, CMYK, RGB, HSL, LAB), the result is shown in that format with ∆E when available.",
+      "no_systems": "No color systems. Run seed or add systems from admin.",
       "actions": {
         "convert": "Find Closest Match",
         "loading": "Analyzing pigments..."
       },
       "results": {
         "title": "Comparison Result",
-        "original": "Original Selection",
-        "best_match": "Best Match Found",
+        "original": "Source Color",
+        "matched": "Matched Color",
+        "display_format": "Display in selected format",
+        "best_match": "Closest Match",
+        "no_match": "No color in system",
+        "system": "System",
         "match_label": "Match",
         "no_notes": "No notes available",
         "delta_e": "Difference Distance (ΔE)"
       },
       "alerts": {
-        "select_both": "Please select both source color and target brand"
+        "select_both": "Please select both source color and target brand",
+        "enter_hex": "Enter a valid HEX color (e.g. 667788 or #667788)",
+        "select_target": "Select the target color system",
+        "convert_failed": "Conversion failed"
       }
     },
     "simulation": {
-      "upload_label": "Upload image to test colors",
+      "upload_label": "Upload image to extract 5 colors",
       "click_hint": "Click anywhere on the image to extract the color",
-      "result_title": "Matching Result",
-      "empty_state": "Please upload a room image and click on the wall to identify its color"
+      "result_title": "Extracted Colors",
+      "empty_state": "Upload an image to extract 5 colors",
+      "extracting": "Extracting...",
+      "auto_extract_hint": "5 colors are extracted automatically",
+      "copy_hex": "Copy HEX",
+      "click_to_copy": "Click to copy",
+      "copied": "Copied!",
+      "hex_copy_hint": "Click the code or copy button to copy the HEX value"
     }
   },
   "customers": {
@@ -347,7 +511,8 @@
       "admin": "System Admin",
       "vendor": "Vendor / Supplier",
       "painter": "Painter",
-      "user": "Customer"
+      "user": "Customer",
+      "designer": "Designer"
     },
     "status": {
       "active": "Active",

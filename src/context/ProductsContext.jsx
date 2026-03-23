@@ -71,7 +71,7 @@ export const ProductsProvider = ({ children }) => {
   const getPaintDetails = useCallback(async (id) => {
     try {
       setLoading(true);
-      const res = await axios.get(`${API_URL}/paint/${id}/details`);
+      const res = await axios.get(`${API_URL}/paint/${id}`);
       return res.data;
     } catch (err) {
       console.error("Fetch paint details error:", err.message);

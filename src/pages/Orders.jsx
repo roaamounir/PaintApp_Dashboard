@@ -92,7 +92,7 @@ const Orders = () => {
                   >
                     <td className="px-6 py-4">
                       <div className="text-[10px] font-black text-blue-600 uppercase mb-1 tracking-tighter">
-                        {order.orderNumber || `ID: ${order.id.slice(0, 8)}`}
+                        {order.orderNumber || `ID: ${String(order.id).slice(0, 8)}`}
                       </div>
                       <div className="text-sm font-bold text-slate-700">
                         {new Date(order.createdAt).toLocaleDateString(
@@ -290,7 +290,7 @@ const Orders = () => {
               className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4"
               dir={isRTL ? "rtl" : "ltr"}
             >
-              <div className="bg-white rounded-[2.5rem] w-full max-w-5xl max-h-[92vh] overflow-hidden flex flex-col shadow-2xl animate-in fade-in zoom-in duration-200 border border-slate-100">
+              <div className="bg-white rounded-3xl w-full max-w-5xl max-h-[92vh] overflow-hidden flex flex-col shadow-2xl animate-in fade-in zoom-in duration-200 border border-slate-100">
                 {/* Header */}
                 <div className="p-6 border-b flex justify-between items-center bg-slate-50/80">
                   <div className="flex items-center gap-4">
@@ -301,7 +301,7 @@ const Orders = () => {
                       <h2 className="text-xl font-black text-slate-800">
                         {t("orders.details.title")}
                         {selectedOrder.orderNumber ||
-                          selectedOrder.id.slice(0, 8)}
+                          String(selectedOrder.id).slice(0, 8)}
                       </h2>
                       <div className="flex gap-3 mt-1">
                         <span className="text-[12px] bg-blue-100 text-blue-700 px-2 py-0.5 rounded-md font-bold italic">
@@ -430,7 +430,7 @@ const Orders = () => {
                   </div>
 
                   {/* Calculations Footer */}
-                  <div className="grid grid-cols-1 md:grid-cols-4 gap-4 bg-slate-900 p-6 rounded-[2rem] text-white">
+                  <div className="grid grid-cols-1 md:grid-cols-4 gap-4 bg-slate-900 p-6 rounded-4xl text-white">
                     <div className="p-2">
                       <p className="text-slate-400 text-[10px] font-bold mb-1 uppercase">
                         {t("orders.details.calculations.customer_total")}

@@ -166,6 +166,9 @@ const Users = () => {
                         <option value="vendor">
                           {t("users.roles.vendor").toUpperCase()}
                         </option>
+                        <option value="designer">
+                          {t("users.roles.designer").toUpperCase()}
+                        </option>
                       </select>
                     </td>
                     <td className="px-6 py-4">
@@ -385,6 +388,7 @@ const Users = () => {
                 <option value="admin">{t("users.roles.admin")}</option>
                 <option value="painter">{t("users.roles.painter")}</option>
                 <option value="vendor">{t("users.roles.vendor")}</option>
+                <option value="designer">{t("users.roles.designer")}</option>
               </select>
             </div>
             <div className="p-6 bg-slate-50 flex flex-col gap-3">

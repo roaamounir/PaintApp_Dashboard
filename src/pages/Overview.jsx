@@ -142,8 +142,8 @@ const Overview = () => {
           <h3 className="text-lg font-bold text-gray-800 mb-6">
             {t("overview.charts.sales_trend")}
           </h3>
-          <div className="h-[300px] w-full">
-            <ResponsiveContainer width="100%" height="100%">
+          <div className="w-full" style={{ minHeight: 280, height: 300 }}>
+            <ResponsiveContainer width="100%" height={300} minHeight={200}>
               <AreaChart data={salesChartData}>
                 <defs>
                   <linearGradient id="colorSales" x1="0" y1="0" x2="0" y2="1">
@@ -192,8 +192,8 @@ const Overview = () => {
           <h3 className="text-lg font-bold text-gray-800 mb-6">
             {t("overview.charts.sales_source")}
           </h3>
-          <div className="h-[300px] w-full">
-            <ResponsiveContainer width="100%" height="100%">
+          <div className="w-full" style={{ minHeight: 280, height: 300 }}>
+            <ResponsiveContainer width="100%" height={300} minHeight={200}>
               <PieChart>
                 <Pie
                   data={sourceData}

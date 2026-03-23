@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import { useAppContext } from "../context/AppContext";
 import { useTranslation } from "react-i18next";
 import {
@@ -15,6 +15,7 @@ import {
   ShieldCheck,
   AlertTriangle,
   Trash2,
+  CalendarCheck,
 } from "lucide-react";
 
 const PainterDetails = () => {
@@ -170,6 +171,13 @@ const PainterDetails = () => {
               </p>
             </div>
           </div>
+          <Link
+            to={`/visit-requests?painterId=${painter.id}`}
+            className="flex items-center justify-center gap-2 bg-white/20 hover:bg-white/30 text-white px-5 py-3 rounded-xl border border-white/30 font-medium transition"
+          >
+            <CalendarCheck size={18} />
+            {t("painterDetails.request_visit")}
+          </Link>
           <div className="bg-blue-600/20 px-6 py-4 rounded-2xl text-center border border-blue-500/30">
             <div className="text-yellow-400 flex justify-center gap-1 mb-1 font-mono">
               <Star fill="currentColor" size={20} />

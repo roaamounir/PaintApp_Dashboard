@@ -34,6 +34,11 @@ import InventoryPage from "./pages/InventoryPage";
 import InvoicesPage from "./pages/InvoicesPage";
 import CustomersPage from "./pages/CustomersPage";
 import SimulationsPage from "./pages/SimulationsPage";
+import DesignsGallery from "./pages/DesignsGallery";
+import MyDesigns from "./pages/MyDesigns";
+import DesignDetail from "./pages/DesignDetail";
+import DesignFormPage from "./pages/DesignFormPage";
+import VisitRequests from "./pages/VisitRequests";
 
 const ProtectedRoute = ({ children }) => {
   const token = localStorage.getItem("token");
@@ -75,11 +80,17 @@ function App() {
                     <Route path="/InvoicesPage" element={<InvoicesPage />} />
                     <Route path="/customers" element={<CustomersPage />} />
                     <Route path="/simulations" element={<SimulationsPage />} />
+                    <Route path="/designs" element={<DesignsGallery />} />
+                    <Route path="/designs/my" element={<MyDesigns />} />
+                    <Route path="/designs/new" element={<DesignFormPage />} />
+                    <Route path="/designs/:id" element={<DesignDetail />} />
+                    <Route path="/designs/:id/edit" element={<DesignFormPage />} />
                     <Route path="/painters/:id" element={<PainterDetails />} />
                     <Route path="/users/:id" element={<UserDetails />} />
                     <Route path="/product/:id" element={<ProductDetails />} />
                     <Route path="/orders/:id" element={<OrderDetails />} />
                     <Route path="/visits/:id" element={<VisitDetails />} />
+                    <Route path="/visit-requests" element={<VisitRequests />} />
                     <Route
                       path="/"
                       element={<Navigate to="/dashboard" replace />}

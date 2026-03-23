@@ -20,10 +20,19 @@ import { useAppContext } from "../context/AppContext";
 import { useTranslation } from "react-i18next"; 
 import axios from "axios";
 
+const getApiBase = () => {
+  const env = import.meta.env.VITE_API_URL;
+  if (env && String(env).trim()) return String(env).replace(/\/$/, "");
+  if (typeof window !== "undefined") return `${window.location.origin}/api-backend`;
+  return "http://localhost:5000";
+};
+
 const Products = () => {
   const { t, i18n } = useTranslation(); 
-  const { paints, fetchPaints, deletePaint, importPaintsExcel, categories } =
+  const { paints, fetchPaints, deletePaint, importPaintsExcel, categories, vendors: contextVendors = [], fetchVendors } =
     useAppContext();
+  const vendors = Array.isArray(contextVendors) ? contextVendors : [];
+  const API_BASE = getApiBase();
 
   const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
@@ -67,6 +76,9 @@ const Products = () => {
     usage: "indoor",
     categoryId: "",
     subCategoryId: "",
+    type: "paint",
+    vendorId: "",
+    weightKg: "1",
     minStockLevel: "10",
     status: "available",
     discount: "0",
@@ -75,15 +87,16 @@ const Products = () => {
   useEffect(() => {
     fetchPaints();
   }, [fetchPaints]);
-  const toggleLanguage = () => {
-    const newLang = i18n.language === "ar" ? "en" : "ar";
-    i18n.changeLanguage(newLang);
-  };
+
+  useEffect(() => {
+    if (typeof fetchVendors === "function") fetchVendors();
+  }, [fetchVendors]);
 
   const handleExport = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/paint/export", {
+      const response = await axios.get(`${API_BASE}/paint/export`, {
         responseType: "blob",
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       });
       const url = window.URL.createObjectURL(new Blob([response.data]));
       const link = document.createElement("a");
@@ -94,8 +107,28 @@ const Products = () => {
       );
       document.body.appendChild(link);
       link.click();
-    } catch (err) {
+    } catch {
       alert(t("messages.exportError"));
+    }
+  };
+
+  const handleExportLowStock = async () => {
+    try {
+      const response = await axios.get(`${API_BASE}/paint/export-low-stock`, {
+        responseType: "blob",
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      });
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute(
+        "download",
+        `low_stock_products_${new Date().toLocaleDateString().replace(/\//g, "-")}.xlsx`,
+      );
+      document.body.appendChild(link);
+      link.click();
+    } catch {
+      alert(t("messages.exportError") || "فشل تحميل الملف");
     }
   };
   const handleImport = async (e) => {
@@ -109,21 +142,24 @@ const Products = () => {
     if (paint) {
       setEditingPaint(paint);
       setFormData({
-        name: paint.name || "",
-        description: paint.description || "",
-        price: paint.price || "",
-        stock: paint.stock || "",
-        coverage: paint.coverage || "",
-        coatHours: paint.coatHours || "",
-        dryDays: paint.dryDays || "",
-        base: paint.base || "water",
-        finish: paint.finish || "matte",
-        unit: paint.unit || "kg",
-        usage: paint.usage || "indoor",
-        categoryId: paint.categoryId ? paint.categoryId.toString() : "",
-        subCategoryId: paint.subCategoryId
-          ? paint.subCategoryId.toString()
-          : "",
+        name: String(paint.name ?? ""),
+        description: String(paint.description ?? ""),
+        price: paint.price != null && Number.isFinite(Number(paint.price)) ? String(paint.price) : "",
+        stock: paint.stock != null && Number.isFinite(Number(paint.stock)) ? String(paint.stock) : "",
+        coverage: paint.coverage != null && Number.isFinite(Number(paint.coverage)) ? String(paint.coverage) : "",
+        coatHours: paint.coatHours != null && Number.isFinite(Number(paint.coatHours)) ? String(paint.coatHours) : "",
+        dryDays: paint.dryDays != null && Number.isFinite(Number(paint.dryDays)) ? String(paint.dryDays) : "",
+        base: String(paint.base ?? "water").toLowerCase(),
+        finish: String(paint.finish ?? "matte").toLowerCase().replace(/\s+/g, "_"),
+        unit: String(paint.unit ?? "kg").toLowerCase(),
+        usage: String(paint.usage ?? "indoor").toLowerCase(),
+        categoryId: paint.categoryId != null ? String(paint.categoryId) : "",
+        subCategoryId: paint.subCategoryId != null ? String(paint.subCategoryId) : "",
+        type: String(paint.type ?? "paint"),
+        vendorId: paint.vendorId != null ? String(paint.vendorId) : "",
+        weightKg: paint.weightKg != null || paint.weightkg != null
+          ? String(paint.weightKg ?? paint.weightkg ?? "1")
+          : "1",
       });
     } else {
       setEditingPaint(null);
@@ -141,6 +177,9 @@ const Products = () => {
         usage: "indoor",
         categoryId: "",
         subCategoryId: "",
+        type: "paint",
+        vendorId: "",
+        weightKg: "1",
       });
     }
     setIsModalOpen(true);
@@ -151,30 +190,49 @@ const Products = () => {
     const isEdit = Boolean(editingPaint);
 
     try {
+      const categoryId = formData.categoryId ? parseInt(formData.categoryId, 10) : NaN;
+      const vendorId = formData.vendorId ? parseInt(formData.vendorId, 10) : NaN;
+      const dryDays = Math.max(0, parseInt(formData.dryDays, 10) || 0);
+
+      if (!isEdit) {
+        if (!Number.isFinite(categoryId) || categoryId <= 0) {
+          alert(t("modal.requiredCategory") || "يرجى اختيار التصنيف");
+          return;
+        }
+        if (!Number.isFinite(vendorId) || vendorId <= 0) {
+          alert(t("modal.requiredVendor") || "يرجى اختيار المورد");
+          return;
+        }
+      }
+
       const payload = {
-        name: formData.name,
-        description: formData.description,
+        name: String(formData.name || "").trim() || (editingPaint?.name ?? ""),
+        description: formData.description ?? "",
         price: parseFloat(formData.price) || 0,
-        stock: parseInt(formData.stock) || 0,
+        stock: Math.max(0, parseInt(formData.stock, 10) || 0),
         coverage: parseFloat(formData.coverage) || 0,
-        coatHours: parseInt(formData.coatHours) || 0,
-        dryDays: parseInt(formData.dryDays) || 0,
-        categoryId: parseInt(formData.categoryId),
-        subCategoryId: formData.subCategoryId
-          ? parseInt(formData.subCategoryId)
-          : null,
-        base: formData.base,
-        finish: formData.finish,
-        unit: formData.unit,
-        usage: formData.usage,
-        minStockLevel: parseInt(formData.minStockLevel) || 10,
-        discount: parseFloat(formData.discount) || 0,
-        status: formData.status || "available",
+        coatHours: parseInt(formData.coatHours, 10) || 0,
+        dryDays,
+        categoryId: Number.isFinite(categoryId) && categoryId > 0 ? categoryId : (editingPaint?.categoryId ?? undefined),
+        subCategoryId: formData.subCategoryId ? (parseInt(formData.subCategoryId, 10) > 0 ? parseInt(formData.subCategoryId, 10) : null) : null,
+        base: String(formData.base ?? "water").toLowerCase(),
+        finish: String(formData.finish ?? "matte").toLowerCase().replace(/\s+/g, "_"),
+        unit: String(formData.unit ?? "kg").toLowerCase(),
+        usage: String(formData.usage ?? "indoor").toLowerCase(),
+        type: String(formData.type ?? "paint").trim() || "paint",
+        vendorId: Number.isFinite(vendorId) && vendorId > 0 ? vendorId : (editingPaint?.vendorId ?? undefined),
+        weightKg: formData.weightKg !== "" && !Number.isNaN(parseFloat(formData.weightKg)) ? parseFloat(formData.weightKg) : null,
       };
+      if (isEdit && payload.categoryId === undefined) delete payload.categoryId;
+      if (isEdit && payload.vendorId === undefined) delete payload.vendorId;
+      if (!isEdit) {
+        payload.categoryId = categoryId;
+        payload.vendorId = vendorId;
+      }
 
       const url = isEdit
-        ? `http://localhost:5000/paint/${editingPaint.id}`
-        : "http://localhost:5000/paint";
+        ? `${API_BASE}/paint/${editingPaint.id}`
+        : `${API_BASE}/paint`;
 
       await axios[isEdit ? "put" : "post"](url, payload, {
         headers: {
@@ -187,13 +245,11 @@ const Products = () => {
       fetchPaints();
       alert(isEdit ? "Updated Successfully" : "Added Successfully");
     } catch (err) {
-      console.error("Detailed Error:", err.response?.data);
-      alert(err.response?.data?.error || "Save failed");
+      const msg = err.response?.data?.error || err.message || "Save failed";
+      console.error("Detailed Error:", err.response?.data || err);
+      alert(typeof msg === "string" ? msg : JSON.stringify(msg));
     }
   };
-  const activeCategory = categories.find(
-    (cat) => cat.id === Number(formData.categoryId),
-  );
   const selectedCategory = categories.find(
     (cat) => String(cat.id) === String(formData.categoryId),
   );
@@ -203,7 +259,7 @@ const Products = () => {
   return (
     <div className="space-y-6 p-6 bg-slate-50 min-h-screen">
       {/* Header */}
-      <div className="flex flex-col md:flex-row justify-between items-center gap-4 bg-white p-6 rounded-[2rem] shadow-sm border border-slate-100">
+      <div className="flex flex-col md:flex-row justify-between items-center gap-4 bg-white p-6 rounded-4xl shadow-sm border border-slate-100">
         <div className="flex items-center gap-4">
           <div className="p-3 bg-blue-50 rounded-2xl">
             <Box className="text-blue-600" size={28} />
@@ -225,6 +281,14 @@ const Products = () => {
             className="flex items-center gap-2 bg-slate-100 text-slate-700 px-4 py-2.5 rounded-xl font-bold text-xs hover:bg-slate-200 transition"
           >
             <FileDown size={16} /> {t("buttons.export")}
+          </button>
+
+          <button
+            onClick={handleExportLowStock}
+            className="flex items-center gap-2 bg-amber-50 text-amber-700 border border-amber-200 px-4 py-2.5 rounded-xl font-bold text-xs hover:bg-amber-100 transition"
+            title={t("buttons.exportLowStock") || "تحميل المنتجات قليلة/منتهية المخزون"}
+          >
+            <FileDown size={16} /> {t("buttons.exportLowStock") || "تحميل قليل/منتهي المخزون"}
           </button>
 
           <label className="flex items-center gap-2 bg-emerald-50 text-emerald-700 border border-emerald-100 px-4 py-2.5 rounded-xl font-bold text-xs cursor-pointer hover:bg-emerald-100 transition">
@@ -514,6 +578,20 @@ const Products = () => {
                   }
                 />
               </div>
+              <div className="md:col-span-3 space-y-1">
+                <label className="text-[10px] font-bold uppercase text-slate-400 px-1">
+                  {t("modal.description") || "الوصف"}
+                </label>
+                <textarea
+                  rows={3}
+                  className="w-full bg-slate-50 border-none rounded-xl p-3 outline-none focus:ring-2 focus:ring-blue-500/20 transition-all resize-none"
+                  placeholder={t("modal.descriptionPlaceholder") || "وصف المنتج (اختياري)"}
+                  value={formData.description ?? ""}
+                  onChange={(e) =>
+                    setFormData({ ...formData, description: e.target.value })
+                  }
+                />
+              </div>
               <div className="space-y-1">
                 <label className="text-[10px] font-bold uppercase text-slate-400 px-1">
                   {t("modal.price")} (EGP)
@@ -522,7 +600,7 @@ const Products = () => {
                   type="number"
                   required
                   className="w-full bg-slate-50 border-none rounded-xl p-3 outline-none"
-                  value={formData.price}
+                  value={formData.price ?? ""}
                   onChange={(e) =>
                     setFormData({ ...formData, price: e.target.value })
                   }
@@ -542,7 +620,7 @@ const Products = () => {
                   step="0.1"
                   required
                   className="w-full bg-slate-50 border-none rounded-xl p-3 outline-none"
-                  value={formData.coverage}
+                  value={formData.coverage ?? ""}
                   onChange={(e) =>
                     setFormData({ ...formData, coverage: e.target.value })
                   }
@@ -556,7 +634,7 @@ const Products = () => {
                   type="number"
                   required
                   className="w-full bg-slate-50 border-none rounded-xl p-3 outline-none"
-                  value={formData.coatHours}
+                  value={formData.coatHours ?? ""}
                   onChange={(e) =>
                     setFormData({ ...formData, coatHours: e.target.value })
                   }
@@ -570,7 +648,7 @@ const Products = () => {
                   type="number"
                   required
                   className="w-full bg-slate-50 border-none rounded-xl p-3 outline-none"
-                  value={formData.dryDays}
+                  value={formData.dryDays ?? ""}
                   onChange={(e) =>
                     setFormData({ ...formData, dryDays: e.target.value })
                   }
@@ -585,7 +663,7 @@ const Products = () => {
                   </label>
                   <select
                     className={selectStyle}
-                    value={formData.base}
+                    value={String(formData.base ?? "water")}
                     onChange={(e) =>
                       setFormData({ ...formData, base: e.target.value })
                     }
@@ -602,7 +680,7 @@ const Products = () => {
                   </label>
                   <select
                     className={selectStyle}
-                    value={formData.finish}
+                    value={String(formData.finish ?? "matte")}
                     onChange={(e) =>
                       setFormData({ ...formData, finish: e.target.value })
                     }
@@ -619,7 +697,7 @@ const Products = () => {
                   </label>
                   <select
                     className={selectStyle}
-                    value={formData.unit}
+                    value={String(formData.unit ?? "kg")}
                     onChange={(e) =>
                       setFormData({ ...formData, unit: e.target.value })
                     }
@@ -630,13 +708,68 @@ const Products = () => {
                 </div>
               </div>
 
+              {/* Product Type */}
+              <div className="space-y-1">
+                <label className="text-[10px] font-bold uppercase text-slate-400 px-1">
+                  {t("modal.type") || "نوع المنتج"}
+                </label>
+                <input
+                  type="text"
+                  className="w-full bg-slate-50 border-none rounded-xl p-3 outline-none"
+                  placeholder="paint"
+                  value={formData.type}
+                  onChange={(e) => setFormData({ ...formData, type: e.target.value })}
+                />
+              </div>
+
+              {/* Vendor — مطلوب عند إنشاء منتج */}
+              <div className="space-y-1">
+                <label className="text-[10px] font-bold uppercase text-slate-400 px-1">
+                  {t("modal.vendor") || "المورد"} {!editingPaint && " *"}
+                </label>
+                <select
+                  required={!editingPaint}
+                  className={selectStyle}
+                  value={formData.vendorId}
+                  onChange={(e) => setFormData({ ...formData, vendorId: e.target.value })}
+                >
+                  <option value="">{t("modal.selectVendor") || "اختر المورد"}</option>
+                  {vendors.length === 0 && (
+                    <option value="" disabled>{t("modal.noVendors") || "لا يوجد موردين — أضف مورداً أولاً"}</option>
+                  )}
+                  {vendors.map((v) => (
+                    <option key={v.id} value={v.id}>
+                      {v.shopName || v.companyName || v.name || v.user?.name || `مورد #${v.id}`}
+                    </option>
+                  ))}
+                </select>
+                {vendors.length === 0 && !editingPaint && (
+                  <p className="text-xs text-amber-600 mt-1">{t("modal.noVendorsHint") || "يجب وجود مورد واحد على الأقل لإنشاء منتج."}</p>
+                )}
+              </div>
+
+              {/* Weight (kg) */}
+              <div className="space-y-1">
+                <label className="text-[10px] font-bold uppercase text-slate-400 px-1">
+                  {t("modal.weightKg") || "وزن المنتج (kg)"}
+                </label>
+                <input
+                  type="number"
+                  min="0"
+                  step="0.01"
+                  className="w-full bg-slate-50 border-none rounded-xl p-3 outline-none"
+                  value={formData.weightKg}
+                  onChange={(e) => setFormData({ ...formData, weightKg: e.target.value })}
+                />
+              </div>
+
               {/* Category Selection */}
               <div className="space-y-1">
                 <label className="text-[10px] font-bold uppercase text-slate-400 px-1">
-                  Main Category
+                  Main Category {!editingPaint && "*"}
                 </label>
                 <select
-                  required
+                  required={!editingPaint}
                   className="w-full bg-slate-50 border-none rounded-xl p-3 outline-none"
                   value={formData.categoryId}
                   onChange={(e) => {
@@ -684,7 +817,7 @@ const Products = () => {
                 </label>
                 <select
                   className="w-full bg-slate-50 border-none rounded-xl p-3 outline-none font-bold text-blue-600"
-                  value={formData.usage}
+                  value={String(formData.usage ?? "indoor")}
                   onChange={(e) =>
                     setFormData({ ...formData, usage: e.target.value })
                   }

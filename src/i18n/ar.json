@@ -1,4 +1,115 @@
 {
+  "sidebar": {
+    "admin": "لوحة الإدارة",
+    "groups": {
+      "main": "الرئيسية",
+      "management": "الإدارة",
+      "inventory": "المخزون",
+      "smart_tools": "أدوات ذكية",
+      "designs": "التصاميم",
+      "business": "الأعمال"
+    },
+    "links": {
+      "overview": "نظرة عامة",
+      "users": "المستخدمون",
+      "customers": "العملاء",
+      "audit_logs": "سجلات التدقيق",
+      "painters": "الدهّانون",
+      "vendors": "الموردون",
+      "reviews": "المراجعات",
+      "products": "المنتجات",
+      "stock_management": "إدارة المخزون",
+      "categories": "التصنيفات",
+      "colors_library": "مكتبة الألوان",
+      "services": "الخدمات",
+      "color_visualizer": "محاكي الألوان",
+      "my_designs": "تصميماتي",
+      "designs_gallery": "معرض التصاميم",
+      "orders": "الطلبات",
+      "visit_requests": "طلبات الزيارات",
+      "invoices": "الفواتير",
+      "wholesale_requests": "طلبات الجملة",
+      "offers_specials": "العروض والخصومات",
+      "settings": "الإعدادات"
+    },
+    "switch_english": "English",
+    "switch_arabic": "العربية",
+    "logout": "تسجيل الخروج"
+  },
+
+  "visitRequests": {
+    "title": "طلبات الزيارات",
+    "title_for_painter": "طلبات الزيارات الواردة",
+    "subtitle": "اطلب زيارة من الفني (التاريخ، الوقت، المساحة، العنوان)",
+    "subtitle_for_painter": "طلبات الزيارات المرسلة من العملاء",
+    "new_request": "طلب زيارة جديدة",
+    "form_title": "طلب زيارة من الفني",
+    "painter": "الفني",
+    "choose_painter": "اختر الفني",
+    "date": "التاريخ",
+    "time": "الوقت",
+    "area": "المساحة",
+    "address": "العنوان",
+    "address_placeholder": "عنوان الزيارة بالتفصيل",
+    "notes": "ملاحظات",
+    "notes_placeholder": "أي تفاصيل إضافية للزيارة",
+    "submit": "إرسال الطلب",
+    "cancel": "إلغاء",
+    "back": "رجوع",
+    "fill_required": "يرجى تعبئة الفني والتاريخ والوقت والعنوان",
+    "request_sent": "تم إرسال طلب الزيارة بنجاح",
+    "error": "حدث خطأ",
+    "loading": "جاري التحميل...",
+    "no_requests": "لا توجد طلبات زيارة",
+    "status_pending": "قيد الانتظار",
+    "status_accepted": "مقبول",
+    "status_rejected": "مرفوض",
+    "status_completed": "منفذ",
+    "accept": "قبول",
+    "reject": "رفض"
+  },
+
+  "designs": {
+    "gallery_title": "معرض التصاميم",
+    "gallery_subtitle": "تصاميم المصممين",
+    "my_designs_title": "تصميماتي",
+    "my_designs_subtitle": "إدارة تصاميمك",
+    "no_designs": "لا توجد تصاميم",
+    "designer_id": "المصمم",
+    "comments": "تعليقات",
+    "favorite": "مفضلة",
+    "share": "مشاركة",
+    "request_design": "طلب هذا التصميم",
+    "copied": "تم نسخ الرابط",
+    "add_design": "إضافة تصميم",
+    "view": "عرض",
+    "edit": "تعديل",
+    "delete": "حذف",
+    "view_requests": "عرض الطلبات",
+    "confirm_delete": "هل أنت متأكد من حذف هذا التصميم؟",
+    "login_required": "يرجى تسجيل الدخول",
+    "back": "رجوع",
+    "back_to_gallery": "العودة للمعرض",
+    "not_found": "التصميم غير موجود",
+    "comment_placeholder": "اكتب تعليقاً...",
+    "post_comment": "نشر",
+    "request_modal_title": "طلب التصميم",
+    "request_description": "الوصف",
+    "request_image_url": "رابط الصورة (اختياري)",
+    "request_video_url": "رابط الفيديو (اختياري)",
+    "request_description_required": "الوصف مطلوب",
+    "submit_request": "إرسال الطلب",
+    "request_sent": "تم إرسال الطلب",
+    "edit_design": "تعديل التصميم",
+    "title": "العنوان",
+    "description": "الوصف",
+    "image_url": "رابط الصورة",
+    "video_url": "رابط الفيديو",
+    "save": "حفظ",
+    "create": "إنشاء",
+    "fill_required": "يرجى تعبئة العنوان والوصف ورابط الصورة"
+  },
+
   "inventory": {
     "title": "إدارة المخزون",
     "subtitle": "مراقبة وتحكم في المخزون في الوقت الفعلي",
@@ -45,7 +156,17 @@
     "updateTitle": "تحديث الكمية لـ",
     "basicInfo": "المعلومات الأساسية",
     "productName": "اسم المنتج",
+    "description": "الوصف",
+    "descriptionPlaceholder": "وصف المنتج (اختياري)",
     "price": "السعر",
+    "type": "نوع المنتج",
+    "vendor": "المورد",
+    "selectVendor": "اختر المورد",
+    "weightKg": "وزن المنتج (kg)",
+    "requiredCategory": "يرجى اختيار التصنيف",
+    "requiredVendor": "يرجى اختيار المورد",
+    "noVendors": "لا يوجد موردين — أضف مورداً أولاً",
+    "noVendorsHint": "يجب وجود مورد واحد على الأقل لإنشاء منتج.",
     "confirmNew": "إضافة المنتج للمخزن",
     "saveUpdated": "حفظ التعديلات"
   },
@@ -152,39 +273,78 @@
       "results": {
         "title": "ملخص الحساب",
         "total_area": "المساحة الإجمالية",
-        "recommended": "الكمية الموصى بها"
+        "area_walls_only": "المساحة بدون السقف والأرضية (الجدران فقط)",
+        "area_with_ceiling_floor": "المساحة مع السقف والأرضية",
+        "recommended": "عدد العلب المطلوبة",
+        "coverage": "معدل التغطية (م²/كغ)",
+        "weight_per_can": "وزن العلبة (كغ)",
+        "kg_needed": "الكمية بالكيلو المطلوبة",
+        "product": "المنتج",
+        "cans": "علبة",
+        "cans_plural": "علب"
       }
     },
     "converter": {
       "header": "مطابق الألوان الذكي",
       "badge": "تحويل مخبري مدعوم بالذكاء الاصطناعي",
+      "description_systems": "يدعم التحويل إلى أنظمة: RAL Classic، Pantone، NCS، HKS، Sherwin Williams، وعينة المحول. أدخل اللون بصيغة HEX أو قيم RGB ثم اختر النظام المستهدف.",
+      "target_placeholder": "أدخل المصنّع أو نظام الألوان",
+      "hint_convert": "اختر النظام المستهدف واضغط تحويل",
+      "source_system_label": "نظام الكود",
+      "source_system_hex": "HEX",
+      "source_system_rgb": "RGB",
+      "source_system_cmyk": "CMYK",
+      "source_system_hsl": "HSL",
+      "source_system_hsv": "HSV",
+      "source_system_lab": "LAB",
+      "loading_palette": "جاري تحميل الألوان...",
+      "select_source_code": "اختر كود اللون",
       "fields": {
         "source_label": "اختر اللون الأصلي",
+        "source_hex": "لون المصدر (HEX)",
         "source_placeholder": "اختر لوناً (مثلاً: جوتن)",
-        "target_label": "العلامة التجارية / النظام المستهدف",
-        "target_placeholder": "اختر العلامة المستهدفة"
+        "target_label": "النظام اللوني المستهدف",
+        "target_placeholder": "اختر النظام المستهدف"
       },
+      "target_hint": "يمكنك اختيار أي نظام: RAL Classic، Pantone، NCS، HKS، Sherwin Williams، أو عينة المحول.",
+      "target_group_systems": "أنظمة المطابقة (RAL, Pantone, ...)",
+      "target_group_formats": "صيغ العرض (HEX, CMYK, RGB, HSL, LAB)",
+      "target_hint_full": "اختر نظاماً للمطابقة أو صيغة لعرض النتيجة. عند اختيار صيغة (HEX, CMYK, RGB, HSL, LAB) تظهر النتيجة بتلك الصيغة مع ∆E إن وُجد.",
+      "no_systems": "لا توجد أنظمة ألوان. شغّل seed أو أضف أنظمة من الإدارة.",
       "actions": {
         "convert": "البحث عن أقرب بديل",
         "loading": "جاري تحليل الأصباغ..."
       },
       "results": {
         "title": "نتيجة المقارنة",
-        "original": "الاختيار الأصلي",
-        "best_match": "أفضل تطابق تم العثور عليه",
+        "original": "اللون الأصلي",
+        "matched": "اللون الناتج",
+        "display_format": "عرض بصيغة المختارة",
+        "best_match": "أقرب مطابق",
+        "no_match": "لا يوجد لون في النظام",
+        "system": "النظام",
         "match_label": "تطابق",
         "no_notes": "لا توجد ملاحظات متاحة",
         "delta_e": "مسافة الفرق (ΔE)"
       },
       "alerts": {
-        "select_both": "يرجى اختيار اللون المصدر والعلامة المستهدفة"
+        "select_both": "يرجى اختيار اللون المصدر والعلامة المستهدفة",
+        "enter_hex": "أدخل لوناً بصيغة HEX صحيحة (مثال: 667788 أو #667788)",
+        "select_target": "اختر النظام اللوني المستهدف",
+        "convert_failed": "فشل التحويل"
       }
     },
     "simulation": {
-      "upload_label": "رفع صورة لاختبار الألوان",
+      "upload_label": "رفع صورة لاستخراج 5 ألوان",
       "click_hint": "انقر على أي مكان في الصورة لاستخراج اللون",
-      "result_title": "نتيجة المطابقة",
-      "empty_state": "يرجى رفع صورة للغرفة ثم الضغط على الحائط المراد معرفة لونه"
+      "result_title": "الألوان المستخرجة",
+      "empty_state": "ارفع صورة لاستخراج 5 ألوان",
+      "extracting": "جاري الاستخراج...",
+      "auto_extract_hint": "يتم استخراج 5 ألوان تلقائياً",
+      "copy_hex": "نسخ HEX",
+      "click_to_copy": "انقر للنسخ",
+      "copied": "تم النسخ",
+      "hex_copy_hint": "انقر على الكود أو زر النسخ لنسخ قيمة HEX"
     }
   },
   "invoices": {
@@ -224,7 +384,8 @@
       "user": "مستخدم",
       "admin": "مدير",
       "painter": "فني دهانات",
-      "vendor": "تاجر / مورد"
+      "vendor": "تاجر / مورد",
+      "designer": "مصمم"
     },
     "status": {
       "active": "نشط",
@@ -459,6 +620,7 @@
   },
   "buttons": {
     "export": "تصدير البيانات",
+    "exportLowStock": "تحميل قليل/منتهي المخزون",
     "import": "استيراد ملف",
     "addPaint": "إضافة دهان جديد",
     "clearFilters": "مسح الفلاتر"
@@ -631,6 +793,7 @@
   "painterDetails": {
     "not_found": "لم يتم العثور على الفني",
     "back_to_list": "العودة للقائمة",
+    "request_visit": "طلب زيارة من هذا الفني",
     "actions": {
       "accept": "قبول الحساب",
       "reject": "رفض الحساب",
@@ -793,6 +956,7 @@
     "spec_finish": "التشطيب",
     "spec_coverage": "معدل التغطية",
     "spec_drying": "وقت الجفاف",
+    "spec_weight": "الوزن",
     "base_water": "مائي",
     "finish_matt": "مطفي",
     "inventory_health": "صحة المخزون",

@@ -3,6 +3,13 @@ import { useNavigate } from "react-router-dom";
 import { Lock, Eye, EyeOff, LogIn, Phone, Shield } from "lucide-react";
 import axios from "axios";
 
+const getLoginApiUrl = () => {
+  const env = import.meta.env.VITE_API_URL;
+  if (env && String(env).trim()) return String(env).replace(/\/$/, "");
+  if (typeof window !== "undefined") return `${window.location.origin}/api-backend`;
+  return "http://localhost:5000";
+};
+
 const Login = () => {
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
@@ -16,7 +23,8 @@ const Login = () => {
     setLoading(true);
 
     try {
-      const res = await axios.post("http://localhost:5000/login", {
+      const base = getLoginApiUrl();
+      const res = await axios.post(`${base}/login`, {
         phone,
         password,
       });

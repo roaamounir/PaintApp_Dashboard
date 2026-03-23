@@ -1,5 +1,6 @@
-import React, { useContext } from "react";
+import React from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import {
   FiHome,
   FiUsers,
@@ -16,72 +17,95 @@ import {
   FiBox,
   FiFileText,
   FiUserCheck,
-  FiGlobe, 
+  FiGlobe,
+  FiMapPin,
 } from "react-icons/fi";
-import { FiEye } from "react-icons/fi"; 
-import { AppContext } from "../context/AppContext";
+import { FiEye } from "react-icons/fi";
+import { useAppContext } from "../context/AppContext";
 import { MdColorLens } from "react-icons/md";
 import { FaPaintRoller, FaIndustry } from "react-icons/fa";
+
+const getCurrentUserRole = () => {
+  try {
+    const token = localStorage.getItem("token");
+    if (!token) return null;
+    const payload = JSON.parse(atob(token.split(".")[1]));
+    return payload?.role ?? null;
+  } catch {
+    return null;
+  }
+};
 
 const Sidebar = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { language, changeLanguage } = useContext(AppContext);
+  const { t } = useTranslation();
+  const { language = "ar", changeLanguage = () => {} } = useAppContext() ?? {};
+  const userRole = getCurrentUserRole();
 
   const handleLogout = () => {
     localStorage.removeItem("token");
     navigate("/login");
   };
 
+  const designLinks = [
+    ...(userRole === "designer" ? [{ nameKey: "sidebar.links.my_designs", path: "/designs/my", icon: FiLayers }] : []),
+    { nameKey: "sidebar.links.designs_gallery", path: "/designs", icon: FiEye },
+  ];
+
   const menuGroups = [
     {
-      title: "Main",
-      links: [{ name: "Overview", path: "/dashboard", icon: FiHome }],
+      titleKey: "sidebar.groups.main",
+      links: [{ nameKey: "sidebar.links.overview", path: "/dashboard", icon: FiHome }],
     },
     {
-      title: "Management",
+      titleKey: "sidebar.groups.management",
       links: [
-        { name: "Users", path: "/users", icon: FiUsers },
-        { name: "Customers", path: "/customers", icon: FiUserCheck },
-        { name: "Audit Logs", path: "/audit-logs", icon: FiShield },
-        { name: "Painters", path: "/painters", icon: FaPaintRoller },
-        { name: "Vendors", path: "/vendors", icon: FaIndustry },
-        { name: "Reviews", path: "/reviews", icon: FiStar },
+        { nameKey: "sidebar.links.users", path: "/users", icon: FiUsers },
+        { nameKey: "sidebar.links.customers", path: "/customers", icon: FiUserCheck },
+        { nameKey: "sidebar.links.audit_logs", path: "/audit-logs", icon: FiShield },
+        { nameKey: "sidebar.links.painters", path: "/painters", icon: FaPaintRoller },
+        { nameKey: "sidebar.links.vendors", path: "/vendors", icon: FaIndustry },
+        { nameKey: "sidebar.links.reviews", path: "/reviews", icon: FiStar },
       ],
     },
     {
-      title: "Inventory",
+      titleKey: "sidebar.groups.inventory",
       links: [
-        { name: "Products", path: "/products", icon: FiPackage },
-        { name: "Stock Management", path: "/InventoryPage", icon: FiBox },
-        { name: "Categories", path: "/categories", icon: FiLayers },
-        { name: "Colors Library", path: "/colors", icon: MdColorLens },
+        { nameKey: "sidebar.links.products", path: "/products", icon: FiPackage },
+        { nameKey: "sidebar.links.stock_management", path: "/InventoryPage", icon: FiBox },
+        { nameKey: "sidebar.links.categories", path: "/categories", icon: FiLayers },
+        { nameKey: "sidebar.links.colors_library", path: "/colors", icon: MdColorLens },
       ],
     },
     {
-      title: "Smart Tools",
+      titleKey: "sidebar.groups.smart_tools",
       links: [
-        { name: "Services", path: "/services", icon: FiCpu },
-        { name: "Color Visualizer", path: "/simulations", icon: FiEye },
+        { nameKey: "sidebar.links.services", path: "/services", icon: FiCpu },
+        { nameKey: "sidebar.links.color_visualizer", path: "/simulations", icon: FiEye },
       ],
     },
+    ...(designLinks.length > 0
+      ? [{ titleKey: "sidebar.groups.designs", links: designLinks }]
+      : []),
     {
-      title: "Business",
+      titleKey: "sidebar.groups.business",
       links: [
-        { name: "Orders", path: "/orders", icon: FiShoppingCart },
-        { name: "Invoices", path: "/InvoicesPage", icon: FiFileText },
-        { name: "Wholesale Requests", path: "/requests", icon: FiClipboard },
-        { name: "Offers & Specials", path: "/offers", icon: FiTag },
-        { name: "Settings", path: "/settings", icon: FiSettings },
+        { nameKey: "sidebar.links.orders", path: "/orders", icon: FiShoppingCart },
+        { nameKey: "sidebar.links.visit_requests", path: "/visit-requests", icon: FiMapPin },
+        { nameKey: "sidebar.links.invoices", path: "/InvoicesPage", icon: FiFileText },
+        { nameKey: "sidebar.links.wholesale_requests", path: "/requests", icon: FiClipboard },
+        { nameKey: "sidebar.links.offers_specials", path: "/offers", icon: FiTag },
+        { nameKey: "sidebar.links.settings", path: "/settings", icon: FiSettings },
       ],
     },
   ];
 
   return (
-    <aside className="w-64 bg-slate-900 text-white flex flex-col hidden md:flex h-screen sticky top-0 shadow-2xl">
+    <aside className="w-64 bg-slate-900 text-white flex-col h-screen sticky top-0 shadow-2xl hidden md:flex">
       {/* Logo */}
       <div className="p-6 text-2xl font-bold border-b border-slate-800 text-center tracking-tight text-blue-400">
-        Admin
+        {t("sidebar.admin")}
       </div>
 
       {/* Navigation */}
@@ -89,12 +113,12 @@ const Sidebar = () => {
         {menuGroups.map((group, idx) => (
           <div key={idx}>
             <p className="text-[10px] uppercase text-slate-500 font-bold mb-3 px-2 tracking-[2px]">
-              {group.title}
+              {t(group.titleKey)}
             </p>
             <div className="space-y-1">
               {group.links.map((link) => (
                 <Link
-                  key={link.name}
+                  key={link.path}
                   to={link.path}
                   className={`flex items-center gap-3 p-3 rounded-xl transition-all duration-200 group ${
                     location.pathname === link.path
@@ -109,7 +133,7 @@ const Sidebar = () => {
                         : "group-hover:text-blue-400"
                     }`}
                   />
-                  <span className="font-medium text-sm">{link.name}</span>
+                  <span className="font-medium text-sm">{t(link.nameKey)}</span>
                 </Link>
               ))}
             </div>
@@ -125,7 +149,7 @@ const Sidebar = () => {
         >
           <FiGlobe className="text-lg group-hover:rotate-12 transition-transform" />
           <span className="font-medium text-sm">
-            {language === "ar" ? "English" : "العربية"}
+            {language === "ar" ? t("sidebar.switch_english") : t("sidebar.switch_arabic")}
           </span>
         </button>
 
@@ -134,7 +158,7 @@ const Sidebar = () => {
           className="w-full flex items-center gap-3 p-3 cursor-pointer rounded-xl transition-all duration-200 text-rose-400 hover:bg-rose-500/10 hover:text-rose-500 group"
         >
           <FiLogOut className="text-lg group-hover:-translate-x-1 transition-transform" />
-          <span className="font-medium text-sm">Logout</span>
+          <span className="font-medium text-sm">{t("sidebar.logout")}</span>
         </button>
       </div>
     </aside>
