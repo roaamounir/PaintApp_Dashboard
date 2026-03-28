@@ -3,18 +3,22 @@ import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { ArrowLeft } from "lucide-react";
 import { useAppContext } from "../context/AppContext";
+import { getJwtRole } from "../utils/jwtUser.js";
 
 const DesignFormPage = () => {
   const { id } = useParams();
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const { fetchDesignById, createDesign, updateDesign } = useAppContext();
+  const { fetchDesignById, createDesign, uploadDesignImage, updateDesign } = useAppContext();
+  const role = getJwtRole();
+  const isAdmin = role === "admin";
   const isNew = pathname === "/designs/new" || pathname.endsWith("/designs/new");
   const isEdit = !isNew && id;
   const [loading, setLoading] = useState(isEdit);
   const [saving, setSaving] = useState(false);
   const [form, setForm] = useState({ title: "", description: "", imageUrl: "", videoUrl: "" });
+  const [imageFile, setImageFile] = useState(null);
 
   useEffect(() => {
     if (!isEdit) return;
@@ -25,27 +29,37 @@ const DesignFormPage = () => {
         imageUrl: d.imageUrl || "",
         videoUrl: d.videoUrl || "",
       }))
-      .catch(() => navigate("/designs/my"))
+      .catch(() => navigate(isAdmin ? "/designs" : "/designs/my"))
       .finally(() => setLoading(false));
   }, [id, isEdit, fetchDesignById, navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!form.title.trim() || !form.description.trim() || !form.imageUrl.trim()) {
+    if (!form.title.trim() || !form.description.trim() || (!form.imageUrl.trim() && !imageFile)) {
       alert(t("designs.fill_required"));
       return;
     }
     setSaving(true);
+    let resolvedImageUrl = form.imageUrl.trim();
+    if (imageFile) {
+      const uploadRes = await uploadDesignImage(imageFile);
+      if (!uploadRes.success || !uploadRes.imageUrl) {
+        setSaving(false);
+        alert(uploadRes.error || "Failed to upload image");
+        return;
+      }
+      resolvedImageUrl = uploadRes.imageUrl;
+    }
     const payload = {
       title: form.title.trim(),
       description: form.description.trim(),
-      imageUrl: form.imageUrl.trim(),
+      imageUrl: resolvedImageUrl,
       videoUrl: form.videoUrl.trim() || undefined,
     };
     const res = isEdit ? await updateDesign(id, payload) : await createDesign(payload);
     setSaving(false);
     if (res.success) {
-      navigate(isEdit ? `/designs/${id}` : "/designs/my");
+      navigate(isEdit ? `/designs/${id}` : isAdmin ? "/designs" : "/designs/my");
     } else {
       alert(res.error || "Failed to save");
     }
@@ -94,14 +108,26 @@ const DesignFormPage = () => {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">{t("designs.image_url")} *</label>
+            <label className="block text-sm font-medium text-slate-700 mb-1">{t("designs.image_url")}</label>
             <input
               type="url"
               value={form.imageUrl}
               onChange={(e) => setForm((p) => ({ ...p, imageUrl: e.target.value }))}
               className="w-full rounded-xl border border-slate-200 px-4 py-2 focus:ring-2 focus:ring-blue-500"
-              required
             />
+            <p className="text-xs text-slate-400 mt-1">أدخل رابط صورة أو ارفع صورة من الجهاز.</p>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-slate-700 mb-1">رفع صورة</label>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(e) => setImageFile(e.target.files?.[0] || null)}
+              className="w-full rounded-xl border border-slate-200 px-4 py-2 focus:ring-2 focus:ring-blue-500"
+            />
+            {imageFile ? (
+              <p className="text-xs text-emerald-600 mt-1">{imageFile.name}</p>
+            ) : null}
           </div>
           <div>
             <label className="block text-sm font-medium text-slate-700 mb-1">{t("designs.video_url")}</label>

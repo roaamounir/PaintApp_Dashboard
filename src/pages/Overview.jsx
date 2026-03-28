@@ -20,10 +20,13 @@ import {
   Legend,
 } from "recharts";
 import { useTranslation } from "react-i18next";
+import { getJwtRole } from "../utils/jwtUser.js";
 
 const Overview = () => {
   const { t } = useTranslation();
-  const { orders, paints, loading, fetchOrders, fetchPaints } = useAppContext();
+  const { orders, paints, loadingStates, fetchOrders, fetchPaints } = useAppContext();
+  const isVendor = getJwtRole() === "vendor";
+  const pageLoading = Boolean(loadingStates?.orders || loadingStates?.paints);
 
   useEffect(() => {
     fetchOrders();
@@ -41,13 +44,21 @@ const Overview = () => {
   }, [orders]);
 
   const sourceData = useMemo(() => {
+    if (isVendor) {
+      const pending = orders.filter((o) => o.status === "pending").length;
+      const other = Math.max(0, orders.length - pending);
+      return [
+        { name: t("painters.status.pending"), value: pending },
+        { name: t("overview.vendor.status_other"), value: other },
+      ];
+    }
     const appCount = orders.filter((o) => o.source === "APP").length;
     const posCount = orders.filter((o) => o.source !== "APP").length;
     return [
       { name: t("overview.charts.mobile_app"), value: appCount },
       { name: t("overview.charts.pos_system"), value: posCount },
     ];
-  }, [orders, t]);
+  }, [orders, t, isVendor]);
 
   const COLORS = ["#6366f1", "#10b981"];
   const totalSales = orders.reduce(
@@ -68,38 +79,73 @@ const Overview = () => {
       paint.status === "out_of_stock",
   );
 
-  const stats = [
-    {
-      label: t("overview.stats.today_sales"),
-      value: `${totalSales.toLocaleString()} EGP`,
-      icon: FiActivity,
-      color: "text-blue-600",
-      bg: "bg-blue-100",
-    },
-    {
-      label: t("overview.stats.pending_orders"),
-      value: pendingOrders,
-      icon: FiShoppingCart,
-      color: "text-purple-600",
-      bg: "bg-purple-100",
-    },
-    {
-      label: t("overview.stats.low_stock"),
-      value: lowStockCount,
-      icon: FiAlertCircle,
-      color: "text-red-600",
-      bg: "bg-red-100",
-    },
-    {
-      label: t("overview.stats.total_products"),
-      value: paints.length,
-      icon: FiBox,
-      color: "text-green-600",
-      bg: "bg-green-100",
-    },
-  ];
+  const openVendorOrders = orders.filter((o) =>
+    ["pending", "processing"].includes(String(o.status || "").toLowerCase()),
+  ).length;
 
-  if (loading)
+  const stats = isVendor
+    ? [
+        {
+          label: t("overview.vendor.stats_total_purchases"),
+          value: `${totalSales.toLocaleString()} EGP`,
+          icon: FiActivity,
+          color: "text-blue-600",
+          bg: "bg-blue-100",
+        },
+        {
+          label: t("overview.vendor.stats_open_orders"),
+          value: openVendorOrders,
+          icon: FiShoppingCart,
+          color: "text-purple-600",
+          bg: "bg-purple-100",
+        },
+        {
+          label: t("overview.vendor.stats_orders_count"),
+          value: orders.length,
+          icon: FiBox,
+          color: "text-emerald-600",
+          bg: "bg-emerald-100",
+        },
+        {
+          label: t("overview.vendor.stats_catalog"),
+          value: paints.length,
+          icon: FiBox,
+          color: "text-green-600",
+          bg: "bg-green-100",
+        },
+      ]
+    : [
+        {
+          label: t("overview.stats.today_sales"),
+          value: `${totalSales.toLocaleString()} EGP`,
+          icon: FiActivity,
+          color: "text-blue-600",
+          bg: "bg-blue-100",
+        },
+        {
+          label: t("overview.stats.pending_orders"),
+          value: pendingOrders,
+          icon: FiShoppingCart,
+          color: "text-purple-600",
+          bg: "bg-purple-100",
+        },
+        {
+          label: t("overview.stats.low_stock"),
+          value: lowStockCount,
+          icon: FiAlertCircle,
+          color: "text-red-600",
+          bg: "bg-red-100",
+        },
+        {
+          label: t("overview.stats.total_products"),
+          value: paints.length,
+          icon: FiBox,
+          color: "text-green-600",
+          bg: "bg-green-100",
+        },
+      ];
+
+  if (pageLoading)
     return (
       <div className="p-10 text-center text-gray-400 text-lg italic">
         {t("overview.loading")}
@@ -111,9 +157,11 @@ const Overview = () => {
       {/* Header */}
       <header className="mb-10">
         <h1 className="text-4xl font-bold text-gray-800 tracking-tight">
-          {t("overview.title")}
+          {isVendor ? t("overview.vendor.title") : t("overview.title")}
         </h1>
-        <p className="text-gray-500 mt-1 text-lg">{t("overview.subtitle")}</p>
+        <p className="text-gray-500 mt-1 text-lg max-w-3xl">
+          {isVendor ? t("overview.vendor.subtitle") : t("overview.subtitle")}
+        </p>
       </header>
 
       {/* Stats Cards */}
@@ -140,7 +188,7 @@ const Overview = () => {
         {/* Sales Trend Chart */}
         <div className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm">
           <h3 className="text-lg font-bold text-gray-800 mb-6">
-            {t("overview.charts.sales_trend")}
+            {isVendor ? t("overview.vendor.recent_order_totals") : t("overview.charts.sales_trend")}
           </h3>
           <div className="w-full" style={{ minHeight: 280, height: 300 }}>
             <ResponsiveContainer width="100%" height={300} minHeight={200}>
@@ -190,7 +238,7 @@ const Overview = () => {
         {/* Source Distribution Pie */}
         <div className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm">
           <h3 className="text-lg font-bold text-gray-800 mb-6">
-            {t("overview.charts.sales_source")}
+            {isVendor ? t("overview.vendor.chart_order_status") : t("overview.charts.sales_source")}
           </h3>
           <div className="w-full" style={{ minHeight: 280, height: 300 }}>
             <ResponsiveContainer width="100%" height={300} minHeight={200}>
@@ -268,11 +316,19 @@ const Overview = () => {
                     </td>
                     <td className="py-4">
                       <span
-                        className={`px-3 py-1 rounded-lg text-xs font-bold ${order.source === "APP" ? "bg-indigo-50 text-indigo-600" : "bg-emerald-50 text-emerald-600"}`}
+                        className={`px-3 py-1 rounded-lg text-xs font-bold ${
+                          order.source === "wholesale"
+                            ? "bg-amber-50 text-amber-700"
+                            : order.source === "APP"
+                              ? "bg-indigo-50 text-indigo-600"
+                              : "bg-emerald-50 text-emerald-600"
+                        }`}
                       >
-                        {order.source === "APP"
-                          ? t("overview.charts.mobile_app")
-                          : t("overview.charts.pos_system")}
+                        {order.source === "wholesale"
+                          ? t("overview.vendor.source_wholesale")
+                          : order.source === "APP"
+                            ? t("overview.charts.mobile_app")
+                            : t("overview.charts.pos_system")}
                       </span>
                     </td>
                     <td className="py-4">
@@ -292,10 +348,15 @@ const Overview = () => {
         {/* Stock Alerts */}
         <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-8">
           <h3 className="font-bold text-gray-800 text-xl mb-6 flex items-center gap-2">
-            <FiAlertCircle className="text-red-500" />{" "}
-            {t("overview.alerts.title")}
+            <FiAlertCircle className={isVendor ? "text-amber-500" : "text-red-500"} />{" "}
+            {isVendor ? t("overview.vendor.sidebar_hint_title") : t("overview.alerts.title")}
           </h3>
-          {immediateAlerts.length > 0 ? (
+          {isVendor ? (
+            <div className="space-y-4 text-sm text-gray-600 leading-relaxed">
+              <p>{t("overview.vendor.sidebar_hint")}</p>
+              <p className="text-gray-400 text-xs">{t("overview.vendor.no_alerts_vendor")}</p>
+            </div>
+          ) : immediateAlerts.length > 0 ? (
             <div className="space-y-4">
               {immediateAlerts.map((paint) => (
                 <div

@@ -14,38 +14,51 @@ import { useAppContext } from "../context/AppContext";
 
 const Categories = () => {
   const { t } = useTranslation();
-  const { categories, addCategory, deleteCategory, updateCategory, loading } =
-    useAppContext();
+  const {
+    categories,
+    addCategory,
+    deleteCategory,
+    updateCategory,
+    loadingStates,
+  } = useAppContext();
   const [searchTerm, setSearchTerm] = useState("");
   const [isAdding, setIsAdding] = useState(false);
-  const [newCategoryName, setNewCategoryName] = useState("");
+  const [newCategoryAr, setNewCategoryAr] = useState("");
+  const [newCategoryEn, setNewCategoryEn] = useState("");
 
   const [editingId, setEditingId] = useState(null);
-  const [editName, setEditName] = useState("");
+  const [editNameAr, setEditNameAr] = useState("");
+  const [editNameEn, setEditNameEn] = useState("");
 
   const filteredCategories = categories.filter((cat) =>
-    cat.name.toLowerCase().includes(searchTerm.toLowerCase()),
+    [cat.name, cat.nameAr, cat.nameEn]
+      .filter(Boolean)
+      .join(" ")
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase()),
   );
 
   const handleAdd = async (e) => {
     e.preventDefault();
-    if (!newCategoryName.trim()) return;
-    const res = await addCategory(newCategoryName);
+    if (!newCategoryAr.trim() || !newCategoryEn.trim()) return;
+    const res = await addCategory({ nameAr: newCategoryAr, nameEn: newCategoryEn });
     if (res.success) {
-      setNewCategoryName("");
+      setNewCategoryAr("");
+      setNewCategoryEn("");
       setIsAdding(false);
     }
   };
 
   const handleUpdate = async (id) => {
-    if (!editName.trim()) {
+    if (!editNameAr.trim() || !editNameEn.trim()) {
       setEditingId(null);
       return;
     }
-    const res = await updateCategory(id, editName);
+    const res = await updateCategory(id, { nameAr: editNameAr, nameEn: editNameEn });
     if (res.success) {
       setEditingId(null);
-      setEditName("");
+      setEditNameAr("");
+      setEditNameEn("");
     }
   };
 
@@ -80,18 +93,25 @@ const Categories = () => {
         >
           <input
             type="text"
-            placeholder={t("categories.fields.placeholder")}
-            value={newCategoryName}
-            onChange={(e) => setNewCategoryName(e.target.value)}
+            placeholder={t("categories.fields.placeholder_ar")}
+            value={newCategoryAr}
+            onChange={(e) => setNewCategoryAr(e.target.value)}
             className="flex-1 bg-slate-50 border border-slate-200 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
             autoFocus
           />
+          <input
+            type="text"
+            placeholder={t("categories.fields.placeholder_en")}
+            value={newCategoryEn}
+            onChange={(e) => setNewCategoryEn(e.target.value)}
+            className="flex-1 bg-slate-50 border border-slate-200 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+          />
           <button
             type="submit"
-            disabled={loading}
+            disabled={loadingStates?.categories}
             className="bg-blue-600 text-white px-6 py-2 rounded-xl font-medium"
           >
-            {loading ? (
+            {loadingStates?.categories ? (
               <Loader2 className="animate-spin" size={20} />
             ) : (
               t("common.save")
@@ -120,7 +140,8 @@ const Categories = () => {
         <table className="w-full text-left">
           <thead className="bg-slate-50 text-slate-500 uppercase text-[11px] font-bold tracking-wider">
             <tr>
-              <th className="px-6 py-4">{t("categories.table.name")}</th>
+              <th className="px-6 py-4">{t("categories.table.name_ar")}</th>
+              <th className="px-6 py-4">{t("categories.table.name_en")}</th>
               <th className="px-6 py-4 text-center">
                 {t("categories.table.count")}
               </th>
@@ -143,15 +164,29 @@ const Categories = () => {
                     {editingId === cat.id ? (
                       <input
                         className="bg-slate-50 border-b-2 border-blue-500 outline-none px-2 py-1 rounded"
-                        value={editName}
-                        onChange={(e) => setEditName(e.target.value)}
+                        value={editNameAr}
+                        onChange={(e) => setEditNameAr(e.target.value)}
                         autoFocus
                         onKeyDown={(e) =>
                           e.key === "Enter" && handleUpdate(cat.id)
                         }
                       />
                     ) : (
-                      cat.name
+                      cat.nameAr || cat.name
+                    )}
+                  </td>
+                  <td className="px-6 py-4 font-semibold text-slate-700">
+                    {editingId === cat.id ? (
+                      <input
+                        className="bg-slate-50 border-b-2 border-blue-500 outline-none px-2 py-1 rounded w-full"
+                        value={editNameEn}
+                        onChange={(e) => setEditNameEn(e.target.value)}
+                        onKeyDown={(e) =>
+                          e.key === "Enter" && handleUpdate(cat.id)
+                        }
+                      />
+                    ) : (
+                      cat.nameEn || cat.name
                     )}
                   </td>
                   <td className="px-6 py-4 text-center text-sm font-bold text-slate-700">
@@ -179,7 +214,8 @@ const Categories = () => {
                           <button
                             onClick={() => {
                               setEditingId(cat.id);
-                              setEditName(cat.name);
+                              setEditNameAr(cat.nameAr || cat.name || "");
+                              setEditNameEn(cat.nameEn || cat.name || "");
                             }}
                             className="p-2 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg"
                           >
@@ -199,7 +235,7 @@ const Categories = () => {
               ))
             ) : (
               <tr>
-                <td colSpan="3" className="text-center py-10 text-slate-400">
+                <td colSpan="4" className="text-center py-10 text-slate-400">
                   {t("categories.empty")}
                 </td>
               </tr>

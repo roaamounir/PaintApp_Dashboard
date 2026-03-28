@@ -3,12 +3,10 @@ import { useAppContext } from "../context/AppContext";
 import {
   Trash2,
   CheckCircle,
-  XCircle,
   Building2,
   Mail,
   Search,
   Clock,
-  CreditCard,
   MapPin,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
@@ -22,10 +20,27 @@ const Requests = () => {
     fetchPendingVendors,
     updateVendorStatus,
     deleteVendor,
-    loading,
+    loadingStates,
   } = useAppContext();
 
+  const loading = loadingStates?.vendors ?? false;
+
   const [searchTerm, setSearchTerm] = useState("");
+
+  const parseRequestType = (req) => {
+    if (req?.requestType) return String(req.requestType).toUpperCase();
+    const tax = req?.taxRegistration ? String(req.taxRegistration) : "";
+    if (tax.startsWith("__REQ_TYPE__:WHOLESALE")) return "WHOLESALE";
+    return "VENDOR";
+  };
+
+  const cleanTax = (taxRegistration) => {
+    if (!taxRegistration) return "-";
+    const raw = String(taxRegistration);
+    if (!raw.startsWith("__REQ_TYPE__:")) return raw;
+    const parts = raw.split("|");
+    return parts[1] || "-";
+  };
 
   useEffect(() => {
     fetchPendingVendors();
@@ -34,18 +49,14 @@ const Requests = () => {
   const filteredRequests = (pendingVendors || []).filter(
     (req) =>
       req.shopName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      req.user?.email?.toLowerCase().includes(searchTerm.toLowerCase()),
+      req.user?.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      parseRequestType(req).toLowerCase().includes(searchTerm.toLowerCase()),
   );
 
-  const handleApprove = async (id) => {
+  const handleApprove = async (vendorRowId) => {
+    if (!vendorRowId) return;
     if (window.confirm(t("requests.confirm_approve"))) {
-      await updateVendorStatus(id, { isApproved: true });
-    }
-  };
-
-  const handleVerifyPayment = async (id) => {
-    if (window.confirm(t("requests.confirm_payment"))) {
-      await updateVendorStatus(id, { paymentStatus: true });
+      await updateVendorStatus(vendorRowId, { isApproved: true });
     }
   };
 
@@ -88,9 +99,6 @@ const Requests = () => {
                 <th className="px-6 py-4">{t("requests.table.company")}</th>
                 <th className="px-6 py-4">{t("requests.table.contact")}</th>
                 <th className="px-6 py-4 text-center">
-                  {t("requests.table.payment")}
-                </th>
-                <th className="px-6 py-4 text-center">
                   {t("requests.table.actions")}
                 </th>
               </tr>
@@ -99,7 +107,7 @@ const Requests = () => {
               {loading ? (
                 <tr>
                   <td
-                    colSpan="4"
+                    colSpan="3"
                     className="py-10 text-center text-slate-400 animate-pulse"
                   >
                     {t("requests.loading")}
@@ -123,8 +131,21 @@ const Requests = () => {
                           <p className="text-slate-400 text-xs flex items-center gap-1 mt-1">
                             <Mail size={12} /> {req.user?.email}
                           </p>
-                          <div className="mt-1 text-[10px] font-mono text-slate-500 bg-slate-100 px-1.5 py-0.5 rounded w-fit">
-                            TAX: {req.taxRegistration}
+                          <div className="mt-1 flex items-center gap-2">
+                            <span
+                              className={`text-[10px] font-bold px-2 py-0.5 rounded ${
+                                parseRequestType(req) === "WHOLESALE"
+                                  ? "bg-amber-100 text-amber-700"
+                                  : "bg-indigo-100 text-indigo-700"
+                              }`}
+                            >
+                              {parseRequestType(req) === "WHOLESALE"
+                                ? "Wholesale"
+                                : "Vendor Upgrade"}
+                            </span>
+                            <span className="text-[10px] font-mono text-slate-500 bg-slate-100 px-1.5 py-0.5 rounded">
+                              TAX: {cleanTax(req.taxRegistration)}
+                            </span>
                           </div>
                         </div>
                       </div>
@@ -143,36 +164,17 @@ const Requests = () => {
                       </div>
                     </td>
 
-                    <td className="px-6 py-4 text-center">
-                      {req.paymentStatus ? (
-                        <span className="bg-emerald-100 text-emerald-600 px-3 py-1 rounded-full text-[10px] font-bold uppercase flex items-center justify-center gap-1 w-fit mx-auto">
-                          <CheckCircle size={12} /> {t("requests.status.paid")}
-                        </span>
-                      ) : (
-                        <span className="bg-amber-100 text-amber-600 px-3 py-1 rounded-full text-[10px] font-bold uppercase flex items-center justify-center gap-1 w-fit mx-auto">
-                          <CreditCard size={12} />{" "}
-                          {t("requests.status.pending")}
-                        </span>
-                      )}
-                    </td>
-
                     <td className="px-6 py-4">
                       <div className="flex justify-center gap-2">
-                        {!req.paymentStatus ? (
-                          <button
-                            onClick={() => handleVerifyPayment(req.id)}
-                            className="bg-amber-500 hover:bg-amber-600 text-white px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1 shadow-sm"
-                          >
-                            {t("requests.verify_payment")}
-                          </button>
-                        ) : (
-                          <button
-                            onClick={() => handleApprove(req.id || req.userId)}
-                            className="bg-emerald-500 hover:bg-emerald-600 text-white px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1 shadow-sm"
-                          >
-                            <CheckCircle size={14} /> {t("requests.approve")}
-                          </button>
-                        )}
+                        <button
+                          onClick={() => handleApprove(req.id)}
+                          className="bg-emerald-500 hover:bg-emerald-600 text-white px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1 shadow-sm"
+                        >
+                          <CheckCircle size={14} />{" "}
+                          {parseRequestType(req) === "WHOLESALE"
+                            ? "Approve Wholesale"
+                            : t("requests.approve")}
+                        </button>
 
                         <button
                           onClick={() => deleteVendor(req.userId || req.id)}
@@ -187,7 +189,7 @@ const Requests = () => {
                 ))
               ) : (
                 <tr>
-                  <td colSpan="4" className="py-10 text-center text-slate-400">
+                  <td colSpan="3" className="py-10 text-center text-slate-400">
                     {t("requests.no_requests")}
                   </td>
                 </tr>

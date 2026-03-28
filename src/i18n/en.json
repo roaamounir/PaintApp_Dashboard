@@ -1,8 +1,30 @@
 {
+  "auth": {
+    "login_title": "Sign in",
+    "signup_title": "Create account",
+    "subtitle_dashboard": "Access your dashboard",
+    "phone_or_email": "Phone or email",
+    "phone_or_email_placeholder": "01xxxxxxxxx or name@email.com",
+    "password": "Password",
+    "name": "Full name",
+    "email": "Email",
+    "phone": "Phone",
+    "login_action": "Sign in",
+    "signup_action": "Sign up",
+    "signing_in": "Signing in...",
+    "signing_up": "Creating account...",
+    "have_account": "Already have an account? Sign in",
+    "no_account": "No account? Register",
+    "invalid_credentials": "Invalid credentials"
+  },
   "sidebar": {
     "admin": "Admin",
+    "vendor_portal": "Wholesale trader portal",
+    "vendor_sub": "Buy wholesale from the admin catalog once your account is approved",
     "groups": {
       "main": "Main",
+      "wholesale": "Wholesale",
+      "account": "Account",
       "management": "Management",
       "inventory": "Inventory",
       "smart_tools": "Smart Tools",
@@ -10,12 +32,16 @@
       "business": "Business"
     },
     "links": {
+      "vendor_catalog": "Product catalog",
+      "my_wholesale_orders": "My orders (wholesale)",
+      "my_invoices": "My invoices",
       "overview": "Overview",
       "users": "Users",
       "customers": "Customers",
       "audit_logs": "Audit Logs",
       "painters": "Painters",
       "vendors": "Vendors",
+      "designers": "Designers",
       "reviews": "Reviews",
       "products": "Products",
       "stock_management": "Stock Management",
@@ -26,10 +52,13 @@
       "my_designs": "My Designs",
       "designs_gallery": "Designs Gallery",
       "orders": "Orders",
+      "request_painter": "Request a painter",
       "visit_requests": "Visit Requests",
       "invoices": "Invoices",
       "wholesale_requests": "Wholesale Requests",
       "offers_specials": "Offers & Specials",
+      "coupons": "Coupons",
+      "my_profile": "My profile",
       "settings": "Settings"
     },
     "switch_english": "English",
@@ -37,11 +66,61 @@
     "logout": "Logout"
   },
 
+  "profile": {
+    "title": "My profile",
+    "subtitle": "Avatar, name, and professional details based on your account type.",
+    "loading": "Loading...",
+    "load_error": "Could not load account data.",
+    "avatar_section": "Profile photo",
+    "change_avatar": "Change photo",
+    "avatar_error": "Could not upload image.",
+    "account_section": "Account",
+    "save": "Save",
+    "save_all": "Save all changes",
+    "saved": "Saved successfully",
+    "save_failed": "Could not save changes",
+    "designer_section": "Designer profile",
+    "designer_hint": "Add your professional details; manage designs from My designs and the gallery.",
+    "my_designs_link": "My designs",
+    "painter_section": "Painter profile",
+    "painter_hint": "Service type, experience, location, and description. The gallery is for your own work photos only.",
+    "location": "Location / city",
+    "bio": "Bio / description",
+    "service_type": "Service type",
+    "city": "City",
+    "address": "Address",
+    "work_gallery": "Work gallery",
+    "work_gallery_hint": "Upload photos of painting projects you completed.",
+    "add_work_photo": "Add work photo",
+    "gallery_empty": "No photos yet.",
+    "gallery_upload_error": "Could not upload image.",
+    "gallery_delete_error": "Could not delete image.",
+    "confirm_delete_image": "Remove this image from the gallery?"
+  },
+
+  "requestPainterFlow": {
+    "title": "Find a painter",
+    "subtitle": "Enter your address and service type, then pick a technician.",
+    "back": "Back",
+    "address": "Your address",
+    "address_placeholder": "Enter your full address",
+    "select_address": "Select address",
+    "service_type": "Service type",
+    "select_service": "Select service type",
+    "continue": "Continue",
+    "results_title": "Matching technicians",
+    "no_results": "No technicians match your filters.",
+    "view_details": "View details",
+    "request_visit": "Request visit"
+  },
+
   "visitRequests": {
     "title": "Visit Requests",
     "title_for_painter": "Incoming Visit Requests",
-    "subtitle": "Request a visit from a technician (date, time, area, address)",
+    "subtitle": "Create and track visit requests (date, time, area, region, address)",
     "subtitle_for_painter": "Visit requests sent by clients",
+    "discovery_hint": "Looking for a technician by city and service?",
+    "open_request_painter": "Open Request a painter",
     "new_request": "New visit request",
     "form_title": "Request a visit from technician",
     "painter": "Technician",
@@ -49,6 +128,8 @@
     "date": "Date",
     "time": "Time",
     "area": "Area",
+    "region": "Region / district",
+    "region_placeholder": "Neighborhood or district",
     "address": "Address",
     "address_placeholder": "Full address for the visit",
     "notes": "Notes",
@@ -56,7 +137,7 @@
     "submit": "Submit request",
     "cancel": "Cancel",
     "back": "Back",
-    "fill_required": "Please fill technician, date, time and address",
+    "fill_required": "Please fill technician, date, time, region and address",
     "request_sent": "Visit request sent successfully",
     "error": "An error occurred",
     "loading": "Loading...",
@@ -66,11 +147,40 @@
     "status_rejected": "Rejected",
     "status_completed": "Completed",
     "accept": "Accept",
-    "reject": "Reject"
+    "reject": "Reject",
+    "client_name": "Client name",
+    "client_phone": "Client phone",
+    "service_interior": "Interior",
+    "service_exterior": "Exterior"
   },
 
   "painterDetails": {
-    "request_visit": "Request a visit from this technician"
+    "request_visit": "Request a visit from this technician",
+    "tab_overview": "About",
+    "bio": "About",
+    "service_type": "Service type",
+    "city": "City",
+    "add_review": "Write a review",
+    "rating": "Rating",
+    "review_text": "Your review",
+    "review_placeholder": "Share your experience…",
+    "submit_review": "Submit review",
+    "customer_reviews": "Customer reviews",
+    "no_reviews_yet": "No reviews yet.",
+    "review_error": "Could not submit review"
+  },
+
+  "financials": {
+    "commission_rate": "Platform commission (%)",
+    "btn_update": "Update financial settings"
+  },
+
+  "tabs": {
+    "verification_info": "Verification",
+    "wallet_financials": "Orders",
+    "portfolio": "Portfolio",
+    "disputes": "Disputes",
+    "reviews": "Reviews"
   },
 
   "designs": {
@@ -117,6 +227,9 @@
   "inventory": {
     "title": "Inventory Management",
     "subtitle": "Monitor and control stock in real time",
+    "vendor_catalog_title": "Wholesale product catalog",
+    "vendor_catalog_subtitle": "Admin catalog — wholesale pricing once your account is approved",
+    "wholesale_buyer_hint": "Prices shown use wholesale when set; otherwise retail. Open product details to review.",
     "searchPlaceholder": "Search for a product...",
     "status": {
       "outOfStock": "Out of Stock"
@@ -155,6 +268,21 @@
       "limit": "Minimum Limit",
       "order_stock": "Order Stock",
       "healthy": "Stock is currently healthy"
+    },
+    "vendor": {
+      "title": "Welcome, wholesale trader",
+      "subtitle": "You started as a regular user; after the admin approved your wholesale or vendor request, your account can buy at wholesale prices from the catalog.",
+      "stats_total_purchases": "My total purchases",
+      "stats_open_orders": "Open orders",
+      "stats_orders_count": "Orders count",
+      "stats_catalog": "Products in catalog",
+      "source_wholesale": "Wholesale",
+      "chart_order_status": "Order status",
+      "recent_order_totals": "Recent order totals",
+      "status_other": "Other orders",
+      "sidebar_hint_title": "Next steps",
+      "sidebar_hint": "Open the product catalog, add items at wholesale, then check My orders and My invoices.",
+      "no_alerts_vendor": "Inventory alerts are for admins; you order from the unified catalog."
     }
   },
   "audit": {
@@ -180,7 +308,8 @@
     "productDetail": "Product",
     "techSpecs": "Technical Specifications",
     "application": "Application",
-    "stockPrice": "Stock",
+    "stockPrice": "Price / Stock",
+    "wholesale": "Wholesale",
     "actions": "Actions",
     "finish": "Finish",
     "unit": "Unit",
@@ -194,9 +323,21 @@
     "updateTitle": "Update Quantity for",
     "basicInfo": "Basic Information",
     "productName": "Product Name",
+    "productNameAr": "Product Name (Arabic)",
+    "productNameEn": "Product Name (English)",
     "description": "Description",
+    "descriptionAr": "Description (Arabic)",
+    "descriptionEn": "Description (English)",
     "descriptionPlaceholder": "Product description (optional)",
+    "descriptionArPlaceholder": "Product description in Arabic (optional)",
+    "descriptionEnPlaceholder": "Product description in English (optional)",
     "price": "Price",
+    "sku": "Color Code (HEX)",
+    "skuPlaceholder": "e.g. FF5733",
+    "retailPrice": "Retail Price (for customers)",
+    "wholesalePrice": "Wholesale Price (for designers & vendors)",
+    "wholesalePricePlaceholder": "Optional",
+    "wholesaleOnly": "Wholesale",
     "type": "Product type",
     "vendor": "Vendor",
     "selectVendor": "Select vendor",
@@ -206,13 +347,20 @@
     "noVendors": "No vendors — add a vendor first",
     "noVendorsHint": "At least one vendor is required to create a product.",
     "confirmNew": "Add Product to Inventory",
-    "saveUpdated": "Save Changes"
+    "saveUpdated": "Save Changes",
+    "productImage": "Product image",
+    "productImageHint": "JPEG, PNG, GIF or WebP. Shown in the catalog and product page.",
+    "productImageChoose": "Choose image",
+    "productImageRemove": "Remove image",
+    "productImageOptionalUrl": "Or image URL",
+    "productImageUrlPlaceholder": "https://… or leave empty"
   },
 
   "messages": {
     "lowStock": "Low Stock",
     "exportError": "File export failed",
-    "importSuccess": "Data imported successfully"
+    "importSuccess": "Data imported successfully",
+    "productImageUploadError": "Could not upload image"
   },
 
   "options": {
@@ -247,14 +395,19 @@
       "new": "New Category"
     },
     "fields": {
-      "placeholder": "Enter category name...",
+      "placeholder_ar": "Enter Arabic category name...",
+      "placeholder_en": "Enter English category name...",
       "search": "Search for a category..."
     },
     "table": {
-      "name": "Category Name",
+      "name_ar": "Arabic Name",
+      "name_en": "English Name",
+      "offer": "Promotion",
       "count": "Number of Products",
       "actions": "Actions"
-    }
+    },
+    "offer_none": "None",
+    "offer_hint": "Assign a catalog offer to this category (create offers under Offers)"
   },
 
   "colors": {
@@ -289,7 +442,7 @@
     "tabs": {
       "calculator": "Paint Calculator",
       "converter": "Color Converter",
-      "simulation": "Color Simulation"
+      "simulation": "Color Picker"
     },
     "calculator": {
       "header": "Estimate Required Quantity",
@@ -383,7 +536,9 @@
       "copy_hex": "Copy HEX",
       "click_to_copy": "Click to copy",
       "copied": "Copied!",
-      "hex_copy_hint": "Click the code or copy button to copy the HEX value"
+      "hex_copy_hint": "Click the code or copy button to copy the HEX value",
+      "click_to_pick": "Click on the image to pick a color",
+      "picked_color": "Picked Color"
     }
   },
   "customers": {
@@ -533,10 +688,10 @@
     "modals": {
       "add_title": "Add New User Account"
     },
-    "users": {
-      "alerts": {
-        "confirm_delete": "Are you sure you want to delete this user? This action cannot be undone."
-      }
+    "alerts": {
+      "confirm_delete": "Are you sure you want to delete this user? This action cannot be undone.",
+      "fill_all_fields": "Please fill in all required fields.",
+      "session_expired": "Your session expired or the token is invalid. Please log in again."
     }
   },
   "vendors": {
@@ -573,6 +728,54 @@
       "confirm_delete": "Are you sure you want to delete this vendor? This action cannot be undone."
     }
   },
+  "designers": {
+    "title": "Designers",
+    "subtitle": "View and edit designer accounts and profiles",
+    "search_placeholder": "Search by name, email, or specialties...",
+    "empty_list": "No designers match your search.",
+    "table": {
+      "designer": "Designer",
+      "profile": "Profile",
+      "actions": "Actions"
+    },
+    "fields": {
+      "experience_years": "Years of experience",
+      "specialties": "Service type / specialties",
+      "rating": "Rating",
+      "portfolio": "Portfolio URL",
+      "location": "Location",
+      "bio": "Description",
+      "no_profile": "No profile yet"
+    },
+    "detail": {
+      "title": "Designer details",
+      "account": "Account",
+      "profile_section": "Designer profile",
+      "save": "Save changes",
+      "cancel": "Cancel",
+      "edit": "Edit",
+      "saved": "Saved successfully",
+      "save_failed": "Could not save changes",
+      "loading": "Loading...",
+      "not_found": "Designer not found",
+      "back": "Back to list",
+      "open_gallery": "Open designs gallery"
+    }
+  },
+  "filters": {
+    "allCategories": "All Categories",
+    "allFinishes": "All Finish Types",
+    "allUsages": "All Usages",
+    "allBases": "All Base Types",
+    "dryingTime": "Drying Time"
+  },
+  "buttons": {
+    "export": "Export Data",
+    "exportLowStock": "Export Low/Out Stock",
+    "import": "Import File",
+    "addPaint": "Add New Paint",
+    "clearFilters": "Clear Filters"
+  },
   "admin": {
     "simulations": {
       "title": "Color Visualizer Logs",
@@ -594,6 +797,9 @@
   "orders": {
     "title": "Admin Dashboard",
     "subtitle": "Review order details and vendor allocations",
+    "vendor_title": "Wholesale purchase orders",
+    "vendor_subtitle": "Your orders from the admin catalog at wholesale prices",
+    "admin_catalog": "Platform catalog",
     "tabs": {
       "paints": "Paint Orders",
       "visits": "Visit Requests"
@@ -610,6 +816,11 @@
     },
     "status": {
       "pending": "Pending",
+      "confirmed": "Confirmed",
+      "preparing": "Preparing",
+      "shipped": "Shipped",
+      "delivered": "Delivered",
+      "cancelled": "Cancelled",
       "accepted": "Accepted",
       "completed": "Completed",
       "canceled": "Canceled"
@@ -618,6 +829,8 @@
   "invoices": {
     "title": "Invoice Management",
     "subtitle": "Track issued invoices and payment status",
+    "vendor_title": "My purchase invoices",
+    "vendor_subtitle": "Invoices for your wholesale orders only",
     "currency": "EGP",
     "unknown_customer": "Unknown Customer",
     "unknown_source": "Unknown Source",
@@ -696,6 +909,14 @@
     "save_success": "Settings updated successfully!",
     "save_error": "Failed to update settings.",
     "connection_error": "Network error, please check your connection.",
+    "profile": {
+      "avatar_title": "My profile photo",
+      "avatar_hint": "Any logged-in user can set a profile picture. JPEG, PNG, GIF or WebP.",
+      "avatar_upload": "Choose image",
+      "avatar_saved": "Profile photo updated.",
+      "avatar_error": "Could not upload photo.",
+      "login_required": "Please sign in first."
+    },
     "general": {
       "title": "General Information",
       "app_name": "Application Name",
@@ -726,10 +947,10 @@
     "suspendVendor": "Suspend Vendor",
     "approveMerchant": "Approve Merchant",
     "suspendConfirm": "Are you sure you want to suspend this vendor's account?",
+    "confirmApproveMerchant": "Approve this merchant? They will be able to sell on the platform.",
     "tabs": {
       "overview": "Overview",
-      "inventory": "Inventory",
-      "financials": "Financials"
+      "inventory": "Inventory"
     },
     "stats": {
       "totalProducts": "Total Products",
@@ -776,5 +997,66 @@
       "status": "Status"
     },
     "noTransactions": "No transactions recorded"
+  },
+  "order": {
+    "loading": "Loading order details...",
+    "back_to_list": "Back to orders",
+    "title": "Order",
+    "customer_info": "Customer Information",
+    "full_name": "Full Name",
+    "phone_number": "Phone Number",
+    "location_label": "Execution location / vendor city",
+    "guest_user": "Guest user",
+    "products_title": "Ordered Products",
+    "col_product": "Product",
+    "col_vendor": "Vendor",
+    "col_qty": "Quantity",
+    "col_price": "Price",
+    "main_store": "Main Store",
+    "summary_total": "Total Amount",
+    "address": "Address Line 1",
+    "address_2": "Address Line 2",
+    "postal_code": "Postal Code"
+  },
+
+  "product": {
+    "loading": "Loading product details...",
+    "not_found_title": "Product Not Found",
+    "not_found_desc": "Sorry, we couldn't find data for this product. It may have been deleted or the link is incorrect.",
+    "back_to_list": "Back to Products",
+    "sku": "Product SKU",
+    "default_category": "Premium Paint",
+    "default_desc": "Professional high-quality finish for interior and exterior surfaces.",
+    "unit_price": "Retail Price",
+    "wholesale_price": "Wholesale Price",
+    "stats_stock": "In Stock",
+    "stats_sold": "Units Sold",
+    "stats_value": "Stock Value",
+    "stats_supplier": "Supplier",
+    "internal_supplier": "Internal",
+    "admin_catalog": "Admin catalog",
+    "tech_details_title": "Technical Details",
+    "spec_base": "Base",
+    "spec_finish": "Finish",
+    "spec_coverage": "Coverage Rate",
+    "spec_drying": "Drying Time",
+    "spec_weight": "Weight",
+    "base_water": "Water-based",
+    "finish_matt": "Matt",
+    "inventory_health": "Inventory Health",
+    "min_level": "Min Level",
+    "history_title": "Recent Transactions",
+    "history_showing_last": "Showing latest {{shown}} of {{total}} — scroll for more",
+    "history_all_movements": "All movements shown ({{count}})",
+    "history_trn": "Transaction",
+    "history_details": "Details",
+    "history_qty": "Qty",
+    "history_revenue": "Revenue",
+    "history_price_type": "Price type",
+    "sale_price_wholesale": "Wholesale",
+    "sale_price_retail": "Retail",
+    "sale_price_other": "Custom",
+    "standard_sale": "Standard Sale",
+    "no_sales": "No transactions recorded yet"
   }
 }

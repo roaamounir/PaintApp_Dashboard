@@ -131,7 +131,7 @@ const InventoryPage = () => {
               <th className="p-5 font-semibold">{t("audit.table.date")}</th>
               <th className="p-5 font-semibold text-center">
                 {t("table.actions")}
-              </th>{" "}
+              </th>
             </tr>
           </thead>
 

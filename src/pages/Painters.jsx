@@ -25,7 +25,6 @@ const Painters = () => {
     loading,
     users,
     addPainter,
-    updatePainter,
     deletePainter,
    fetchPainters,
   } = useAppContext();
@@ -45,7 +44,6 @@ const Painters = () => {
     bio: "",
     service: "both",
   });
-  const [updatingPainterId, setUpdatingPainterId] = useState(null);
   const API_URL = "http://localhost:5000";
 
   const handleRegisterPainter = async () => {
@@ -78,18 +76,6 @@ const Painters = () => {
       alert(t("painters.alerts.register_success"));
     }
   };
-  const handleStatusChange = async (id, newStatus) => {
-    try {
-      setUpdatingPainterId(id);
-      await updatePainter(id, { status: newStatus });
-    } catch (err) {
-      console.error("Failed to update status", err);
-      alert(t("painters.alerts.update_error"));
-    } finally {
-      setUpdatingPainterId(null);
-    }
-  };
-
   const handleDelete = async (id) => {
     const confirmDelete = window.confirm(t("painters.alerts.confirm_delete"));
     if (!confirmDelete) return;
@@ -113,7 +99,6 @@ const Painters = () => {
     userId: user.id,
     user: user,
     experience: 0,
-    status: "pending",
     isNewRequest: true,
   }));
 
@@ -187,7 +172,7 @@ const Painters = () => {
         </div>
 
         <div className="overflow-x-auto">
-          <table className="w-full text-right">
+          <table className={`w-full ${isRtl ? "text-right" : "text-left"}`}>
             <thead className="bg-slate-50 text-slate-500 uppercase text-[11px] tracking-wider font-bold">
               <tr>
                 <th className="px-6 py-4">{t("painters.table.name")}</th>
@@ -196,9 +181,6 @@ const Painters = () => {
                 </th>
                 <th className="px-6 py-4 text-center">
                   {t("painters.table.rating")}
-                </th>
-                <th className="px-6 py-4 text-center">
-                  {t("painters.table.status")}
                 </th>
                 <th className="px-6 py-4 text-center">
                   {t("painters.table.actions")}
@@ -212,10 +194,12 @@ const Painters = () => {
                     key={painter.id}
                     className="hover:bg-blue-50/30 transition-colors group"
                   >
-                    <td className="px-6 py-4 text-sm font-semibold text-slate-600">
+                    <td
+                      className={`px-6 py-4 text-sm font-semibold text-slate-600 ${isRtl ? "text-right" : "text-left"}`}
+                    >
                       {painter.user?.name || t("painters.fields.unknown")}
                       {painter.isNewRequest && (
-                        <span className="mr-2 text-[10px] bg-blue-100 text-blue-600 px-2 py-0.5 rounded-full">
+                        <span className="ms-2 text-[10px] bg-blue-100 text-blue-600 px-2 py-0.5 rounded-full">
                           {t("painters.status.new")}
                         </span>
                       )}
@@ -230,37 +214,6 @@ const Painters = () => {
                           ? Number(painter.rating).toFixed(1)
                           : "0.0"}
                       </div>
-                    </td>
-                    <td className="px-6 py-4 text-center">
-                      {updatingPainterId === painter.id ? (
-                        <Loader2
-                          className="animate-spin text-blue-500 mx-auto"
-                          size={16}
-                        />
-                      ) : (
-                        <select
-                          disabled={painter.isNewRequest}
-                          value={painter.status || "pending"}
-                          onChange={(e) =>
-                            handleStatusChange(painter.id, e.target.value)
-                          }
-                          className={`text-[10px] font-black rounded-lg px-2 py-1 outline-none border cursor-pointer ${
-                            painter.status === "accepted"
-                              ? "bg-green-50 text-green-600 border-green-100"
-                              : "bg-orange-50 text-orange-600 border-orange-100"
-                          }`}
-                        >
-                          <option value="pending">
-                            {t("painters.status.pending")}
-                          </option>
-                          <option value="accepted">
-                            {t("painters.status.accepted")}
-                          </option>
-                          <option value="rejected">
-                            {t("painters.status.rejected")}
-                          </option>
-                        </select>
-                      )}
                     </td>
                     <td className="px-6 py-4 text-center">
                       <div className="flex justify-center gap-2">
@@ -293,7 +246,7 @@ const Painters = () => {
               ) : (
                 <tr>
                   <td
-                    colSpan="5"
+                    colSpan="4"
                     className="px-6 py-10 text-center text-slate-400 italic"
                   >
                     {t("painters.empty")}

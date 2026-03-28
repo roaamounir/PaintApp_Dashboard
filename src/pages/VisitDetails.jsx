@@ -10,10 +10,8 @@ import {
   Clock,
   Ruler,
   Paintbrush,
-  AlertCircle,
   Star,
   Briefcase,
-  Wallet,
   Edit3,
   Save,
   X,
@@ -55,7 +53,7 @@ const VisitDetails = () => {
     );
 
   return (
-    <div className="p-6 md:p-10 bg-gradient-to-br from-slate-50 to-slate-100 min-h-screen font-sans">
+    <div className="p-6 md:p-10 bg-linear-to-br from-slate-50 to-slate-100 min-h-screen font-sans">
       {/* ================= TOP BAR ================= */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-6">
         <div>
@@ -250,19 +248,6 @@ const VisitDetails = () => {
               />
             </div>
 
-            <div className="grid grid-cols-2 gap-4 mt-6">
-              <InfoMini
-                icon={<Wallet size={16} />}
-                label="Commission"
-                value={`${visit.painter?.commissionRate || 10}%`}
-              />
-              <InfoMini
-                icon={<AlertCircle size={16} />}
-                label="Current Debt"
-                value={`${visit.painter?.debt || 0} EGP`}
-                red
-              />
-            </div>
           </Card>
         </div>
       </div>
@@ -327,17 +312,6 @@ const StatBox = ({ icon, label, value, color, isEditing, editElement }) => {
 const Badge = ({ icon, text }) => (
   <div className="flex items-center gap-2 bg-slate-100 px-4 py-2 rounded-xl font-bold text-slate-600">
     {icon} {text}
-  </div>
-);
-
-const InfoMini = ({ icon, label, value, red }) => (
-  <div className="flex justify-between items-center bg-slate-50 p-4 rounded-xl">
-    <span className="flex items-center gap-2 text-slate-500 font-bold">
-      {icon} {label}
-    </span>
-    <span className={`font-black ${red ? "text-red-500" : "text-slate-800"}`}>
-      {value}
-    </span>
   </div>
 );
 

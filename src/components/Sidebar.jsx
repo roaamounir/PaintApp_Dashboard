@@ -18,42 +18,33 @@ import {
   FiFileText,
   FiUserCheck,
   FiGlobe,
-  FiMapPin,
 } from "react-icons/fi";
 import { FiEye } from "react-icons/fi";
 import { useAppContext } from "../context/AppContext";
-import { MdColorLens } from "react-icons/md";
-import { FaPaintRoller, FaIndustry } from "react-icons/fa";
-
-const getCurrentUserRole = () => {
-  try {
-    const token = localStorage.getItem("token");
-    if (!token) return null;
-    const payload = JSON.parse(atob(token.split(".")[1]));
-    return payload?.role ?? null;
-  } catch {
-    return null;
-  }
-};
+import { FaPaintRoller, FaIndustry, FaPalette } from "react-icons/fa";
+import { getJwtRole, hasUserPermission } from "../utils/jwtUser.js";
 
 const Sidebar = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { t } = useTranslation();
   const { language = "ar", changeLanguage = () => {} } = useAppContext() ?? {};
-  const userRole = getCurrentUserRole();
+  const userRole = getJwtRole();
 
   const handleLogout = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("user");
     navigate("/login");
   };
 
   const designLinks = [
-    ...(userRole === "designer" ? [{ nameKey: "sidebar.links.my_designs", path: "/designs/my", icon: FiLayers }] : []),
+    ...(userRole === "designer"
+      ? [{ nameKey: "sidebar.links.my_designs", path: "/designs/my", icon: FiLayers }]
+      : []),
     { nameKey: "sidebar.links.designs_gallery", path: "/designs", icon: FiEye },
   ];
 
-  const menuGroups = [
+  const adminMenuGroups = [
     {
       titleKey: "sidebar.groups.main",
       links: [{ nameKey: "sidebar.links.overview", path: "/dashboard", icon: FiHome }],
@@ -62,10 +53,10 @@ const Sidebar = () => {
       titleKey: "sidebar.groups.management",
       links: [
         { nameKey: "sidebar.links.users", path: "/users", icon: FiUsers },
-        { nameKey: "sidebar.links.customers", path: "/customers", icon: FiUserCheck },
         { nameKey: "sidebar.links.audit_logs", path: "/audit-logs", icon: FiShield },
         { nameKey: "sidebar.links.painters", path: "/painters", icon: FaPaintRoller },
         { nameKey: "sidebar.links.vendors", path: "/vendors", icon: FaIndustry },
+        { nameKey: "sidebar.links.designers", path: "/designers", icon: FaPalette },
         { nameKey: "sidebar.links.reviews", path: "/reviews", icon: FiStar },
       ],
     },
@@ -75,7 +66,6 @@ const Sidebar = () => {
         { nameKey: "sidebar.links.products", path: "/products", icon: FiPackage },
         { nameKey: "sidebar.links.stock_management", path: "/InventoryPage", icon: FiBox },
         { nameKey: "sidebar.links.categories", path: "/categories", icon: FiLayers },
-        { nameKey: "sidebar.links.colors_library", path: "/colors", icon: MdColorLens },
       ],
     },
     {
@@ -92,23 +82,77 @@ const Sidebar = () => {
       titleKey: "sidebar.groups.business",
       links: [
         { nameKey: "sidebar.links.orders", path: "/orders", icon: FiShoppingCart },
-        { nameKey: "sidebar.links.visit_requests", path: "/visit-requests", icon: FiMapPin },
         { nameKey: "sidebar.links.invoices", path: "/InvoicesPage", icon: FiFileText },
         { nameKey: "sidebar.links.wholesale_requests", path: "/requests", icon: FiClipboard },
         { nameKey: "sidebar.links.offers_specials", path: "/offers", icon: FiTag },
+        { nameKey: "sidebar.links.coupons", path: "/coupons", icon: FiTag },
+        { nameKey: "sidebar.links.my_profile", path: "/profile", icon: FiUserCheck },
         { nameKey: "sidebar.links.settings", path: "/settings", icon: FiSettings },
       ],
     },
   ];
 
+  const vendorMenuGroups = [
+    {
+      titleKey: "sidebar.groups.main",
+      links: [{ nameKey: "sidebar.links.overview", path: "/dashboard", icon: FiHome }],
+    },
+    {
+      titleKey: "sidebar.groups.wholesale",
+      links: [
+        { nameKey: "sidebar.links.vendor_catalog", path: "/products", icon: FiPackage },
+        { nameKey: "sidebar.links.my_wholesale_orders", path: "/orders", icon: FiShoppingCart },
+        { nameKey: "sidebar.links.my_invoices", path: "/InvoicesPage", icon: FiFileText },
+      ],
+    },
+    {
+      titleKey: "sidebar.groups.account",
+      links: [
+        { nameKey: "sidebar.links.my_profile", path: "/profile", icon: FiUserCheck },
+        { nameKey: "sidebar.links.settings", path: "/settings", icon: FiSettings },
+      ],
+    },
+  ];
+
+  const menuGroups = userRole === "vendor" ? vendorMenuGroups : adminMenuGroups;
+  const permissionByPath = {
+    "/users": "manage_users",
+    "/audit-logs": "view_reports",
+    "/painters": "manage_users",
+    "/vendors": "manage_users",
+    "/designers": "manage_users",
+    "/reviews": "view_reports",
+    "/products": "manage_stock",
+    "/InventoryPage": "manage_stock",
+    "/categories": "manage_stock",
+    "/orders": "manage_orders",
+    "/InvoicesPage": "view_reports",
+    "/requests": "manage_orders",
+    "/offers": "edit_prices",
+    "/coupons": "edit_prices",
+    "/services": "color_tools",
+    "/simulations": "color_tools",
+  };
+  const canSeeLink = (path) => {
+    if (userRole === "admin" || userRole === "vendor") return true;
+    const required = permissionByPath[path];
+    return required ? hasUserPermission(required) : true;
+  };
+
+  const headerTitle =
+    userRole === "vendor" ? t("sidebar.vendor_portal") : t("sidebar.admin");
+
   return (
     <aside className="w-64 bg-slate-900 text-white flex-col h-screen sticky top-0 shadow-2xl hidden md:flex">
-      {/* Logo */}
-      <div className="p-6 text-2xl font-bold border-b border-slate-800 text-center tracking-tight text-blue-400">
-        {t("sidebar.admin")}
+      <div className="p-6 border-b border-slate-800 text-center tracking-tight">
+        <div className="text-2xl font-bold text-blue-400">{headerTitle}</div>
+        {userRole === "vendor" && (
+          <p className="text-[11px] text-slate-500 font-medium mt-2 leading-snug">
+            {t("sidebar.vendor_sub")}
+          </p>
+        )}
       </div>
 
-      {/* Navigation */}
       <nav className="flex-1 overflow-y-auto p-4 space-y-6 mt-2 hide-scrollbar">
         {menuGroups.map((group, idx) => (
           <div key={idx}>
@@ -116,7 +160,7 @@ const Sidebar = () => {
               {t(group.titleKey)}
             </p>
             <div className="space-y-1">
-              {group.links.map((link) => (
+              {group.links.filter((link) => canSeeLink(link.path)).map((link) => (
                 <Link
                   key={link.path}
                   to={link.path}
@@ -141,9 +185,9 @@ const Sidebar = () => {
         ))}
       </nav>
 
-      {/* Action Buttons (Language & Logout) */}
       <div className="p-4 border-t border-slate-800 bg-slate-900/50 space-y-2">
         <button
+          type="button"
           onClick={() => changeLanguage(language === "ar" ? "en" : "ar")}
           className="w-full flex items-center gap-3 p-3 cursor-pointer rounded-xl transition-all duration-200 text-slate-400 hover:bg-slate-800 hover:text-blue-400 group"
         >
@@ -154,6 +198,7 @@ const Sidebar = () => {
         </button>
 
         <button
+          type="button"
           onClick={handleLogout}
           className="w-full flex items-center gap-3 p-3 cursor-pointer rounded-xl transition-all duration-200 text-rose-400 hover:bg-rose-500/10 hover:text-rose-500 group"
         >

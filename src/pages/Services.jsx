@@ -16,26 +16,77 @@ const Services = () => {
     colorSystems,
     fetchColorSystems,
     paints,
-    colors,
-    loading: contextLoading,
   } = useAppContext();
 
   // --- States ---
   const [activeTab, setActiveTab] = useState("calc");
   const [loading, setLoading] = useState(false);
 
-  // Simulation States — استخراج 5 ألوان تلقائياً من الصورة
+  // Simulation States — استخراج 5 ألوان تلقائياً من الصورة + اختيار لون بالضغط
   const [_selectedImage, setSelectedImage] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
   const [extractedColors, setExtractedColors] = useState([]);
   const [copiedHexIndex, setCopiedHexIndex] = useState(null);
+  const [pickedColor, setPickedColor] = useState(null); // اللون المختار بالضغط على الصورة
+  const [pickerPin, setPickerPin] = useState(null); // { x, y } موضع الدبوس على الصورة (%)
+  const [copiedPicked, setCopiedPicked] = useState(false);
   const imageRef = useRef(null);
+  const canvasRef = useRef(null); // canvas مخفي لقراءة البيكسلات
 
   const copyExtractedHex = (hex, index) => {
     const text = (hex || "").startsWith("#") ? hex : "#" + hex;
     navigator.clipboard.writeText(text).then(() => {
       setCopiedHexIndex(index);
       setTimeout(() => setCopiedHexIndex(null), 2000);
+    });
+  };
+
+  const copyPickedHex = (hex) => {
+    const text = (hex || "").startsWith("#") ? hex : "#" + hex;
+    navigator.clipboard.writeText(text).then(() => {
+      setCopiedPicked(true);
+      setTimeout(() => setCopiedPicked(false), 2000);
+    });
+  };
+
+  // الضغط على الصورة لاستخراج لون نقطة محددة
+  const handleImageClick = (e) => {
+    const img = imageRef.current;
+    const canvas = canvasRef.current;
+    if (!img || !canvas) return;
+
+    const rect = img.getBoundingClientRect();
+    const clickX = e.clientX - rect.left;
+    const clickY = e.clientY - rect.top;
+
+    // تحويل إحداثيات العرض إلى إحداثيات الصورة الطبيعية
+    const scaleX = img.naturalWidth / rect.width;
+    const scaleY = img.naturalHeight / rect.height;
+    const naturalX = Math.round(clickX * scaleX);
+    const naturalY = Math.round(clickY * scaleY);
+
+    // رسم الصورة على canvas ثم قراءة البيكسل
+    canvas.width = img.naturalWidth;
+    canvas.height = img.naturalHeight;
+    const ctx = canvas.getContext("2d");
+    ctx.drawImage(img, 0, 0, img.naturalWidth, img.naturalHeight);
+
+    const pixel = ctx.getImageData(
+      Math.min(naturalX, img.naturalWidth - 1),
+      Math.min(naturalY, img.naturalHeight - 1),
+      1, 1
+    ).data;
+
+    const r = pixel[0];
+    const g = pixel[1];
+    const b = pixel[2];
+    const hex = "#" + [r, g, b].map(v => v.toString(16).padStart(2, "0")).join("").toUpperCase();
+
+    setPickedColor({ hex, r, g, b });
+    // نسبة موضع الدبوس على الصورة المعروضة
+    setPickerPin({
+      x: (clickX / rect.width) * 100,
+      y: (clickY / rect.height) * 100,
     });
   };
 
@@ -51,7 +102,6 @@ const Services = () => {
   const [sourceHex, setSourceHex] = useState("667788");
   const [sourceSelectedCode, setSourceSelectedCode] = useState(""); // عند اختيار نظام كمصدر: الكود المختار (مثل RAL 9010)
   const [sourceSystemPalette, setSourceSystemPalette] = useState([]); // ألوان النظام المختار كمصدر [{ code, hex }, ...]
-  const [sourcePaletteLoading, setSourcePaletteLoading] = useState(false);
   const [convertResult, setConvertResult] = useState(null);
 
   // تحميل كل أنظمة الألوان عند فتح المحول (للنظام المستهدف وقائمة مصدر الكود)
@@ -64,13 +114,10 @@ const Services = () => {
   // عند اختيار نظام لون كمصدر، جلب ألوانه
   useEffect(() => {
     if (!sourceCodeSystem.startsWith("sys-")) {
-      setSourceSystemPalette([]);
-      setSourceSelectedCode("");
       return;
     }
     const systemId = sourceCodeSystem.replace("sys-", "");
     if (!systemId) return;
-    setSourcePaletteLoading(true);
     axios
       .get(`${API_URL}/colors`, { params: { systemId } })
       .then((res) => {
@@ -78,11 +125,9 @@ const Services = () => {
         setSourceSystemPalette(list.map((c) => ({ code: c.code || c.name || "", hex: (c.hex || "").replace(/^#/, "") })));
         setSourceSelectedCode("");
       })
-      .catch(() => setSourceSystemPalette([]))
-      .finally(() => setSourcePaletteLoading(false));
+      .catch(() => setSourceSystemPalette([]));
   }, [sourceCodeSystem]);
 
-  const availableColors = colors || paints || [];
   const normalizedHex = (sourceHex || "").trim().replace(/^#/, "").replace(/[^0-9A-Fa-f]/g, "");
   const fullHex = normalizedHex.length === 6 && /^[0-9A-Fa-f]{6}$/.test(normalizedHex)
     ? "#" + normalizedHex
@@ -109,6 +154,8 @@ const Services = () => {
       setSelectedImage(file);
       setPreviewUrl(URL.createObjectURL(file));
       setExtractedColors([]);
+      setPickedColor(null);
+      setPickerPin(null);
     }
   };
 
@@ -118,7 +165,7 @@ const Services = () => {
     const img = new Image();
     img.crossOrigin = "anonymous";
     img.onload = () => {
-      setLoading(true);
+    setLoading(true);
       Vibrant.from(img)
         .getPalette()
         .then((palette) => {
@@ -368,10 +415,10 @@ const Services = () => {
                   </p>
                 </>
               ) : (
-                <p className="text-gray-600">
-                  {t("services.calculator.results.total_area")}:{" "}
-                  <span className="font-semibold">{calcResult.area} m²</span>
-                </p>
+              <p className="text-gray-600">
+                {t("services.calculator.results.total_area")}:{" "}
+                <span className="font-semibold">{calcResult.area} m²</span>
+              </p>
               )}
               <p className="text-gray-600">
                 {t("services.calculator.results.coverage")}:{" "}
@@ -413,9 +460,9 @@ const Services = () => {
           <div className="rounded-2xl border border-gray-200 bg-gray-50/60 p-4 md:p-6 w-full mb-5">
             <label className="text-xs font-semibold text-gray-600 uppercase tracking-wider block mb-3">
               {t("services.converter.source_system_label")}
-            </label>
+                </label>
             <div className="flex flex-wrap items-center gap-3 md:gap-4">
-              <select
+                <select
                 className="rounded-xl bg-white border border-gray-300 px-4 py-3 text-gray-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm font-medium min-w-[140px]"
                 value={sourceCodeSystem}
                 onChange={(e) => setSourceCodeSystem(e.target.value)}
@@ -432,7 +479,7 @@ const Services = () => {
                     {colorSystems.map((s) => (
                       <option key={s.id} value={`sys-${s.id}`}>
                         {s.name}
-                      </option>
+                  </option>
                     ))}
                   </>
                 )}
@@ -445,30 +492,26 @@ const Services = () => {
                   />
                   {sourceCodeSystem.startsWith("sys-") ? (
                     <div className="flex items-center gap-2 flex-1 min-w-0">
-                      {sourcePaletteLoading ? (
-                        <span className="text-sm text-gray-500">{t("services.converter.loading_palette")}</span>
-                      ) : (
-                        <>
-                          <select
-                            className="flex-1 min-w-0 rounded-lg bg-white border border-gray-300 px-3 py-2 text-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-                            value={sourceSelectedCode}
-                            onChange={(e) => {
-                              const code = e.target.value;
-                              setSourceSelectedCode(code);
-                              const item = sourceSystemPalette.find((c) => c.code === code);
-                              if (item?.hex) setSourceHex(item.hex.replace(/^#/, ""));
-                            }}
-                          >
-                            <option value="">{t("services.converter.select_source_code")}</option>
-                            {sourceSystemPalette.map((c) => (
-                              <option key={c.code} value={c.code}>
-                                {c.code}
-                              </option>
-                            ))}
-                          </select>
-                          <button type="button" onClick={() => { setSourceSelectedCode(""); }} className="text-gray-500 hover:text-gray-700 p-1 rounded hover:bg-gray-200 transition-colors" aria-label="Clear">×</button>
-                        </>
-                      )}
+                      <>
+                        <select
+                          className="flex-1 min-w-0 rounded-lg bg-white border border-gray-300 px-3 py-2 text-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                          value={sourceSelectedCode}
+                          onChange={(e) => {
+                            const code = e.target.value;
+                            setSourceSelectedCode(code);
+                            const item = sourceSystemPalette.find((c) => c.code === code);
+                            if (item?.hex) setSourceHex(item.hex.replace(/^#/, ""));
+                          }}
+                        >
+                          <option value="">{t("services.converter.select_source_code")}</option>
+                          {sourceSystemPalette.map((c) => (
+                            <option key={c.code} value={c.code}>
+                              {c.code}
+                            </option>
+                          ))}
+                        </select>
+                        <button type="button" onClick={() => { setSourceSelectedCode(""); }} className="text-gray-500 hover:text-gray-700 p-1 rounded hover:bg-gray-200 transition-colors" aria-label="Clear">×</button>
+                      </>
                     </div>
                   ) : sourceCodeSystem === "hex" ? (
                     <>
@@ -520,17 +563,17 @@ const Services = () => {
                   )}
                 </div>
               </div>
-          </div>
+              </div>
 
           {/* صف 2: اختيار النظام المستهدف — أنظمة المطابقة (RAL, Pantone...) + صيغ العرض (HEX, CMYK, RGB, HSL, LAB) */}
           <div className="rounded-2xl border border-gray-200 bg-gray-50/60 p-4 md:p-6 w-full mb-5">
             <label className="text-xs font-semibold text-gray-600 uppercase tracking-wider block mb-3">
-              {t("services.converter.fields.target_label")}
-            </label>
-            <select
+                  {t("services.converter.fields.target_label")}
+                </label>
+                <select
               className="w-full rounded-xl bg-white border-2 border-gray-300 px-4 py-3 pr-10 text-gray-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 cursor-pointer font-medium text-sm"
               value={String(convertInputs.targetSystemId ?? "")}
-              onChange={(e) =>
+                  onChange={(e) =>
                 setConvertInputs((prev) => ({ ...prev, targetSystemId: e.target.value || "" }))
               }
               aria-label={t("services.converter.fields.target_label")}
@@ -540,8 +583,8 @@ const Services = () => {
                 {(colorSystems || []).map((s) => (
                   <option key={s.id} value={String(s.id)}>
                     {s.name}
-                  </option>
-                ))}
+                    </option>
+                  ))}
               </optgroup>
               <optgroup label={t("services.converter.target_group_formats")}>
                 <option value="hex">HEX</option>
@@ -550,11 +593,11 @@ const Services = () => {
                 <option value="hsl">HSL</option>
                 <option value="lab">LAB</option>
               </optgroup>
-            </select>
+                </select>
             <p className="text-xs text-gray-500 mt-2">
               {t("services.converter.target_hint_full")}
             </p>
-          </div>
+            </div>
 
           {/* صف 3: زر البحث — أسفل الحقول */}
           <div className="w-full mb-8">
@@ -600,14 +643,14 @@ const Services = () => {
               <div className="flex justify-center mb-8">
                 <div
                   className="w-64 h-64 md:w-72 md:h-72 rounded-full overflow-hidden border-4 border-gray-200 shadow-lg"
-                  style={{
+                      style={{
                     ...(sameColor
                       ? { backgroundColor: leftColor }
                       : { background: `linear-gradient(to right, ${leftColor} 50%, ${rightColor} 50%)` }),
                     transform: isRtl ? "rotate(180deg)" : undefined,
-                  }}
-                />
-              </div>
+                      }}
+                    />
+                    </div>
             );
           })()}
 
@@ -616,7 +659,7 @@ const Services = () => {
             <div className="space-y-2 p-4 rounded-xl bg-gray-50 border border-gray-100">
               <h3 className="text-sm font-bold text-gray-700 uppercase tracking-wider">
                 {t("services.converter.results.original")}
-              </h3>
+                    </h3>
               {(() => {
                 const o = convertResult?.originalColor;
                 const fmt = o || sourceFormats;
@@ -639,11 +682,11 @@ const Services = () => {
                   </div>
                 );
               })()}
-            </div>
+                </div>
             <div className="space-y-2 p-4 rounded-xl bg-indigo-50 border border-indigo-100">
               <h3 className="text-sm font-bold text-indigo-700 uppercase tracking-wider">
                 {t("services.converter.results.matched")}
-              </h3>
+                    </h3>
               {convertResult?.matchedColor ? (
                 <div className="text-xs font-mono text-gray-600 space-y-1">
                   {convertResult.matchedColor.code && (
@@ -692,33 +735,116 @@ const Services = () => {
               </div>
 
               {previewUrl && (
-                <div className="relative border-4 border-white shadow-xl rounded-lg overflow-hidden group">
+                <>
+                  {/* canvas مخفي لقراءة ألوان البيكسل */}
+                  <canvas ref={canvasRef} className="hidden" aria-hidden="true" />
+
+                  <div
+                    className="relative border-4 border-white shadow-xl rounded-lg overflow-hidden group select-none"
+                    style={{ cursor: "crosshair" }}
+                    onClick={handleImageClick}
+                  >
                   <img
                     ref={imageRef}
                     src={previewUrl}
                     alt="Preview"
-                    className="w-full h-auto"
-                  />
+                      className="w-full h-auto pointer-events-none"
+                      crossOrigin="anonymous"
+                    />
+
+                    {/* دبوس موضع الضغط */}
+                    {pickerPin && pickedColor && (
+                      <div
+                        className="absolute pointer-events-none"
+                        style={{
+                          left: `${pickerPin.x}%`,
+                          top: `${pickerPin.y}%`,
+                          transform: "translate(-50%, -100%)",
+                        }}
+                      >
+                        {/* مؤشر اللون المختار */}
+                        <div
+                          className="w-8 h-8 rounded-full border-4 border-white shadow-lg ring-2 ring-black/30"
+                          style={{ backgroundColor: pickedColor.hex }}
+                        />
+                        <div
+                          className="w-0.5 h-3 bg-white shadow mx-auto"
+                          style={{ boxShadow: "0 0 2px rgba(0,0,0,0.6)" }}
+                        />
+                      </div>
+                    )}
+
                   {loading && (
-                    <div className="absolute inset-0 bg-white/50 flex items-center justify-center backdrop-blur-sm">
+                      <div className="absolute inset-0 bg-white/50 flex items-center justify-center backdrop-blur-sm pointer-events-none">
                       <div className="w-10 h-10 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
-                      <span className="ml-2 text-sm text-gray-700">{t("services.simulation.extracting")}</span>
+                        <span className="ml-2 text-sm text-gray-700">{t("services.simulation.extracting")}</span>
+                      </div>
+                    )}
+
+                    {/* تلميح بالضغط */}
+                    <div className="absolute bottom-2 left-0 right-0 flex items-center justify-center gap-2 pointer-events-none">
+                      <div className="bg-black/65 text-white text-xs px-3 py-1.5 rounded-full flex items-center gap-1.5 backdrop-blur-sm">
+                        <svg className="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <circle cx="12" cy="12" r="3" strokeWidth="2"/>
+                          <path strokeLinecap="round" strokeWidth="2" d="M12 2v3m0 14v3M2 12h3m14 0h3"/>
+                        </svg>
+                        {t("services.simulation.click_to_pick", { defaultValue: "اضغط على الصورة لاختيار لون" })}
+                      </div>
                     </div>
-                  )}
-                  <div className="absolute bottom-2 left-2 bg-black/60 text-white text-xs px-2 py-1 rounded">
-                    {t("services.simulation.auto_extract_hint", { defaultValue: "يتم استخراج 5 ألوان تلقائياً" })}
                   </div>
+
+                  {/* بطاقة اللون المختار يدوياً */}
+                  {pickedColor && (
+                    <div className="flex items-center gap-4 p-4 bg-linear-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-2xl shadow-sm mt-1">
+                      <div
+                        className="w-14 h-14 rounded-2xl shrink-0 border-2 border-white shadow-lg ring-1 ring-black/10"
+                        style={{ backgroundColor: pickedColor.hex }}
+                      />
+                      <div className="flex-1 min-w-0">
+                        <p className="text-xs font-semibold text-blue-600 uppercase tracking-wide mb-1">
+                          {t("services.simulation.picked_color", { defaultValue: "اللون المختار" })}
+                        </p>
+                        <p className="font-mono text-xl font-bold text-gray-900 tracking-tight">
+                          {pickedColor.hex}
+                        </p>
+                        <p className="text-xs text-gray-500 font-mono mt-0.5">
+                          rgb({pickedColor.r}, {pickedColor.g}, {pickedColor.b})
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => copyPickedHex(pickedColor.hex)}
+                        className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl border border-blue-200 bg-white text-blue-600 hover:bg-blue-50 text-xs font-semibold shadow-sm transition-colors shrink-0"
+                      >
+                        {copiedPicked ? (
+                          <>
+                            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7"/>
+                            </svg>
+                            {t("services.simulation.copied")}
+                          </>
+                        ) : (
+                          <>
+                            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h2m8 0h2a2 2 0 012 2v2m0 8V6a2 2 0 00-2-2h-2m-4 0h-2a2 2 0 00-2 2v8a2 2 0 002 2h2"/>
+                            </svg>
+                            {t("services.simulation.copy_hex")}
+                          </>
+                        )}
+                      </button>
                 </div>
+                  )}
+                </>
               )}
             </div>
             <div className="space-y-4">
               <div className="border-b border-gray-200 pb-3 mb-4">
                 <h3 className="font-semibold text-gray-800 text-sm flex items-center gap-2">
                   <span className="w-2 h-2 bg-blue-500 rounded-full shrink-0" aria-hidden />
-                  {t("services.simulation.result_title", {
+                {t("services.simulation.result_title", {
                     defaultValue: "الألوان المستخرجة",
-                  })}
-                </h3>
+                })}
+              </h3>
                 <p className="text-xs text-gray-500 mt-1">
                   {t("services.simulation.hex_copy_hint", { defaultValue: "انقر على الكود أو زر النسخ لنسخ قيمة HEX" })}
                 </p>
@@ -744,7 +870,7 @@ const Services = () => {
                           <div className="flex flex-wrap items-center gap-2">
                             <span className="text-[10px] font-semibold text-gray-400 bg-gray-200/80 px-1.5 py-0.5 rounded uppercase">
                               HEX
-                            </span>
+                      </span>
                             <button
                               type="button"
                               onClick={() => copyExtractedHex(displayHex, i)}
@@ -773,11 +899,11 @@ const Services = () => {
                                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                                 </svg>
                                 {t("services.simulation.copied")}
-                              </span>
+                      </span>
                             )}
                           </div>
-                        </div>
-                      </div>
+                    </div>
+                  </div>
                     );
                   })}
                 </div>

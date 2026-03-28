@@ -8,10 +8,7 @@ import {
   MapPin,
   Phone,
   Receipt,
-  ShieldCheck,
   CreditCard,
-  Percent,
-  Wallet,
 } from "lucide-react";
 
 const OrderDetails = () => {
@@ -41,14 +38,22 @@ const OrderDetails = () => {
       </div>
     );
 
-  /* ================= Calculations ================= */
-  const totalPrice = order.totalPrice || 0;
-  const tax = totalPrice * 0.14;
-  const systemCommission = totalPrice * 0.1;
-  const vendorNet = totalPrice - systemCommission - tax;
+  const totalPrice = Number(order.totalPrice || 0);
+  const subtotalPrice = Number(order.subtotalPrice ?? order.totalPrice ?? 0);
+  const discountValue = Number(order.discountValue || 0);
+  const couponCode = order.couponCode || null;
+  const legacyStatusMap = {
+    accepted: "confirmed",
+    completed: "delivered",
+    canceled: "cancelled",
+  };
+  const normalizedStatus =
+    legacyStatusMap[String(order.status || "").toLowerCase()] ||
+    String(order.status || "").toLowerCase();
 
   const vendorLocation =
     order.items?.[0]?.paint?.vendor?.city || t("common.not_specified");
+  const shipping = order.shipping || {};
 
   return (
     <div
@@ -74,6 +79,9 @@ const OrderDetails = () => {
               isRTL ? "ar-EG" : "en-US",
             )}
           </p>
+          <span className="inline-block mt-2 text-xs font-bold uppercase px-3 py-1 rounded-full bg-blue-50 text-blue-700 border border-blue-100">
+            {t(`orders.status.${normalizedStatus}`, { defaultValue: normalizedStatus || "-" })}
+          </span>
         </div>
       </div>
 
@@ -96,14 +104,32 @@ const OrderDetails = () => {
             <InfoItem
               icon={<Phone size={18} />}
               label={t("order.phone_number")}
-              value={order.user?.phone || t("common.not_available")}
+              value={shipping.phone || order.user?.phone || t("common.not_available")}
               color="emerald"
             />
 
             <InfoItem
               icon={<MapPin size={18} />}
               label={t("order.location_label")}
-              value={vendorLocation}
+              value={shipping.city || vendorLocation}
+              color="amber"
+            />
+            <InfoItem
+              icon={<MapPin size={18} />}
+              label={t("order.address", { defaultValue: "Address" })}
+              value={shipping.addressLine1 || t("common.not_available")}
+              color="blue"
+            />
+            <InfoItem
+              icon={<MapPin size={18} />}
+              label={t("order.address_2", { defaultValue: "Address 2" })}
+              value={shipping.addressLine2 || t("common.not_available")}
+              color="blue"
+            />
+            <InfoItem
+              icon={<Receipt size={18} />}
+              label={t("order.postal_code", { defaultValue: "Postal Code" })}
+              value={shipping.postalCode || t("common.not_available")}
               color="amber"
             />
           </div>
@@ -127,63 +153,64 @@ const OrderDetails = () => {
                 </tr>
               </thead>
 
-              <tbody cla     ssName="divide-y">
-                {order.items?.map((item, idx) => (
-                  <tr key={idx} className="text-sm">
-                    <td className="py-4 font-semibold text-slate-700">
-                      {item.paint?.name}
-                    </td>
+              <tbody className="divide-y">
+                {order.items?.map((item, idx) => {
+                  const unitCharged =
+                    item.unitPrice != null && item.unitPrice !== ""
+                      ? Number(item.unitPrice)
+                      : Number(item.paint?.price ?? 0);
+                  return (
+                    <tr key={idx} className="text-sm">
+                      <td className="py-4 font-semibold text-slate-700">
+                        {item.paint?.name}
+                      </td>
 
-                    <td className="py-4 text-slate-500">
-                      <span className="bg-slate-100 px-2 py-1 rounded text-xs">
-                        {item.paint?.vendor?.shopName || t("order.main_store")}
-                      </span>
-                    </td>
+                      <td className="py-4 text-slate-500">
+                        <span className="bg-slate-100 px-2 py-1 rounded text-xs">
+                          {item.paint?.vendor?.shopName || t("order.main_store")}
+                        </span>
+                      </td>
 
-                    <td className="py-4 font-bold">x{item.quantity}</td>
+                      <td className="py-4 font-bold">x{item.quantity}</td>
 
-                    <td className="py-4 text-blue-600 font-bold">
-                      {item.paint?.price?.toLocaleString()}{" "}
-                      {t("common.currency")}
-                    </td>
-                  </tr>
-                ))}
+                      <td className="py-4 text-blue-600 font-bold">
+                        {unitCharged.toLocaleString()}{" "}
+                        {t("common.currency")}
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>
         </div>
 
-        {/* ================= Invoice Summary ================= */}
+        {/* ================= Invoice total ================= */}
         <div className="lg:col-span-3 bg-slate-900 text-white p-8 rounded-3xl shadow-xl">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
             <SummaryBox
-              icon={<CreditCard size={14} />}
-              label={t("order.summary_total")}
-              value={`${totalPrice.toLocaleString()} ${t("common.currency")}`}
+              icon={<Receipt size={14} />}
+              label={t("order.summary_subtotal", { defaultValue: "Subtotal" })}
+              value={`${subtotalPrice.toLocaleString()} ${t("common.currency")}`}
             />
-
             <SummaryBox
-              icon={<Percent size={14} />}
-              label={t("order.summary_tax")}
-              value={`${tax.toLocaleString()} ${t("common.currency")}`}
-              color="amber"
-            />
-
-            <SummaryBox
-              icon={<ShieldCheck size={14} />}
-              label={t("order.summary_fee")}
-              value={`${systemCommission.toLocaleString()} ${t("common.currency")}`}
-              color="blue"
-            />
-
-            <SummaryBox
-              icon={<Wallet size={14} />}
-              label={t("order.summary_net")}
-              value={`${vendorNet.toLocaleString()} ${t("common.currency")}`}
+              icon={<Receipt size={14} />}
+              label={t("order.summary_discount", { defaultValue: "Discount" })}
+              value={`-${discountValue.toLocaleString()} ${t("common.currency")}`}
               color="emerald"
-              highlight
+            />
+            <SummaryBox
+              icon={<Receipt size={14} />}
+              label={t("order.summary_coupon", { defaultValue: "Coupon" })}
+              value={couponCode || t("common.not_available")}
             />
           </div>
+          <SummaryBox
+            icon={<CreditCard size={14} />}
+            label={t("order.summary_total")}
+            value={`${totalPrice.toLocaleString()} ${t("common.currency")}`}
+            highlight
+          />
         </div>
       </div>
     </div>

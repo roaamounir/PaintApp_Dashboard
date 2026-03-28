@@ -12,7 +12,54 @@ import {
   History,
   DollarSign,
   AlertTriangle,
+  Tag,
 } from "lucide-react";
+import { getUnitPriceForBuyer, paintHasWholesale } from "../utils/buyerPricing.js";
+
+// HEX helpers
+const isValidHex = (val) => {
+  if (!val) return false;
+  const h = String(val).trim().replace(/^#/, "");
+  return /^([0-9A-Fa-f]{6}|[0-9A-Fa-f]{3})$/.test(h);
+};
+const toDisplayHex = (val) => {
+  if (!isValidHex(val)) return null;
+  const h = String(val).trim().replace(/^#/, "");
+  const full = h.length === 3 ? h.split("").map((c) => c + c).join("") : h;
+  return "#" + full.toUpperCase();
+};
+
+// استخراج دور المستخدم من التوكن
+const getApiBase = () => {
+  const env = import.meta.env.VITE_API_URL;
+  if (env && String(env).trim()) return String(env).replace(/\/$/, "");
+  if (typeof window !== "undefined") return `${window.location.origin}/api-backend`;
+  return "http://localhost:5000";
+};
+
+const resolveMediaUrl = (base, pathOrUrl) => {
+  if (pathOrUrl == null || String(pathOrUrl).trim() === "") return null;
+  const s = String(pathOrUrl).trim();
+  if (s.startsWith("http://") || s.startsWith("https://")) return s;
+  if (s.startsWith("/")) return `${base}${s}`;
+  return `${base}/${s}`;
+};
+
+const getUserAuth = () => {
+  try {
+    const token = localStorage.getItem("token");
+    if (!token) return { role: null, canBuyWholesale: false };
+    const payload = JSON.parse(atob(token.split(".")[1]));
+    return {
+      role: payload?.role ?? null,
+      canBuyWholesale: Boolean(payload?.canBuyWholesale),
+    };
+  } catch {
+    return { role: null, canBuyWholesale: false };
+  }
+};
+const WHOLESALE_ROLES = ["admin", "vendor", "designer"];
+const WHOLESALE_BUYER_ROLES = ["vendor", "designer"];
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -23,6 +70,7 @@ const ProductDetails = () => {
   const { getPaintDetails } = useAppContext();
   const [productData, setProductData] = useState(null);
   const [loadingLocal, setLoadingLocal] = useState(true);
+  const API_BASE = getApiBase();
 
   useEffect(() => {
     const loadDetails = async () => {
@@ -55,7 +103,18 @@ const ProductDetails = () => {
   const supplier = productData?.vendor;
 
   const totalSold = productData?.analytics?.totalSoldQuantity || 0;
+  const movementsTotal =
+    productData?.analytics?.orderMovementsTotal ?? productSales.length;
+  const movementsShown =
+    productData?.analytics?.orderMovementsShown ?? productSales.length;
   const stockValue = Number(product?.stock || 0) * Number(product?.price || 0);
+  const { role: userRole, canBuyWholesale } = getUserAuth();
+  const canSeeWholesale = WHOLESALE_ROLES.includes(userRole) || canBuyWholesale;
+  const isWholesaleBuyer = WHOLESALE_BUYER_ROLES.includes(userRole) || canBuyWholesale;
+  const hasWholesalePrice = product ? paintHasWholesale(product) : false;
+  const buyerEffectivePrice = product
+    ? getUnitPriceForBuyer(userRole, product, canBuyWholesale)
+    : 0;
   if (!product && !loadingLocal) {
     return (
       <div
@@ -111,15 +170,25 @@ const ProductDetails = () => {
         >
           <Droplet size={120} className="text-blue-600" />
         </div>
-        <div className="flex flex-col md:flex-row justify-between items-center relative z-10">
-          <div className={isRTL ? "text-right" : "text-left"}>
+        <div className="flex flex-col lg:flex-row justify-between items-center gap-8 relative z-10">
+          <div className={`${isRTL ? "text-right" : "text-left"} flex-1 min-w-0`}>
             <div className="flex items-center gap-2 mb-3">
               <span className="bg-blue-600 text-white px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-tighter">
                 {product.Category?.name || t("product.default_category")}
               </span>
-              <span className="bg-slate-100 text-slate-500 px-3 py-1 rounded-full text-[10px] font-black uppercase">
-                {t("product.sku")}: {product.id}
-              </span>
+              {product.sku ? (
+                <span className="flex items-center gap-2 bg-slate-800 text-white px-3 py-1.5 rounded-full text-[10px] font-mono font-black uppercase tracking-widest">
+                  <span
+                    className="w-4 h-4 rounded-full border-2 border-white/30 shrink-0"
+                    style={{ backgroundColor: toDisplayHex(product.sku) ?? "#6b7280" }}
+                  />
+                  #{String(product.sku).replace(/^#/, "").toUpperCase()}
+                </span>
+              ) : (
+                <span className="bg-slate-100 text-slate-400 px-3 py-1 rounded-full text-[10px] font-black uppercase">
+                  {t("product.sku")}: {product.id?.slice(0, 8)}…
+                </span>
+              )}
             </div>
             <h1 className="text-5xl font-black text-slate-800 tracking-tight mb-2">
               {product.name}
@@ -128,16 +197,81 @@ const ProductDetails = () => {
               {product.description || t("product.default_desc")}
             </p>
           </div>
+          {resolveMediaUrl(API_BASE, product.image) && (
+            <div className="shrink-0">
+              <img
+                src={resolveMediaUrl(API_BASE, product.image)}
+                alt={product.name || ""}
+                className="w-40 h-40 md:w-48 md:h-48 object-cover rounded-3xl border border-slate-100 shadow-md bg-slate-100"
+              />
+            </div>
+          )}
           <div
-            className={`${isRTL ? "text-left" : "text-right"} mt-6 md:mt-0 bg-blue-50/50 p-6 rounded-4xl border border-blue-100`}
+            className={`${isRTL ? "text-left" : "text-right"} mt-6 lg:mt-0 space-y-3 shrink-0`}
           >
-            <p className="text-4xl font-black text-blue-700">
-              {product.price}{" "}
-              <span className="text-sm font-bold">{t("common.currency")}</span>
-            </p>
-            <p className="text-[10px] font-black text-blue-400 uppercase mt-1">
-              {t("product.unit_price")}
-            </p>
+            {isWholesaleBuyer ? (
+              /* تاجر / مصمم: سعر واحد = جملة إن وُجد، وإلا سعر التجزئة */
+              <div
+                className={`p-5 rounded-3xl border ${
+                  hasWholesalePrice
+                    ? "bg-amber-50/50 border-amber-200"
+                    : "bg-blue-50/50 border-blue-100"
+                }`}
+              >
+                <p
+                  className={`text-4xl font-black ${
+                    hasWholesalePrice ? "text-amber-700" : "text-blue-700"
+                  }`}
+                >
+                  {buyerEffectivePrice}{" "}
+                  <span className="text-sm font-bold">{t("common.currency")}</span>
+                </p>
+                <p
+                  className={`text-[10px] font-black uppercase mt-1 ${
+                    hasWholesalePrice ? "text-amber-500" : "text-blue-400"
+                  }`}
+                >
+                  {hasWholesalePrice
+                    ? t("product.wholesale_price", { defaultValue: "سعر الجملة" })
+                    : t("product.unit_price")}
+                </p>
+                {hasWholesalePrice && (
+                  <p className="text-sm text-slate-400 line-through mt-2">
+                    {product.price} {t("common.currency")}{" "}
+                    <span className="text-[10px] font-normal not-italic">
+                      ({t("product.unit_price")})
+                    </span>
+                  </p>
+                )}
+              </div>
+            ) : (
+              <>
+                <div className="bg-blue-50/50 p-5 rounded-3xl border border-blue-100">
+                  <p className="text-4xl font-black text-blue-700">
+                    {product.price}{" "}
+                    <span className="text-sm font-bold">{t("common.currency")}</span>
+                  </p>
+                  <p className="text-[10px] font-black text-blue-400 uppercase mt-1">
+                    {t("product.unit_price")}
+                  </p>
+                </div>
+
+                {canSeeWholesale && product.wholesalePrice != null && (
+                  <div className="bg-amber-50 p-4 rounded-3xl border border-amber-200 flex items-center gap-3">
+                    <Tag size={16} className="text-amber-600 shrink-0" />
+                    <div className={isRTL ? "text-right" : "text-left"}>
+                      <p className="text-xl font-black text-amber-700">
+                        {product.wholesalePrice}{" "}
+                        <span className="text-xs font-bold">{t("common.currency")}</span>
+                      </p>
+                      <p className="text-[10px] font-black text-amber-500 uppercase">
+                        {t("product.wholesale_price", { defaultValue: "سعر الجملة" })}
+                      </p>
+                    </div>
+                  </div>
+                )}
+              </>
+            )}
           </div>
         </div>
       </div>
@@ -167,7 +301,7 @@ const ProductDetails = () => {
         />
         <StatCard
           label={t("product.stats_supplier")}
-          value={supplier?.shopName || t("product.internal_supplier")}
+          value={supplier?.shopName || t("product.admin_catalog", { defaultValue: "مخزون الإدارة" })}
           icon={Truck}
           color="text-purple-600"
           bg="bg-purple-50"
@@ -230,21 +364,36 @@ const ProductDetails = () => {
 
         {/* Transaction History */}
         <div className="lg:col-span-2 bg-white p-8 rounded-3xl shadow-sm border border-slate-100">
-          <div className="flex justify-between items-center mb-8">
+          <div className="flex flex-col gap-1 sm:flex-row sm:justify-between sm:items-center mb-6">
             <h3 className="font-black text-slate-800 flex items-center gap-2 text-xl">
               <History className="text-blue-500" size={24} />{" "}
               {t("product.history_title")}
             </h3>
+            {movementsTotal > 0 && (
+              <p className="text-xs font-bold text-slate-400 uppercase tracking-wide">
+                {movementsTotal > movementsShown
+                  ? t("product.history_showing_last", {
+                      shown: movementsShown,
+                      total: movementsTotal,
+                    })
+                  : t("product.history_all_movements", {
+                      count: movementsTotal,
+                    })}
+              </p>
+            )}
           </div>
 
           {productSales.length > 0 ? (
-            <div className="overflow-x-auto">
-              <table className={`w-full ${isRTL ? "text-right" : "text-left"}`}>
-                <thead className="text-[10px] text-slate-400 font-black uppercase border-b">
+            <div className="max-h-[min(28rem,55vh)] overflow-y-auto overflow-x-auto rounded-xl border border-slate-100 shadow-inner bg-slate-50/30">
+              <table
+                className={`w-full min-w-[640px] ${isRTL ? "text-right" : "text-left"}`}
+              >
+                <thead className="sticky top-0 z-1 text-[10px] text-slate-400 font-black uppercase border-b border-slate-200 bg-white shadow-sm">
                   <tr>
                     <th className="pb-4">{t("product.history_trn")}</th>
                     <th className="pb-4">{t("product.history_details")}</th>
                     <th className="pb-4">{t("product.history_qty")}</th>
+                    <th className="pb-4">{t("product.history_price_type")}</th>
                     <th
                       className={`pb-4 ${isRTL ? "text-left" : "text-right"}`}
                     >
@@ -266,6 +415,13 @@ const ProductDetails = () => {
                       </td>
                       <td className="py-4 text-xs font-black">
                         -{sale.quantity}
+                      </td>
+                      <td className="py-4 text-xs font-bold text-slate-600">
+                        {sale.salePriceType === "wholesale"
+                          ? t("product.sale_price_wholesale")
+                          : sale.salePriceType === "retail"
+                            ? t("product.sale_price_retail")
+                            : t("product.sale_price_other")}
                       </td>
                       <td
                         className={`py-4 text-xs font-black ${isRTL ? "text-left" : "text-right"}`}

@@ -1,8 +1,30 @@
 {
+  "auth": {
+    "login_title": "تسجيل الدخول",
+    "signup_title": "إنشاء حساب",
+    "subtitle_dashboard": "الدخول إلى لوحة التحكم",
+    "phone_or_email": "الجوال أو البريد",
+    "phone_or_email_placeholder": "01xxxxxxxxx أو name@email.com",
+    "password": "كلمة المرور",
+    "name": "الاسم الكامل",
+    "email": "البريد الإلكتروني",
+    "phone": "رقم الجوال",
+    "login_action": "دخول",
+    "signup_action": "تسجيل",
+    "signing_in": "جاري الدخول...",
+    "signing_up": "جاري إنشاء الحساب...",
+    "have_account": "لديك حساب؟ تسجيل الدخول",
+    "no_account": "لا حساب؟ سجّل الآن",
+    "invalid_credentials": "بيانات الدخول غير صحيحة"
+  },
   "sidebar": {
     "admin": "لوحة الإدارة",
+    "vendor_portal": "بوابة تاجر الجملة",
+    "vendor_sub": "شراء بالجملة من كتالوج الإدارة بعد تفعيل حسابك",
     "groups": {
       "main": "الرئيسية",
+      "wholesale": "الجملة",
+      "account": "الحساب",
       "management": "الإدارة",
       "inventory": "المخزون",
       "smart_tools": "أدوات ذكية",
@@ -10,12 +32,16 @@
       "business": "الأعمال"
     },
     "links": {
+      "vendor_catalog": "كتالوج المنتجات",
+      "my_wholesale_orders": "طلباتي (جملة)",
+      "my_invoices": "فواتيري",
       "overview": "نظرة عامة",
       "users": "المستخدمون",
       "customers": "العملاء",
       "audit_logs": "سجلات التدقيق",
       "painters": "الدهّانون",
       "vendors": "الموردون",
+      "designers": "المصممون",
       "reviews": "المراجعات",
       "products": "المنتجات",
       "stock_management": "إدارة المخزون",
@@ -26,10 +52,13 @@
       "my_designs": "تصميماتي",
       "designs_gallery": "معرض التصاميم",
       "orders": "الطلبات",
+      "request_painter": "طلب فني",
       "visit_requests": "طلبات الزيارات",
       "invoices": "الفواتير",
       "wholesale_requests": "طلبات الجملة",
       "offers_specials": "العروض والخصومات",
+      "coupons": "الكوبونات",
+      "my_profile": "حسابي",
       "settings": "الإعدادات"
     },
     "switch_english": "English",
@@ -37,11 +66,61 @@
     "logout": "تسجيل الخروج"
   },
 
+  "profile": {
+    "title": "حسابي",
+    "subtitle": "صورة البروفايل واسمك وبيانات الملف المهني حسب نوع حسابك.",
+    "loading": "جاري التحميل...",
+    "load_error": "تعذر تحميل بيانات الحساب.",
+    "avatar_section": "صورة البروفايل",
+    "change_avatar": "تغيير الصورة",
+    "avatar_error": "تعذر رفع الصورة.",
+    "account_section": "بيانات الحساب",
+    "save": "حفظ",
+    "save_all": "حفظ كل التعديلات",
+    "saved": "تم الحفظ بنجاح",
+    "save_failed": "تعذر حفظ التعديلات",
+    "designer_section": "ملف المصمم",
+    "designer_hint": "أضف تفاصيلك المهنية وعرّف من التصاميم من «تصميماتي» ومعرض التصاميم.",
+    "my_designs_link": "تصميماتي",
+    "painter_section": "ملف الفني",
+    "painter_hint": "نوع الخدمة والخبرة والموقع والوصف. معرض الصور يعرض أعمالك التنفيذية فقط.",
+    "location": "الموقع / المدينة",
+    "bio": "نبذة / وصف",
+    "service_type": "نوع الخدمة",
+    "city": "المدينة",
+    "address": "العنوان",
+    "work_gallery": "معرض أعمال التنفيذ",
+    "work_gallery_hint": "ارفع صوراً لأعمال الدهان التي نفّذتها بنفسك.",
+    "add_work_photo": "إضافة صورة عمل",
+    "gallery_empty": "لا توجد صور بعد.",
+    "gallery_upload_error": "تعذر رفع الصورة.",
+    "gallery_delete_error": "تعذر حذف الصورة.",
+    "confirm_delete_image": "حذف هذه الصورة من المعرض؟"
+  },
+
+  "requestPainterFlow": {
+    "title": "طلب فني",
+    "subtitle": "أدخل عنوانك ونوع الخدمة، ثم اختر الفني المناسب.",
+    "back": "رجوع",
+    "address": "عنوانك",
+    "address_placeholder": "أدخل العنوان بالتفصيل",
+    "select_address": "اختر العنوان",
+    "service_type": "نوع الخدمة",
+    "select_service": "اختر نوع الخدمة",
+    "continue": "متابعة",
+    "results_title": "الفنيين المطابقين",
+    "no_results": "لا يوجد فنيون مطابقون لاختيارك.",
+    "view_details": "عرض التفاصيل",
+    "request_visit": "طلب زيارة"
+  },
+
   "visitRequests": {
     "title": "طلبات الزيارات",
     "title_for_painter": "طلبات الزيارات الواردة",
-    "subtitle": "اطلب زيارة من الفني (التاريخ، الوقت، المساحة، العنوان)",
+    "subtitle": "إنشاء ومتابعة طلبات الزيارة (التاريخ، الوقت، المساحة، المنطقة، العنوان)",
     "subtitle_for_painter": "طلبات الزيارات المرسلة من العملاء",
+    "discovery_hint": "تبحث عن فني حسب المدينة ونوع الخدمة؟",
+    "open_request_painter": "افتح «طلب فني»",
     "new_request": "طلب زيارة جديدة",
     "form_title": "طلب زيارة من الفني",
     "painter": "الفني",
@@ -49,6 +128,8 @@
     "date": "التاريخ",
     "time": "الوقت",
     "area": "المساحة",
+    "region": "المنطقة / الحي",
+    "region_placeholder": "الحي أو المنطقة",
     "address": "العنوان",
     "address_placeholder": "عنوان الزيارة بالتفصيل",
     "notes": "ملاحظات",
@@ -56,7 +137,7 @@
     "submit": "إرسال الطلب",
     "cancel": "إلغاء",
     "back": "رجوع",
-    "fill_required": "يرجى تعبئة الفني والتاريخ والوقت والعنوان",
+    "fill_required": "يرجى تعبئة الفني والتاريخ والوقت والمنطقة والعنوان",
     "request_sent": "تم إرسال طلب الزيارة بنجاح",
     "error": "حدث خطأ",
     "loading": "جاري التحميل...",
@@ -66,7 +147,11 @@
     "status_rejected": "مرفوض",
     "status_completed": "منفذ",
     "accept": "قبول",
-    "reject": "رفض"
+    "reject": "رفض",
+    "client_name": "اسم العميل",
+    "client_phone": "موبايل العميل",
+    "service_interior": "داخلي",
+    "service_exterior": "خارجي"
   },
 
   "designs": {
@@ -113,6 +198,9 @@
   "inventory": {
     "title": "إدارة المخزون",
     "subtitle": "مراقبة وتحكم في المخزون في الوقت الفعلي",
+    "vendor_catalog_title": "كتالوج شراء الجملة",
+    "vendor_catalog_subtitle": "منتجات الإدارة — تسعير الجملة بعد تفعيل حسابك",
+    "wholesale_buyer_hint": "أسعار المنتجات المعروضة هي سعر الجملة عند توفره؛ وإلا يُعرض سعر التجزئة. افتح «التفاصيل» لمراجعة المنتج.",
     "searchPlaceholder": "بحث عن منتج...",
     "status": {
       "outOfStock": "نفد من المخزن"
@@ -142,7 +230,8 @@
     "productDetail": "المنتج",
     "techSpecs": "المواصفات الفنية",
     "application": "التطبيق",
-    "stockPrice": "المخزون",
+    "stockPrice": "السعر / المخزون",
+    "wholesale": "جملة",
     "actions": "الإجراءات",
     "finish": "تشطيب",
     "unit": "وحدة",
@@ -156,9 +245,21 @@
     "updateTitle": "تحديث الكمية لـ",
     "basicInfo": "المعلومات الأساسية",
     "productName": "اسم المنتج",
+    "productNameAr": "اسم المنتج (عربي)",
+    "productNameEn": "اسم المنتج (إنجليزي)",
     "description": "الوصف",
+    "descriptionAr": "الوصف (عربي)",
+    "descriptionEn": "الوصف (إنجليزي)",
     "descriptionPlaceholder": "وصف المنتج (اختياري)",
+    "descriptionArPlaceholder": "وصف المنتج بالعربي (اختياري)",
+    "descriptionEnPlaceholder": "وصف المنتج بالإنجليزي (اختياري)",
     "price": "السعر",
+    "sku": "كود اللون (HEX)",
+    "skuPlaceholder": "مثال: FF5733",
+    "retailPrice": "السعر الأساسي (للعملاء)",
+    "wholesalePrice": "سعر الجملة (للمصممين والتجار)",
+    "wholesalePricePlaceholder": "اختياري",
+    "wholesaleOnly": "جملة",
     "type": "نوع المنتج",
     "vendor": "المورد",
     "selectVendor": "اختر المورد",
@@ -168,13 +269,20 @@
     "noVendors": "لا يوجد موردين — أضف مورداً أولاً",
     "noVendorsHint": "يجب وجود مورد واحد على الأقل لإنشاء منتج.",
     "confirmNew": "إضافة المنتج للمخزن",
-    "saveUpdated": "حفظ التعديلات"
+    "saveUpdated": "حفظ التعديلات",
+    "productImage": "صورة المنتج",
+    "productImageHint": "JPEG أو PNG أو GIF أو WebP. تظهر في القائمة وصفحة المنتج.",
+    "productImageChoose": "اختر صورة",
+    "productImageRemove": "إزالة الصورة",
+    "productImageOptionalUrl": "أو رابط صورة",
+    "productImageUrlPlaceholder": "https://… أو اتركه فارغاً"
   },
 
   "messages": {
     "lowStock": "مخزون منخفض",
     "exportError": "فشل تصدير الملف",
-    "importSuccess": "تم استيراد البيانات بنجاح"
+    "importSuccess": "تم استيراد البيانات بنجاح",
+    "productImageUploadError": "تعذر رفع الصورة"
   },
 
   "options": {
@@ -208,14 +316,19 @@
       "new": "فئة جديدة"
     },
     "fields": {
-      "placeholder": "أدخل اسم الفئة...",
+      "placeholder_ar": "أدخل اسم الفئة بالعربية...",
+      "placeholder_en": "أدخل اسم الفئة بالإنجليزية...",
       "search": "بحث عن فئة..."
     },
     "table": {
-      "name": "اسم الفئة",
+      "name_ar": "الاسم العربي",
+      "name_en": "الاسم الإنجليزي",
+      "offer": "العرض",
       "count": "عدد المنتجات",
       "actions": "الإجراءات"
-    }
+    },
+    "offer_none": "بدون عرض",
+    "offer_hint": "اربط عرضاً من صفحة العروض بهذا القسم"
   },
 
   "colors": {
@@ -250,7 +363,7 @@
     "tabs": {
       "calculator": "حاسبة الطلاء",
       "converter": "محول الألوان",
-      "simulation": "محاكاة الألوان"
+      "simulation": "ملتقط الألوان"
     },
     "calculator": {
       "header": "تقدير الكمية المطلوبة",
@@ -344,12 +457,16 @@
       "copy_hex": "نسخ HEX",
       "click_to_copy": "انقر للنسخ",
       "copied": "تم النسخ",
-      "hex_copy_hint": "انقر على الكود أو زر النسخ لنسخ قيمة HEX"
+      "hex_copy_hint": "انقر على الكود أو زر النسخ لنسخ قيمة HEX",
+      "click_to_pick": "اضغط على الصورة لاختيار لون",
+      "picked_color": "اللون المختار"
     }
   },
   "invoices": {
     "title": "إدارة الفواتير",
     "subtitle": "متابعة الفواتير الصادرة وحالة الدفع",
+    "vendor_title": "فواتير مشترياتي",
+    "vendor_subtitle": "فواتير طلبات الجملة الخاصة بك فقط",
     "currency": "ج.م",
     "unknown_customer": "عميل غير معروف",
     "unknown_source": "غير محدد",
@@ -406,7 +523,9 @@
       "add_title": "إضافة حساب مستخدم جديد"
     },
     "alerts": {
-      "confirm_delete": "هل أنت متأكد من حذف هذا المستخدم؟ لا يمكن التراجع عن هذا الإجراء."
+      "confirm_delete": "هل أنت متأكد من حذف هذا المستخدم؟ لا يمكن التراجع عن هذا الإجراء.",
+      "fill_all_fields": "يرجى تعبئة جميع الحقول المطلوبة.",
+      "session_expired": "انتهت الجلسة أو التوكن غير صالح. سجّل الدخول مرة أخرى."
     }
   },
   "requests": {
@@ -591,6 +710,40 @@
       "confirm_delete": "هل أنت متأكد من حذف هذا المورد؟ لا يمكن التراجع عن هذا الإجراء."
     }
   },
+  "designers": {
+    "title": "المصممون",
+    "subtitle": "عرض وتعديل حسابات المصممين وبيانات ملفهم",
+    "search_placeholder": "بحث بالاسم، البريد، أو التخصصات...",
+    "empty_list": "لا يوجد مصممون مطابقون للبحث.",
+    "table": {
+      "designer": "المصمم",
+      "profile": "الملف المهني",
+      "actions": "الإجراءات"
+    },
+    "fields": {
+      "experience_years": "سنوات الخبرة",
+      "specialties": "نوع الخدمة / التخصصات",
+      "rating": "التقييم",
+      "portfolio": "رابط الأعمال / البورتفوليو",
+      "location": "الموقع",
+      "bio": "الوصف",
+      "no_profile": "لا يوجد ملف مهني بعد"
+    },
+    "detail": {
+      "title": "تفاصيل المصمم",
+      "account": "الحساب",
+      "profile_section": "الملف المهني",
+      "save": "حفظ التعديلات",
+      "cancel": "إلغاء",
+      "edit": "تعديل",
+      "saved": "تم الحفظ بنجاح",
+      "save_failed": "تعذر حفظ التعديلات",
+      "loading": "جاري التحميل...",
+      "not_found": "المصمم غير موجود",
+      "back": "العودة للقائمة",
+      "open_gallery": "فتح معرض التصاميم"
+    }
+  },
   "reviews": {
     "title": "آراء وتقييمات العملاء",
     "subtitle": "متابعة ملاحظات العملاء على أداء الفنيين",
@@ -658,11 +811,29 @@
       "limit": "الحد الأدنى",
       "order_stock": "طلب كمية",
       "healthy": "المخزون سليم حالياً"
+    },
+    "vendor": {
+      "title": "مرحباً بك، تاجر الجملة",
+      "subtitle": "كنت مستخدمًا عاديًا حتى وافقت الإدارة على طلب الجملة أو طلب التحويل لتاجر؛ حسابك الآن مفعّل للشراء بأسعار الجملة من كتالوج المنصة.",
+      "stats_total_purchases": "إجمالي مشترياتي",
+      "stats_open_orders": "طلبات قيد التنفيذ",
+      "stats_orders_count": "عدد الطلبات",
+      "stats_catalog": "منتجات في الكتالوج",
+      "source_wholesale": "شراء جملة",
+      "chart_order_status": "حالة الطلبات",
+      "recent_order_totals": "إجمالي طلباتي الأخيرة",
+      "status_other": "طلبات غير معلقة",
+      "sidebar_hint_title": "ماذا بعد؟",
+      "sidebar_hint": "تصفح «كتالوج المنتجات» وأضف للسلة بسعر الجملة، ثم راجِع «طلباتي» و«فواتيري».",
+      "no_alerts_vendor": "تنبيهات مخزون الإدارة تظهر للمشرفين فقط؛ أنت تطلب من الكتالوج الموحّد."
     }
   },
   "orders": {
     "title": "لوحة الإدارة",
     "subtitle": "مراجعة تفاصيل الطلبات وتوزيع الموردين",
+    "vendor_title": "طلبات شراء الجملة",
+    "vendor_subtitle": "طلباتك من كتالوج الإدارة بأسعار الجملة",
+    "admin_catalog": "كتالوج المنصة",
     "tabs": {
       "paints": "طلبات الدهانات",
       "visits": "طلبات المعاينة"
@@ -685,6 +856,11 @@
     },
     "status": {
       "pending": "قيد الانتظار",
+      "confirmed": "تم التأكيد",
+      "preparing": "قيد التجهيز",
+      "shipped": "تم الشحن",
+      "delivered": "تم التسليم",
+      "cancelled": "ملغي",
       "accepted": "تم القبول",
       "completed": "مكتمل",
       "canceled": "ملغي"
@@ -849,7 +1025,19 @@
       "id": "نزاع رقم #",
       "view_conv": "عرض المحادثة",
       "empty": "لا توجد نزاعات حالياً"
-    }
+    },
+    "tab_overview": "نبذة",
+    "bio": "نبذة",
+    "service_type": "نوع الخدمة",
+    "city": "المدينة",
+    "add_review": "اكتب تقييماً",
+    "rating": "التقييم",
+    "review_text": "نص التقييم",
+    "review_placeholder": "شارك تجربتك…",
+    "submit_review": "إرسال التقييم",
+    "customer_reviews": "آراء العملاء",
+    "no_reviews_yet": "لا توجد تقييمات بعد.",
+    "review_error": "تعذر إرسال التقييم"
   },
   "common": {
     "back": "رجوع",
@@ -886,7 +1074,7 @@
   },
   "tabs": {
     "verification_info": "بيانات التوثيق",
-    "wallet_financials": "المحفظة والماليات",
+    "wallet_financials": "الطلبات",
     "portfolio": "الأعمال",
     "disputes": "النزاعات",
     "reviews": "المراجعات"
@@ -934,9 +1122,6 @@
     "verify_error": "خطأ في توثيق الحساب. تحقق من الاتصال.",
     "update_success": "تم تحديث البيانات المالية بنجاح ✅"
   },
-  "painterDetails": {
-    "not_found": "لم يتم العثور على بيانات النقاش"
-  },
   "product": {
     "loading": "جاري تحميل تفاصيل المنتج...",
     "not_found_title": "المنتج غير متوفر",
@@ -945,12 +1130,14 @@
     "sku": "كود المنتج",
     "default_category": "دهان ممتاز",
     "default_desc": "تشطيب احترافي عالي الجودة للأسطح الداخلية والخارجية.",
-    "unit_price": "سعر وحدة التجزئة",
+    "unit_price": "سعر التجزئة",
+    "wholesale_price": "سعر الجملة",
     "stats_stock": "في المخزن",
     "stats_sold": "حجم المبيعات",
     "stats_value": "قيمة المخزون",
     "stats_supplier": "المورد",
     "internal_supplier": "داخلي",
+    "admin_catalog": "مخزون الإدارة",
     "tech_details_title": "التفاصيل الفنية",
     "spec_base": "الأساس",
     "spec_finish": "التشطيب",
@@ -962,10 +1149,16 @@
     "inventory_health": "صحة المخزون",
     "min_level": "الحد الأدنى",
     "history_title": "التحركات الأخيرة",
+    "history_showing_last": "عرض آخر {{shown}} من {{total}} حركة — مرّر للمزيد",
+    "history_all_movements": "جميع الحركات المعروضة ({{count}})",
     "history_trn": "المعاملة",
     "history_details": "التفاصيل",
     "history_qty": "الكمية",
     "history_revenue": "الإيرادات",
+    "history_price_type": "نوع السعر",
+    "sale_price_wholesale": "جملة",
+    "sale_price_retail": "قطاعي",
+    "sale_price_other": "مخصص",
     "standard_sale": "بيع قياسي",
     "no_sales": "لا توجد بيانات مبيعات متاحة"
   },
@@ -986,6 +1179,9 @@
     "col_price": "السعر",
     "main_store": "المتجر الرئيسي",
     "summary_total": "إجمالي المبلغ",
+    "address": "العنوان الأول",
+    "address_2": "العنوان الثاني",
+    "postal_code": "الرمز البريدي",
     "summary_tax": "ضريبة القيمة المضافة (14%)",
     "summary_fee": "عمولة المنصة (10%)",
     "summary_net": "صافي أرباح المورد"
@@ -1137,6 +1333,14 @@
     "save_success": "تم تحديث الإعدادات بنجاح!",
     "save_error": "فشل في تحديث الإعدادات.",
     "connection_error": "خطأ في الاتصال، يرجى التحقق من الشبكة.",
+    "profile": {
+      "avatar_title": "صورة البروفايل (حسابي)",
+      "avatar_hint": "أي مستخدم مسجّل يمكنه رفع صورة شخصية. الصيغ: JPEG أو PNG أو GIF أو WebP.",
+      "avatar_upload": "اختر صورة",
+      "avatar_saved": "تم تحديث صورة البروفايل.",
+      "avatar_error": "تعذر رفع الصورة.",
+      "login_required": "يرجى تسجيل الدخول أولاً."
+    },
     "general": {
       "title": "المعلومات العامة",
       "app_name": "اسم التطبيق",
@@ -1167,10 +1371,10 @@
     "suspendVendor": "إيقاف التاجر",
     "approveMerchant": "تفعيل التاجر",
     "suspendConfirm": "هل أنت متأكد من إيقاف حساب هذا التاجر؟",
+    "confirmApproveMerchant": "تأكيد تفعيل هذا التاجر؟ سيتمكن من البيع على المنصة.",
     "tabs": {
       "overview": "نظرة عامة",
-      "inventory": "المخزون",
-      "financials": "المالية"
+      "inventory": "المخزون"
     },
     "stats": {
       "totalProducts": "إجمالي المنتجات",

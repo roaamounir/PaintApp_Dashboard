@@ -7,7 +7,22 @@ import {
   Info,
   Upload,
   Trash2,
+  User,
+  Loader2,
 } from "lucide-react";
+
+const getApiBase = () => {
+  const env = import.meta.env.VITE_API_URL;
+  if (env && String(env).trim()) return String(env).replace(/\/$/, "");
+  if (typeof window !== "undefined") return `${window.location.origin}/api-backend`;
+  return "http://localhost:5000";
+};
+
+const resolveUploadUrl = (url) => {
+  if (!url) return null;
+  if (url.startsWith("http")) return url;
+  return `${getApiBase()}${url.startsWith("/") ? "" : "/"}${url}`;
+};
 
 const Settings = () => {
   const { t, i18n } = useTranslation();
@@ -23,20 +38,55 @@ const Settings = () => {
   });
   const [banners, setBanners] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [meProfile, setMeProfile] = useState(null);
+  const [avatarUploading, setAvatarUploading] = useState(false);
 
   useEffect(() => {
     fetchSettings();
   }, []);
 
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) return;
+    const base = getApiBase();
+    fetch(`${base}/users/me`, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+      .then((r) => {
+        if (r.status === 401) {
+          // Session expired: clear stale auth to stop repeated unauthorized calls.
+          localStorage.removeItem("token");
+          localStorage.removeItem("user");
+          return null;
+        }
+        return r.ok ? r.json() : null;
+      })
+      .then((data) => {
+        if (data) {
+          setMeProfile(data);
+          localStorage.setItem("user", JSON.stringify(data));
+        }
+      })
+      .catch(() => {});
+  }, []);
+
   const fetchSettings = async () => {
     try {
-      const response = await fetch("http://localhost:5000/api/settings");
+      const response = await fetch(`${getApiBase()}/api/settings`);
+      if (response.status === 404) {
+        // Backward compatibility: some backend builds don't implement settings APIs.
+        setLoading(false);
+        return;
+      }
+      if (!response.ok) {
+        setLoading(false);
+        return;
+      }
       const data = await response.json();
       if (data.settings) setFormData(data.settings);
       if (data.banners) setBanners(data.banners);
       setLoading(false);
-    } catch (err) {
-      console.error("Error fetching settings:", err);
+    } catch {
       setLoading(false);
     }
   };
@@ -49,16 +99,21 @@ const Settings = () => {
   const handleSave = async () => {
     try {
       const response = await fetch(
-        "http://localhost:5000/api/settings/update",
+        `${getApiBase()}/api/settings/update`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ settings: formData }),
         },
       );
-      if (response.ok) alert("✅ " + t("settings.save_success") || "Saved!");
-      else alert("❌ " + t("settings.save_error"));
-    } catch (err) {
+      if (response.ok) {
+        alert("✅ " + t("settings.save_success") || "Saved!");
+      } else if (response.status === 404) {
+        alert(t("settings.save_error"));
+      } else {
+        alert("❌ " + t("settings.save_error"));
+      }
+    } catch {
       alert("❌ " + t("settings.connection_error"));
     }
   };
@@ -71,7 +126,7 @@ const Settings = () => {
 
     try {
       const response = await fetch(
-        "http://localhost:5000/api/settings/upload-banner",
+        `${getApiBase()}/api/settings/upload-banner`,
         {
           method: "POST",
           body: data,
@@ -88,6 +143,40 @@ const Settings = () => {
   };
 
   
+  const handleProfileAvatarUpload = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const token = localStorage.getItem("token");
+    if (!token) {
+      alert(t("settings.profile.login_required"));
+      return;
+    }
+    const data = new FormData();
+    data.append("avatar", file);
+    setAvatarUploading(true);
+    try {
+      const base = getApiBase();
+      const response = await fetch(`${base}/users/me/avatar`, {
+        method: "POST",
+        headers: { Authorization: `Bearer ${token}` },
+        body: data,
+      });
+      const result = await response.json().catch(() => ({}));
+      if (response.ok && result.user) {
+        setMeProfile(result.user);
+        localStorage.setItem("user", JSON.stringify(result.user));
+        alert(t("settings.profile.avatar_saved"));
+      } else {
+        alert(result.error || t("settings.profile.avatar_error"));
+      }
+    } catch {
+      alert(t("settings.profile.avatar_error"));
+    } finally {
+      setAvatarUploading(false);
+      e.target.value = "";
+    }
+  };
+
   const handleLogoUpload = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -96,7 +185,7 @@ const Settings = () => {
 
     try {
       const response = await fetch(
-        "http://localhost:5000/api/settings/upload-logo",
+        `${getApiBase()}/api/settings/upload-logo`,
         {
           method: "POST",
           body: data,
@@ -208,6 +297,43 @@ const Settings = () => {
 
         {/* Media Section */}
         <div className="space-y-6">
+          {/* Profile avatar (حسابي) */}
+          <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm">
+            <h3 className="text-sm font-bold text-slate-800 mb-4 uppercase tracking-wider flex items-center gap-2">
+              <User size={16} className="text-violet-500" />
+              {t("settings.profile.avatar_title")}
+            </h3>
+            <p className="text-xs text-slate-500 mb-4">{t("settings.profile.avatar_hint")}</p>
+            <label className="border-2 border-dashed border-slate-200 rounded-2xl p-6 flex flex-col items-center justify-center bg-slate-50 hover:bg-slate-100 transition cursor-pointer relative overflow-hidden group">
+              {avatarUploading && (
+                <div className="absolute inset-0 bg-white/80 flex items-center justify-center z-10">
+                  <Loader2 className="animate-spin text-violet-600" size={28} />
+                </div>
+              )}
+              {meProfile?.avatarUrl ? (
+                <img
+                  src={resolveUploadUrl(meProfile.avatarUrl)}
+                  className="absolute inset-0 w-full h-full object-cover opacity-90 group-hover:opacity-70 transition"
+                  alt=""
+                />
+              ) : (
+                <User className="text-slate-400 mb-2" size={40} />
+              )}
+              <p className="text-xs text-slate-500 font-medium text-center relative z-1">
+                {t("settings.profile.avatar_upload")}
+              </p>
+              <input
+                type="file"
+                className="hidden"
+                onChange={handleProfileAvatarUpload}
+                accept="image/jpeg,image/png,image/gif,image/webp"
+              />
+            </label>
+            {meProfile?.name && (
+              <p className="text-center text-sm font-bold text-slate-700 mt-3">{meProfile.name}</p>
+            )}
+          </div>
+
           {/* App Logo */}
           <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm">
             <h3 className="text-sm font-bold text-slate-800 mb-4 uppercase tracking-wider">

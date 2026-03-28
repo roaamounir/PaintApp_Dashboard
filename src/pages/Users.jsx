@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Trash2, Edit, Plus, Search, Loader2, X } from "lucide-react";
+import { Trash2, Edit, Plus, Search, Loader2, X, Ban } from "lucide-react";
 import { useAppContext } from "../context/AppContext";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next"; 
@@ -8,6 +8,7 @@ const Users = () => {
   const { t } = useTranslation(); 
   const { users, deleteUser, updateUser, loading, addUser } = useAppContext();
   const [searchTerm, setSearchTerm] = useState("");
+  const [roleFilter, setRoleFilter] = useState("all");
 
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [isAddOpen, setIsAddOpen] = useState(false);
@@ -24,11 +25,13 @@ const Users = () => {
 
   const filteredUsers = users.filter((user) => {
     const search = searchTerm.toLowerCase().trim();
-    return (
+    const textMatch = (
       user.name?.toLowerCase().includes(search) ||
       user.email?.toLowerCase().includes(search) ||
       user.phone?.includes(search)
     );
+    const roleMatch = roleFilter === "all" || String(user.role) === roleFilter;
+    return textMatch && roleMatch;
   });
 
   const openEditModal = (user) => {
@@ -93,18 +96,32 @@ const Users = () => {
       </div>
 
       {/* Search Bar */}
-      <div className="relative">
-        <Search
-          className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
-          size={18}
-        />
-        <input
-          type="text"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          placeholder={t("users.search_placeholder")}
-          className="w-full bg-white border border-slate-200 rounded-xl py-3 pl-12 pr-4 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition shadow-sm"
-        />
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+        <div className="relative md:col-span-2">
+          <Search
+            className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
+            size={18}
+          />
+          <input
+            type="text"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            placeholder={t("users.search_placeholder")}
+            className="w-full bg-white border border-slate-200 rounded-xl py-3 pl-12 pr-4 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition shadow-sm"
+          />
+        </div>
+        <select
+          value={roleFilter}
+          onChange={(e) => setRoleFilter(e.target.value)}
+          className="bg-white border border-slate-200 rounded-xl py-3 px-4 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition shadow-sm text-sm font-semibold text-slate-700"
+        >
+          <option value="all">All roles</option>
+          <option value="user">{t("users.roles.user")}</option>
+          <option value="admin">{t("users.roles.admin")}</option>
+          <option value="painter">{t("users.roles.painter")}</option>
+          <option value="vendor">{t("users.roles.vendor")}</option>
+          <option value="designer">{t("users.roles.designer")}</option>
+        </select>
       </div>
 
       {/* Table Section */}
@@ -196,13 +213,17 @@ const Users = () => {
                           <Edit size={16} />
                         </button>
                         <button
-                          onClick={() => {
-                            if (
-                              window.confirm(t("users.alerts.confirm_delete"))
-                            )
-                              deleteUser(user.id);
-                          }}
-                          className="p-2 text-slate-400 hover:text-red-600 transition"
+                          onClick={() => deleteUser(user.id, "soft")}
+                          className="p-2 text-slate-400 hover:text-amber-600 transition"
+                          title="Soft delete"
+                        >
+                          <Ban size={16} />
+                        </button>
+                        <button
+                          onClick={() => deleteUser(user.id, "hard")}
+                          className="p-2 text-slate-400 hover:text-rose-600 transition"
+                          title="Hard delete"
+                          aria-label="Hard delete"
                         >
                           <Trash2 size={16} />
                         </button>

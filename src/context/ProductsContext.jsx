@@ -100,9 +100,8 @@ export const ProductsProvider = ({ children }) => {
         finish: currentPaint.finish,
         unit: currentPaint.unit,
         usage: currentPaint.usage,
-        vendorId: parseInt(currentPaint.vendorId),
-        categoryId: parseInt(currentPaint.categoryId),
-        subCategoryId: currentPaint.subCategoryId ? parseInt(currentPaint.subCategoryId) : null,
+        vendorId: null,
+        categoryId: String(currentPaint.categoryId ?? ""),
         minStockLevel: parseInt(currentPaint.minStockLevel) || 5,
         availability: parseInt(newStock) > 0 ? "in_stock" : "out_of_stock",
         barcode: currentPaint.barcode || null,
@@ -142,7 +141,7 @@ export const ProductsProvider = ({ children }) => {
       const res = await axios.get(`${API_URL}/categories`, getAuthHeader());
       const processedData = res.data.map((cat) => ({
         ...cat,
-        subCategories: cat.SubCategory || cat.subcategory || cat.subcategories || [],
+        subCategories: [],
       }));
       setCategories(processedData);
     } catch (err) {
@@ -204,34 +203,9 @@ export const ProductsProvider = ({ children }) => {
     }
   };
 
-  const addSubCategory = async (subData) => {
-    try {
-      setLoading(true);
-      await axios.post(`${API_URL}/subcategories`, subData, getAuthHeader());
-      await fetchCategories();
-      return { success: true };
-    } catch (err) {
-      alert(err.response?.data?.error || "Failed to add sub-category");
-      return { success: false };
-    } finally {
-      setLoading(false);
-    }
-  };
+  const addSubCategory = async () => ({ success: false });
 
-  const deleteSubCategory = async (id) => {
-    if (!window.confirm("هل أنت متأكد من حذف هذا التصنيف الفرعي؟")) return;
-    try {
-      setLoading(true);
-      await axios.delete(`${API_URL}/subcategories/${id}`, getAuthHeader());
-      await fetchCategories();
-      return { success: true };
-    } catch (err) {
-      console.error("Delete sub-category error:", err.message);
-      return { success: false };
-    } finally {
-      setLoading(false);
-    }
-  };
+  const deleteSubCategory = async () => ({ success: false });
 
   const fetchColorSystems = useCallback(async () => {
     try {
